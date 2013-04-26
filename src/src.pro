@@ -1,0 +1,48 @@
+#-------------------------------------------------
+#
+# Project created by QtCreator 2012-12-21T13:05:39
+#
+#-------------------------------------------------
+
+include(../common.pri)
+
+QT       += core gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = src
+TEMPLATE = app
+
+SOURCES += main.cpp\
+        mainwindow.cpp \
+    guidoservice.cpp \
+    midiwrapper.cpp \
+    notemapper.cpp \
+    song.cpp \
+    needlemanwunsch.cpp \
+    matchinghandler.cpp \
+    matchingitem.cpp \
+    matchingservice.cpp \
+    hanonsongfactory.cpp \
+    scoreservice.cpp \
+    score.cpp
+
+HEADERS  += mainwindow.h \
+    guidoservice.h \
+    midiwrapper.h \
+    mididefs.h \
+    notemapper.h \
+    song.h \
+    needlemanwunsch.h \
+    events.h \
+    matchinghandler.h \
+    matchingitem.h \
+    matchingservice.h \
+    hanonsongfactory.h \
+    scoreservice.h \
+    score.h
+
+FORMS    += mainwindow.ui
+
+OTHER_FILES +=
+
