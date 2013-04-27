@@ -7,7 +7,8 @@
 #include "Fraction.h"
 
 #include "events.h"
-#include "matchingitem.h"
+
+class MatchingItem;
 
 class MatchingHandler : public QObject
 {

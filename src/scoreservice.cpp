@@ -2,6 +2,8 @@
 
 #include <QString>
 
+#include "score.h"
+
 ScoreService::ScoreService()
 {
 }

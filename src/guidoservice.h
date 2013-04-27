@@ -5,7 +5,8 @@
 #include <QList>
 
 #include "events.h"
-#include "score.h"
+
+class Score;
 
 class GuidoService
 {

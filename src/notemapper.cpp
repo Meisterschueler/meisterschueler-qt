@@ -6,6 +6,8 @@
 #include "ARNote.h"
 #include "ARRest.h"
 
+#include "score.h"
+
 NoteMapper::NoteMapper(ARMusicalVoice *voice) : TimeUnwrap(voice)
 {
 }

@@ -4,7 +4,7 @@
 #include <QList>
 #include <QString>
 
-#include "score.h"
+class Score;
 
 class ScoreService
 {

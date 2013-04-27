@@ -7,6 +7,7 @@
 #include "ARMusicalVoice.h"
 
 #include "notemapper.h"
+#include "score.h"
 
 GuidoService::GuidoService()
 {

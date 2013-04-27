@@ -4,6 +4,7 @@
 #include "guidoservice.h"
 #include "scoreservice.h"
 #include "needlemanwunsch.h"
+#include "score.h"
 
 class Test : public QObject
 {

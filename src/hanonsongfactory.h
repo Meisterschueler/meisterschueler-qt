@@ -2,9 +2,10 @@
 #define HANONSONGFACTORY_H
 
 #include <QList>
+#include <QString>
 
-#include "song.h"
-#include "score.h"
+class Song;
+class Score;
 
 class Sequence {
 public:

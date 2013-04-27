@@ -8,7 +8,7 @@
 #include <QString>
 #include <QList>
 
-#include "score.h"
+class Score;
 
 class NoteMapper : public TimeUnwrap
 {

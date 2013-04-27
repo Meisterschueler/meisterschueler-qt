@@ -2,6 +2,8 @@
 
 #include "guidoservice.h"
 #include "scoreservice.h"
+#include "song.h"
+#include "score.h"
 
 HanonSongFactory::HanonSongFactory()
 {
