@@ -1,6 +1,8 @@
 #ifndef SCORE_H
 #define SCORE_H
 
+#include <QSharedPointer>
+
 #include "Fraction.h"
 
 class NoteOnEvent;
@@ -19,11 +21,22 @@ public:
     Fraction duration;
     Fraction position;
 
-    NoteOnEvent *noteOn;
-    NoteOffEvent *noteOff;
+    QSharedPointer<NoteOnEvent> noteOn;
+    QSharedPointer<NoteOffEvent> noteOff;
     Finger finger;
     Hand hand;
     Status status;
+
+    bool operator<(const Score& rhs) const {
+        if (this->position < rhs.position) {
+            return true;
+        } else if (this->position == rhs.position && this->pitch < rhs.pitch){
+            return true;
+        } else {
+            return false;
+        }
+    }
 };
+
 
 #endif // SCORE_H

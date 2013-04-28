@@ -8,7 +8,7 @@ ScoreService::ScoreService()
 {
 }
 
-QList<Score> ScoreService::transposeStep(QList<Score> scores, int step) {
+QList<Score> ScoreService::transposeStep(const QList<Score>& scores, const int& step) {
     const QString whiteKeys = "x.x.xx.x.x.xx.x.xx.x.x.xx.x.xx.x.x.xx.x.xx.x.x.xx.x.xx.x.x.xx.x.xx.x.x.xx.x.xx.x.x.xx.x.xx.x.x.xx.x.xx.x.x.xx.x.xx.x.x.xx.x.xx.x";
 
     QList<Score> result;
@@ -47,7 +47,10 @@ QList<Score> ScoreService::concat(QList<Score> scores1, QList<Score> scores2) {
     return result;
 }
 
-QList<Score> ScoreService::merge(QList<Score> scores1, QList<Score> scores2) {
+QList<Score> ScoreService::merge(const QList<Score>& scores1, const QList<Score>& scores2) {
     QList<Score> result;
+    result.append(scores1);
+    result.append(scores2);
+    qSort(result);
     return result;
 }
