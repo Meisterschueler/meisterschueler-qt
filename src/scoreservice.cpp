@@ -42,8 +42,14 @@ QList<Score> ScoreService::addFingers(QList<Score> scores, int * fingers) {
     return result;
 }
 
-QList<Score> ScoreService::concat(QList<Score> scores1, QList<Score> scores2) {
+QList<Score> ScoreService::concat(const QList<Score>& scores1, const QList<Score>& scores2) {
     QList<Score> result;
+    Fraction offset = scores1.last().position + scores1.last().duration;
+    result.append(scores1);
+    for (Score score : scores2) {
+        score.position += offset;
+        result.append(score);
+    }
     return result;
 }
 

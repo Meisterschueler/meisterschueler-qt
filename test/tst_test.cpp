@@ -163,9 +163,11 @@ void Test::scoreService_concat() {
     QList<Score> scores3 = ScoreService::concat(scores1, scores2);
     QVERIFY( scores3.size() == 6 );
 
-    for (int i=0; i<scores3.size(); i++) {
-        Fraction position = scores3.at(i).position;
-        QVERIFY( i*0.25 == position.getNumerator()/position.getDenominator() );
+    Fraction nextPosition;
+    for (Score score : scores3) {
+        Fraction position = score.position;
+        QVERIFY( nextPosition == position );
+        nextPosition = position + score.duration;
     }
 }
 
