@@ -25,12 +25,14 @@ INCLUDEPATH += ../src
 
 SOURCES += guidoservice.cpp \
     scoreservice.cpp \
+    midiservice.cpp \
     score.cpp \
     notemapper.cpp \
     needlemanwunsch.cpp
 
 HEADERS  += guidoservice.h \
     scoreservice.h \
+    midiservice.h \
     events.h \
     mididefs.h \
     score.h \

@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     matchingservice.cpp \
     hanonsongfactory.cpp \
     scoreservice.cpp \
-    score.cpp
+    score.cpp \
+    midiservice.cpp
 
 HEADERS  += mainwindow.h \
     guidoservice.h \
@@ -40,7 +41,8 @@ HEADERS  += mainwindow.h \
     matchingservice.h \
     hanonsongfactory.h \
     scoreservice.h \
-    score.h
+    score.h \
+    midiservice.h
 
 FORMS    += mainwindow.ui
 

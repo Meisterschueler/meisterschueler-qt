@@ -3,8 +3,10 @@
 
 #include "guidoservice.h"
 #include "scoreservice.h"
+#include "midiservice.h"
 #include "needlemanwunsch.h"
 #include "score.h"
+#include "events.h"
 
 class Test : public QObject
 {
@@ -25,6 +27,8 @@ private Q_SLOTS:
     void scoreService_addFingers();
     void scoreService_concat();
     void scoreService_merge();
+
+    void midiService_addNote() ;
 
     void needlemanWunsch_emptySequencesTest();
     void needlemanWunsch_AAA_AAA_mmm_Test();
@@ -184,6 +188,64 @@ void Test::scoreService_merge() {
     QVERIFY( merged.at(7).pitch == 36 );
     QVERIFY( merged.at(8).pitch == 48 );
     QVERIFY( merged.at(9).pitch == 52 );
+}
+
+// MIDISERVICE
+
+void Test::midiService_addNote() {
+    // AaBbEFCecf | GHgDhd
+
+    NoteOnEvent A(  0, 0, 10, 0); NoteOffEvent a( 50, 0, 10, 0);
+    NoteOnEvent B(100, 0, 20, 0); NoteOffEvent b(150, 0, 20, 0);
+    NoteOnEvent C(200, 0, 30, 0); NoteOffEvent c(250, 0, 30, 0);
+    NoteOnEvent D(300, 0, 40, 0); NoteOffEvent d(350, 0, 40, 0);
+    NoteOnEvent E(400, 0, 60, 0); NoteOffEvent e(450, 0, 60, 0);
+    NoteOnEvent F(500, 0, 70, 0); NoteOffEvent f(550, 0, 70, 0);
+    NoteOnEvent G(600, 0, 80, 0); NoteOffEvent g(650, 0, 80, 0);
+    NoteOnEvent H(700, 0, 90, 0); NoteOffEvent h(750, 0, 90, 0);
+
+    QList<NoteEvent> events;
+    events.append(A);
+    events.append(a);
+    events.append(B);
+    events.append(b);
+    events.append(E);
+    events.append(F);
+    events.append(C);
+    events.append(e);
+    events.append(G);
+    events.append(H);
+    events.append(c);
+    events.append(f);
+    events.append(g);
+    events.append(D);
+    events.append(h);
+    events.append(d);
+
+    QList<NoteEventPair> pairs;
+
+    for (NoteEvent event : events) {
+        MidiService::addNote(pairs, event);
+    }
+
+    QVERIFY( pairs.size() == 16 );
+
+    QVERIFY( A == pairs.at(0).noteOn );
+    QVERIFY( a == pairs.at(0).noteOff );
+    QVERIFY( B == pairs.at(1).noteOn );
+    QVERIFY( b == pairs.at(1).noteOff );
+    QVERIFY( C == pairs.at(2).noteOn );
+    QVERIFY( c == pairs.at(2).noteOff );
+    QVERIFY( D == pairs.at(3).noteOn );
+    QVERIFY( d == pairs.at(3).noteOff );
+    QVERIFY( E == pairs.at(4).noteOn );
+    QVERIFY( e == pairs.at(4).noteOff );
+    QVERIFY( F == pairs.at(5).noteOn );
+    QVERIFY( f == pairs.at(5).noteOff );
+    QVERIFY( G == pairs.at(6).noteOn );
+    QVERIFY( g == pairs.at(6).noteOff );
+    QVERIFY( H == pairs.at(7).noteOn );
+    QVERIFY( h == pairs.at(7).noteOff );
 }
 
 // NEEDLEMANWUNSCH
