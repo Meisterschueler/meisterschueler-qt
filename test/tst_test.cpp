@@ -140,19 +140,18 @@ void Test::scoreService_transposeStep() {
 }
 
 void Test::scoreService_addFingers() {
-    QString gmn = "[c d e f g a]";
+    QString gmn = "[c d e f g]";
     QList<Score> scores = GuidoService::gmnToScores(gmn);
-    int fingers[] = {1, 2, 3};
+    QVector<int> fingers {1, 2, 3};
 
     QList<Score> fingeredScores = ScoreService::addFingers(scores, fingers);
 
-    QVERIFY( fingeredScores.size() == 6 );
+    QVERIFY( fingeredScores.size() == 5 );
     QVERIFY( fingeredScores.at(0).finger == 1 );
     QVERIFY( fingeredScores.at(1).finger == 2 );
     QVERIFY( fingeredScores.at(2).finger == 3 );
     QVERIFY( fingeredScores.at(3).finger == 1 );
     QVERIFY( fingeredScores.at(4).finger == 2 );
-    QVERIFY( fingeredScores.at(5).finger == 3 );
 }
 
 void Test::scoreService_concat() {

@@ -3,32 +3,33 @@
 
 #include <QList>
 #include <QString>
+#include <QVector>
 
 class Song;
 class Score;
 
 class Sequence {
 public:
-    Sequence(QString pattern, int fingers[], int steps[]) {
+    Sequence(QString pattern, QVector<int> fingers, int steps[]) {
         m_pattern = pattern;
         m_fingers = fingers;
         m_steps = steps;
     }
 
     QString m_pattern;
-    int * m_fingers;
+    QVector<int> m_fingers;
     int * m_steps;
 };
 
 class Sequence2 : public Sequence{
 public:
-    Sequence2(QString pattern, int leftFingers[], int rightFingers[], int steps[]) : Sequence(pattern, leftFingers, steps){
+    Sequence2(QString pattern, QVector<int> leftFingers, QVector<int> rightFingers, int steps[]) : Sequence(pattern, leftFingers, steps){
         m_leftFingers = leftFingers;
         m_rightFingers = rightFingers;
     }
 
-    int * m_leftFingers;
-    int * m_rightFingers;
+    QVector<int> m_leftFingers;
+    QVector<int> m_rightFingers;
 };
 
 class HanonSongFactory

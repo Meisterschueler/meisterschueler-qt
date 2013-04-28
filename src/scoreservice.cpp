@@ -37,8 +37,12 @@ QList<Score> ScoreService::transposeSteps(QList<Score> scores, int * steps) {
     return result;
 }
 
-QList<Score> ScoreService::addFingers(QList<Score> scores, int * fingers) {
-    QList<Score> result;
+QList<Score> ScoreService::addFingers(const QList<Score>& scores, const QVector<int>& fingers) {
+    QList<Score> result(scores);
+    for (int i=0; i < result.size(); i++) {
+        int idx = i % fingers.size();
+        result[i].finger = (Finger)fingers[idx];
+    }
     return result;
 }
 

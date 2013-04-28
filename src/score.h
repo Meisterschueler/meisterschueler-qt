@@ -8,7 +8,7 @@
 class NoteOnEvent;
 class NoteOffEvent;
 
-enum Finger { UNKNOWN_FINGER, THUMB, POINTER, MIDDLE, RING, LITTLE };
+enum Finger { UNKNOWN_FINGER = 0, THUMB, POINTER, MIDDLE, RING, LITTLE };
 enum Hand { UNKNOWN_HAND, LEFT, RIGHT, BOTH };
 enum Status { UNKNOWN_STATUS, PLAYED, MISSED, EXTRA, FAILED, OPEN };
 
