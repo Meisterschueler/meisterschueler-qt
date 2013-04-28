@@ -137,9 +137,9 @@ public:
         : ValueEvent(value, PitchWheelEventType) { }
 };
 
-class MidiPair {
+class NoteEventPair {
 public:
-    MidiPair(NoteOnEvent noteOn, NoteOffEvent noteOff) : noteOn(noteOn), noteOff(noteOff) {}
+    NoteEventPair(NoteOnEvent noteOn, NoteOffEvent noteOff) : noteOn(noteOn), noteOff(noteOff) {}
 
     NoteOnEvent noteOn;
     NoteOffEvent noteOff;

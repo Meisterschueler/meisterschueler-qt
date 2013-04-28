@@ -27,7 +27,7 @@ signals:
 
 private:
     QList<MatchingItem> matchingItems;
-    QList<MidiPair> midiEvents;
+    QList<NoteEventPair> midiEvents;
 };
 
 #endif // MATCHINGHANDLER_H
