@@ -19,12 +19,11 @@ void MidiService::addNoteOn(QList<NoteEventPair>& pairs, NoteOnEvent noteOn) {
 void MidiService::addNoteOff(QList<NoteEventPair>& pairs, NoteOffEvent noteOff) {
     QSharedPointer<NoteOffEvent> pointer(new NoteOffEvent(noteOff));
     QMutableListIterator<NoteEventPair> it(pairs);
-    bool finished = false;
-    while (!finished || it.hasNext()) {
+    while (it.hasNext()) {
         it.next();
         if (it.value().noteOn->getNote() == pointer->getNote() && !it.value().noteOff) {
             it.value().noteOff = pointer;
-            finished = true;
+            break;
         }
     }
 }
