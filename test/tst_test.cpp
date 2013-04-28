@@ -204,29 +204,25 @@ void Test::midiService_addNote() {
     NoteOnEvent G(600, 0, 80, 0); NoteOffEvent g(650, 0, 80, 0);
     NoteOnEvent H(700, 0, 90, 0); NoteOffEvent h(750, 0, 90, 0);
 
-    QList<NoteEvent> events;
-    events.append(A);
-    events.append(a);
-    events.append(B);
-    events.append(b);
-    events.append(E);
-    events.append(F);
-    events.append(C);
-    events.append(e);
-    events.append(G);
-    events.append(H);
-    events.append(c);
-    events.append(f);
-    events.append(g);
-    events.append(D);
-    events.append(h);
-    events.append(d);
-
     QList<NoteEventPair> pairs;
 
-    for (NoteEvent event : events) {
-        MidiService::addNote(pairs, event);
-    }
+    MidiService::addNoteOn(pairs, A);
+    MidiService::addNoteOff(pairs, a);
+    MidiService::addNoteOn(pairs, B);
+    MidiService::addNoteOff(pairs, b);
+    MidiService::addNoteOn(pairs, E);
+    MidiService::addNoteOn(pairs, F);
+    MidiService::addNoteOn(pairs, C);
+    MidiService::addNoteOff(pairs, e);
+    MidiService::addNoteOff(pairs, c);
+    MidiService::addNoteOff(pairs, f);
+
+    MidiService::addNoteOn(pairs, G);
+    MidiService::addNoteOn(pairs, H);
+    MidiService::addNoteOff(pairs, g);
+    MidiService::addNoteOn(pairs, D);
+    MidiService::addNoteOff(pairs, h);
+    MidiService::addNoteOff(pairs, d);
 
     QVERIFY( pairs.size() == 16 );
 

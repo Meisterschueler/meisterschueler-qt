@@ -6,6 +6,10 @@ MidiService::MidiService()
 {
 }
 
-void MidiService::addNote(QList<NoteEventPair> pairs, NoteEvent event) {
+void MidiService::addNoteOn(QList<NoteEventPair> pairs, NoteOnEvent noteOn) {
+
+}
+
+void MidiService::addNoteOff(QList<NoteEventPair> pairs, NoteOffEvent noteOff) {
 
 }
