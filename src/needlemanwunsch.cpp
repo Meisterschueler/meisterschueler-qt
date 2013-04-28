@@ -45,7 +45,7 @@ QString NeedlemanWunsch::getAlignments(QString seq1, QString seq2) {
             int dist_del = dist[ (i-1)*(n2+1) + (j  ) ] + cost_del;
             int dist_ins = dist[ (i  )*(n2+1) + (j-1) ] + cost_ins;
             //int dist_sub = dist[ (i-1)*(n2+1) + (j-1) ] + ( seq1.charAt(i-1) == seq2.charAt(j-1) ? cost_mat : cost_sub );
-            int dist_sub = dist[ (i-1)*(n2+1) + (j-1) ] + getSimilarity(seq1.at(i-1).toAscii(), seq2.at(j-1).toAscii());
+            int dist_sub = dist[ (i-1)*(n2+1) + (j-1) ] + getSimilarity(seq1.at(i-1).toLatin1(), seq2.at(j-1).toLatin1());
             dist[ i*(n2+1) + j ] = MIN3( dist_del, dist_ins, dist_sub );
         }
     }

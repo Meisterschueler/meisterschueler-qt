@@ -20,8 +20,8 @@ SOURCES += tst_test.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 # Get Classes
-DEPENDPATH += ../src
 INCLUDEPATH += ../src
+VPATH += ../src
 
 SOURCES += guidoservice.cpp \
     scoreservice.cpp \

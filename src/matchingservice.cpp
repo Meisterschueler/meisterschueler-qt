@@ -18,7 +18,7 @@ QString MatchingService::midiEvents2intervalSequence(QList<NoteEventPair> events
     QString sequence;
     QString pitchSequence = midiEvents2pitchSequence(events);
     for (int i=1; i<pitchSequence.length(); i++) {
-        sequence.append(pitchSequence.at(i).toAscii() - pitchSequence.at(i-1).toAscii());
+        sequence.append(pitchSequence.at(i).toLatin1() - pitchSequence.at(i-1).toLatin1());
     }
     return sequence;
 }

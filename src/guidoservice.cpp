@@ -17,7 +17,7 @@ QList<Score> GuidoService::gmnToScores(const QString &gmn) {
     QList<Score> result;
 
     ARHandler ar;
-    GuidoParseString(gmn.toAscii(), &ar);
+    GuidoParseString(gmn.toLatin1(), &ar);
     ARMusic *arMusic = ar->armusic;
 
     GuidoPos pos = arMusic->GetHeadPosition();
