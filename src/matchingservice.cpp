@@ -9,7 +9,7 @@ MatchingService::MatchingService()
 QString MatchingService::midiEvents2pitchSequence(QList<NoteEventPair> events) {
     QString sequence;
     for (NoteEventPair midiPair : events) {
-        sequence.append(midiPair.noteOn.getNote());
+        sequence.append(midiPair.noteOn->getNote());
     }
     return sequence;
 }

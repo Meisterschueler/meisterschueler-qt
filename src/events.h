@@ -21,6 +21,7 @@
 
 #include "mididefs.h"
 #include <QEvent>
+#include <QSharedPointer>
 
 const QEvent::Type NoteOffEventType = QEvent::Type(
         QEvent::registerEventType( QEvent::User + STATUS_NOTEOFF ) );
@@ -148,10 +149,18 @@ public:
 
 class NoteEventPair {
 public:
-    NoteEventPair(NoteOnEvent noteOn, NoteOffEvent noteOff) : noteOn(noteOn), noteOff(noteOff) {}
+    NoteEventPair() {}
 
-    NoteOnEvent noteOn;
-    NoteOffEvent noteOff;
+    QSharedPointer<NoteOnEvent> noteOn;
+    QSharedPointer<NoteOffEvent> noteOff;
+
+    bool operator<(const NoteEventPair& rhs) const {
+        if (this->noteOn && rhs.noteOn && this->noteOn->getTime() < rhs.noteOn->getTime()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 };
 
 #endif /* EVENTS_H */
