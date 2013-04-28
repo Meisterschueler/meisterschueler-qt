@@ -14,17 +14,17 @@ public:
     Test();
     
 private Q_SLOTS:
-    void guidoservice_gmnToScores_simple();
-    void guidoservice_gmnToScores_chord();
-    void guidoservice_gmnToScores_repeat();
-    void guidoservice_gmnToScores_finger();
-    void guidoservice_gmnToScores_voices();
-    void guidoservice_gmnToScores_duration_position();
+    void guidoService_gmnToScores_simple();
+    void guidoService_gmnToScores_chord();
+    void guidoService_gmnToScores_repeat();
+    void guidoService_gmnToScores_finger();
+    void guidoService_gmnToScores_voices();
+    void guidoService_gmnToScores_duration_position();
 
-    void scoreservice_transposeStep();
-    void scoreservice_addFingers();
-    void scoreservice_concat();
-    void scoreservice_merge();
+    void scoreService_transposeStep();
+    void scoreService_addFingers();
+    void scoreService_concat();
+    void scoreService_merge();
 
     void needlemanWunsch_emptySequencesTest();
     void needlemanWunsch_AAA_AAA_mmm_Test();
@@ -43,7 +43,7 @@ Test::Test()
 
 // GUIDOSERVICE
 
-void Test::guidoservice_gmnToScores_simple()
+void Test::guidoService_gmnToScores_simple()
 {
     QString gmn = "[c d e f g]";
     QList<Score> notes = GuidoService::gmnToScores(gmn);
@@ -55,7 +55,7 @@ void Test::guidoservice_gmnToScores_simple()
     QVERIFY( notes.at(4).pitch == 67 );
 }
 
-void Test::guidoservice_gmnToScores_chord() {
+void Test::guidoService_gmnToScores_chord() {
     QString gmn = "[ {c,e,g} ]";
     QList<Score> notes = GuidoService::gmnToScores(gmn);
     QVERIFY( notes.length() == 3 );
@@ -64,13 +64,13 @@ void Test::guidoservice_gmnToScores_chord() {
     QVERIFY( notes.at(2).pitch == 67 );
 }
 
-void Test::guidoservice_gmnToScores_repeat() {
+void Test::guidoService_gmnToScores_repeat() {
     QString gmn = "[c d \\beginRepeat e f g \\endRepeat a]";
     QList<Score> notes = GuidoService::gmnToScores(gmn);
     QVERIFY( notes.length() == 9 );
 }
 
-void Test::guidoservice_gmnToScores_finger() {
+void Test::guidoService_gmnToScores_finger() {
     QString gmn = "[c \\finger<\"3\"> e \\finger<\"1\"> g]";
     QList<Score> notes = GuidoService::gmnToScores(gmn);
     QVERIFY( notes.length() == 3 );
@@ -79,13 +79,13 @@ void Test::guidoservice_gmnToScores_finger() {
     QVERIFY( notes.at(2).finger == THUMB );
 }
 
-void Test::guidoservice_gmnToScores_voices() {
+void Test::guidoService_gmnToScores_voices() {
     QString gmn = "{[c e g],[d f g]}";
     QList<Score> notes = GuidoService::gmnToScores(gmn);
     QVERIFY( notes.length() == 6 );
 }
 
-void Test::guidoservice_gmnToScores_duration_position() {
+void Test::guidoService_gmnToScores_duration_position() {
     QString gmn = "[c d/8 e/2 _/4 g/8]";
     QList<Score> notes = GuidoService::gmnToScores(gmn);
     QVERIFY( notes.length() == 4 );
@@ -104,7 +104,7 @@ void Test::guidoservice_gmnToScores_duration_position() {
 
 // SCORESERVICE
 
-void Test::scoreservice_transposeStep() {
+void Test::scoreService_transposeStep() {
     QString gmn = "[c0 e g c1]";
     QList<Score> ionisch = GuidoService::gmnToScores(gmn);
     QVERIFY( ionisch.size() == 4 );
@@ -135,7 +135,7 @@ void Test::scoreservice_transposeStep() {
     QVERIFY( aeolisch.at(3).pitch == 57 );
 }
 
-void Test::scoreservice_addFingers() {
+void Test::scoreService_addFingers() {
     QString gmn = "[c d e f g a]";
     QList<Score> scores = GuidoService::gmnToScores(gmn);
     int fingers[] = {1, 2, 3};
@@ -151,7 +151,7 @@ void Test::scoreservice_addFingers() {
     QVERIFY( fingeredScores.at(5).finger == 3 );
 }
 
-void Test::scoreservice_concat() {
+void Test::scoreService_concat() {
     QString gmn = "[c0/4 d e]";
     QList<Score> scores1 = GuidoService::gmnToScores(gmn);
     QList<Score> scores2 = GuidoService::gmnToScores(gmn);
@@ -165,7 +165,7 @@ void Test::scoreservice_concat() {
     }
 }
 
-void Test::scoreservice_merge() {
+void Test::scoreService_merge() {
     QString rightGmn = "[c0/4 g/8 f {c/4,e}]";
     QString leftGmn = "[_/8 c-1 {b-2,d-1} g1 c-1]";
     QList<Score> rightScores = GuidoService::gmnToScores(rightGmn);
