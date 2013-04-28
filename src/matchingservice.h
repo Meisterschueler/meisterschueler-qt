@@ -4,7 +4,7 @@
 #include <QList>
 #include <QString>
 
-#include "events.h"
+class MidiPair;
 
 class MatchingService
 {

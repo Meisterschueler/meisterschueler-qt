@@ -3,7 +3,8 @@
 
 #include "Fraction.h"
 
-#include "events.h"
+class NoteOnEvent;
+class NoteOffEvent;
 
 enum Finger { UNKNOWN_FINGER, THUMB, POINTER, MIDDLE, RING, LITTLE };
 enum Hand { UNKNOWN_HAND, LEFT, RIGHT, BOTH };

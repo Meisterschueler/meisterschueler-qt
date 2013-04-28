@@ -4,8 +4,6 @@
 #include <QString>
 #include <QList>
 
-#include "events.h"
-
 class Score;
 
 class GuidoService
