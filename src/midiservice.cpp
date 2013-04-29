@@ -27,3 +27,13 @@ void MidiService::addNoteOff(QList<NoteEventPair>& pairs, NoteOffEvent noteOff) 
         }
     }
 }
+
+
+void MidiService::save(const QFile *file, const QList<NoteEventPair>& pairs) {
+
+}
+
+QList<NoteEventPair> MidiService::load(const QFile *file) {
+    QList<NoteEventPair> result;
+    return result;
+}

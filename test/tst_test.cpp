@@ -28,7 +28,8 @@ private Q_SLOTS:
     void scoreService_concat();
     void scoreService_merge();
 
-    void midiService_addNote() ;
+    void midiService_addNote();
+    void midiService_saveLoad();
 
     void needlemanWunsch_emptySequencesTest();
     void needlemanWunsch_AAA_AAA_mmm_Test();
@@ -243,6 +244,33 @@ void Test::midiService_addNote() {
     QVERIFY( g == *pairs.at(6).noteOff );
     QVERIFY( H == *pairs.at(7).noteOn );
     QVERIFY( h == *pairs.at(7).noteOff );
+}
+
+void Test::midiService_saveLoad() {
+    NoteOnEvent A(  0, 0, 48, 0); NoteOffEvent a( 50, 0, 48, 0);
+    NoteOnEvent B(100, 0, 52, 0); NoteOffEvent b(150, 0, 52, 0);
+    NoteOnEvent C(200, 0, 55, 0); NoteOffEvent c(250, 0, 55, 0);
+
+    QList<NoteEventPair> saveit;
+
+    MidiService::addNoteOn(saveit, A);
+    MidiService::addNoteOff(saveit, a);
+    MidiService::addNoteOn(saveit, B);
+    MidiService::addNoteOff(saveit, b);
+    MidiService::addNoteOn(saveit, C);
+    MidiService::addNoteOff(saveit, c);
+
+    QTemporaryFile *file = new QTemporaryFile("midiService");
+    file->open();
+
+    MidiService::save(file, saveit);
+
+    QList<NoteEventPair> loadit = MidiService::load(file);
+
+    QVERIFY( loadit.size() == saveit.size() );
+    for (int i = 0; i < loadit.size(); ++i) {
+        QVERIFY( loadit.at(i) == saveit.at(i) );
+    }
 }
 
 // NEEDLEMANWUNSCH
