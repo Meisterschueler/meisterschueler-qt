@@ -1,6 +1,9 @@
 #Path definitions
 GUIDOLIB = ../../guidolib-code
 RTMIDI = ../../rtmidi-2.0.1
+JDKSMIDI = ../../jdksmidi
+
+QMAKE_CXXFLAGS += -std=c++0x
 
 #Guido
 INCLUDEPATH += $$GUIDOLIB/Qt/GuidoQt/include \
@@ -41,4 +44,8 @@ mac {
             -framework CoreFoundation
 }
 
-QMAKE_CXXFLAGS += -std=c++0x
+#jdksmidi
+INCLUDEPATH += $$JDKSMIDI/include
+
+LIBS += -L$$JDKSMIDI \
+        -ljdksmidi
