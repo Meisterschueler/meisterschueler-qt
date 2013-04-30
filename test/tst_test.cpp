@@ -260,12 +260,15 @@ void Test::midiService_saveLoad() {
     MidiService::addNoteOn(saveit, C);
     MidiService::addNoteOff(saveit, c);
 
-    QTemporaryFile *file = new QTemporaryFile("midiService");
-    file->open();
+    QTemporaryFile tempFile("midiService");
+    tempFile.open();
+    tempFile.close();
 
-    MidiService::save(file, saveit);
+    QFile file1(tempFile.fileName());
+    MidiService::save(&file1, saveit);
 
-    QList<NoteEventPair> loadit = MidiService::load(file);
+    QFile file2(tempFile.fileName());
+    QList<NoteEventPair> loadit = MidiService::load(&file2);
 
     QVERIFY( loadit.size() == saveit.size() );
     for (int i = 0; i < loadit.size(); ++i) {

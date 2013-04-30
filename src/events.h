@@ -155,7 +155,7 @@ public:
     QSharedPointer<NoteOffEvent> noteOff;
 
     bool operator==(const NoteEventPair& rhs) const {
-        if (this->noteOn == rhs.noteOn && this->noteOff == rhs.noteOff) {
+        if (*(this->noteOn) == *(rhs.noteOn) && *(this->noteOff) == *(rhs.noteOff)) {
             return true;
         } else {
             return false;
