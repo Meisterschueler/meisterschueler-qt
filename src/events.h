@@ -100,15 +100,6 @@ class NoteOnEvent : public ChannelEvent
 public:
     NoteOnEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel)
         : ChannelEvent(time, chan, note, vel, NoteOnEventType) { }
-
-    int getDegree() const { return m_note % 12; }
-    int getType() const
-    {
-        int g = getDegree();
-        if (g == 1 || g == 3 || g == 6 || g == 8 || g == 10)
-            return 1;
-        return 0;
-    }
 };
 
 class PolyKeyPressEvent : public NoteEvent
@@ -174,11 +165,11 @@ public:
         bool noteOnSimilar = false;
         bool noteOffSimilar = false;
 
-        if ( (!this->noteOn && !rhs.noteOn) || (this->noteOn && rhs.noteOn) && *(this->noteOn) == *(rhs.noteOn) ) {
+        if ( (!this->noteOn && !rhs.noteOn) || ((this->noteOn && rhs.noteOn) && *(this->noteOn) == *(rhs.noteOn)) ) {
             noteOnSimilar = true;
         }
 
-        if ( (!this->noteOff && !rhs.noteOff) || (this->noteOff && rhs.noteOff) && *(this->noteOff) == *(rhs.noteOff)) {
+        if ( (!this->noteOff && !rhs.noteOff) || ((this->noteOff && rhs.noteOff) && *(this->noteOff) == *(rhs.noteOff)) ) {
             noteOffSimilar = true;
         }
 
