@@ -109,9 +109,6 @@ void MidiService::save(const QFile *file, const QList<NoteEventPair>& pairs) {
 
     t = 0;
 
-    // we add note 1: press and release in (dt) ticks
-
-
     for (QSharedPointer<NoteEvent> event : events) {
         m.SetTime( (*event).getTime() );
         if ((*event).type() == QEvent::User + STATUS_NOTEON) {
@@ -128,8 +125,6 @@ void MidiService::save(const QFile *file, const QList<NoteEventPair>& pairs) {
     const char *outfile_name = file->fileName().toLatin1();
     MIDIFileWriteStreamFileName out_stream( outfile_name );
 
-    // then output the stream like my example does, except setting num_tracks to match your data
-
     if( out_stream.IsValid() ) {
         // the object which takes the midi tracks and writes the midifile to the output stream
         MIDIFileWriteMultiTrack writer( &tracks, &out_stream );
@@ -145,33 +140,17 @@ void MidiService::save(const QFile *file, const QList<NoteEventPair>& pairs) {
     }
 }
 
-void DumpMIDITimedBigMessage ( const MIDITimedBigMessage *msg )
-{
-    if ( msg ) {
-        char msgbuf[1024];
-        fprintf ( stdout, "%8ld : %s\n", msg->GetTime(), msg->MsgToText ( msgbuf ) );
-
-        if ( msg->IsSystemExclusive() ) {
-            fprintf ( stdout, "\tSYSEX length: %d\n", msg->GetSysEx()->GetLength() );
-        }
-    }
-}
-
-QList<NoteEventPair> DumpMIDIMultiTrack ( MIDIMultiTrack *mlt ) {
+QList<NoteEventPair> parseMIDIMultiTrack ( MIDIMultiTrack *mlt ) {
     QList<NoteEventPair> result;
 
     MIDIMultiTrackIterator i ( mlt );
     const MIDITimedBigMessage *msg;
-    fprintf ( stdout , "Clocks per beat: %d\n\n", mlt->GetClksPerBeat() );
     i.GoToTime ( 0 );
 
     do {
         int trk_num;
 
         if ( i.GetCurEvent ( &trk_num, &msg ) ) {
-            fprintf ( stdout, "#%2d - ", trk_num );
-            DumpMIDITimedBigMessage ( msg );
-
             if (msg->IsNoteOn()) {
                 MidiService::addNoteOn(result, NoteOnEvent(msg->GetTime(), msg->GetChannel(), msg->GetNote(), msg->GetVelocity()));
             } else if (msg->IsNoteOff()) {
@@ -191,7 +170,7 @@ QList<NoteEventPair> MidiService::load(const QFile *file) {
     MIDIFileReadMultiTrack track_loader ( &tracks );
     MIDIFileRead reader ( &rs, &track_loader );
     reader.Parse();
-    result = DumpMIDIMultiTrack ( &tracks );
+    result = parseMIDIMultiTrack ( &tracks );
 
     return result;
 }
