@@ -16,6 +16,9 @@ public:
     Test();
     
 private Q_SLOTS:
+    void noteEvent_comparisons();
+    void noteEventPair_comparisons();
+
     void guidoService_gmnToScores_simple();
     void guidoService_gmnToScores_chord();
     void guidoService_gmnToScores_repeat();
@@ -46,10 +49,54 @@ Test::Test()
 {
 }
 
+// COMPARISONS
+
+void Test::noteEvent_comparisons() {
+    NoteOnEvent note(0, 0, 10, 0);
+    NoteOffEvent same(0, 0, 10, 0);
+    NoteOffEvent higher(0, 0, 20, 0);
+
+    QVERIFY( note == same );
+    QVERIFY( note < higher );
+    QVERIFY( higher > note );
+}
+
+void Test::noteEventPair_comparisons() {
+    NoteEventPair pair;
+    pair.noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(0, 0, 10, 0));
+    NoteEventPair same;
+    same.noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(0, 0, 10, 0));
+    NoteEventPair higher;
+    higher.noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(0, 0, 20, 0));
+    NoteEventPair later;
+    later.noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(10, 0, 10, 0));
+    NoteEventPair higherAndLater;
+    higherAndLater.noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(10, 0, 20, 0));
+
+    QVERIFY( pair == same );
+
+    QVERIFY( pair < higher );
+    QVERIFY( higher > pair );
+
+    QVERIFY( pair < later );
+    QVERIFY( later > pair );
+
+    QVERIFY( pair < higherAndLater );
+    QVERIFY( higherAndLater > pair );
+
+    QVERIFY( higher < later );
+    QVERIFY( later > higher );
+
+    QVERIFY( higher < higherAndLater );
+    QVERIFY( higherAndLater > higher );
+
+    QVERIFY( later < higherAndLater );
+    QVERIFY( higherAndLater > later );
+}
+
 // GUIDOSERVICE
 
-void Test::guidoService_gmnToScores_simple()
-{
+void Test::guidoService_gmnToScores_simple() {
     QString gmn = "[c d e f g]";
     QList<Score> notes = GuidoService::gmnToScores(gmn);
     QVERIFY( notes.length() == 5 );

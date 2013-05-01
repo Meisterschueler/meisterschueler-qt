@@ -24,19 +24,19 @@
 #include <QSharedPointer>
 
 const QEvent::Type NoteOffEventType = QEvent::Type(
-        QEvent::registerEventType( QEvent::User + STATUS_NOTEOFF ) );
+            QEvent::registerEventType( QEvent::User + STATUS_NOTEOFF ) );
 const QEvent::Type NoteOnEventType = QEvent::Type(
-        QEvent::registerEventType( QEvent::User + STATUS_NOTEON ) );
+            QEvent::registerEventType( QEvent::User + STATUS_NOTEON ) );
 const QEvent::Type PolyKeyPressEventType = QEvent::Type(
-        QEvent::registerEventType( QEvent::User + STATUS_POLYAFT ) );
+            QEvent::registerEventType( QEvent::User + STATUS_POLYAFT ) );
 const QEvent::Type ControlChangeEventType = QEvent::Type(
-        QEvent::registerEventType( QEvent::User + STATUS_CTLCHG ) );
+            QEvent::registerEventType( QEvent::User + STATUS_CTLCHG ) );
 const QEvent::Type ProgramChangeEventType = QEvent::Type(
-        QEvent::registerEventType( QEvent::User + STATUS_PROGRAM ) );
+            QEvent::registerEventType( QEvent::User + STATUS_PROGRAM ) );
 const QEvent::Type ChannelKeyPressEventType = QEvent::Type(
-        QEvent::registerEventType( QEvent::User + STATUS_CHANAFT ) );
+            QEvent::registerEventType( QEvent::User + STATUS_CHANAFT ) );
 const QEvent::Type PitchWheelEventType = QEvent::Type(
-        QEvent::registerEventType( QEvent::User + STATUS_BENDER) );
+            QEvent::registerEventType( QEvent::User + STATUS_BENDER) );
 
 class NoteEvent : public QEvent
 {
@@ -61,11 +61,19 @@ public:
     unsigned char getChannel() const { return m_channel; }
 
     bool operator==(ChannelEvent const& rhs) {
-        if (this->m_channel == rhs.m_channel && this->m_note == rhs.m_note && this->m_time == rhs.m_time && this->m_velocity == rhs.m_velocity) {
+        //if (this->m_channel == rhs.m_channel && this->m_note == rhs.m_note && this->m_time == rhs.m_time && this->m_velocity == rhs.m_velocity) {
             return true;
-        } else {
-            return false;
-        }
+        //} else {
+        //    return false;
+        //}
+    }
+
+    bool operator<(ChannelEvent const& rhs) {
+        return false;
+    }
+
+    bool operator>(ChannelEvent const& rhs) {
+        return false;
     }
 
 protected:
@@ -168,6 +176,10 @@ public:
         } else {
             return false;
         }
+    }
+
+    bool operator>(const NoteEventPair& rhs) const {
+        return false;
     }
 };
 
