@@ -61,19 +61,27 @@ public:
     unsigned char getChannel() const { return m_channel; }
 
     bool operator==(ChannelEvent const& rhs) {
-        //if (this->m_channel == rhs.m_channel && this->m_note == rhs.m_note && this->m_time == rhs.m_time && this->m_velocity == rhs.m_velocity) {
+        if (this->m_channel == rhs.m_channel && this->m_note == rhs.m_note && this->m_time == rhs.m_time && this->m_velocity == rhs.m_velocity) {
             return true;
-        //} else {
-        //    return false;
-        //}
+        } else {
+            return false;
+        }
     }
 
     bool operator<(ChannelEvent const& rhs) {
-        return false;
+        if (this->m_time != rhs.getTime()) {
+            return this->m_time<rhs.getTime();
+        } else {
+            return this->m_note<rhs.getNote();
+        }
     }
 
     bool operator>(ChannelEvent const& rhs) {
-        return false;
+        if (this->m_time != rhs.getTime()) {
+            return this->m_time>rhs.getTime();
+        } else {
+            return this->m_note>rhs.getNote();
+        }
     }
 
 protected:
@@ -163,7 +171,18 @@ public:
     QSharedPointer<NoteOffEvent> noteOff;
 
     bool operator==(const NoteEventPair& rhs) const {
-        if (*(this->noteOn) == *(rhs.noteOn) && *(this->noteOff) == *(rhs.noteOff)) {
+        bool noteOnSimilar = false;
+        bool noteOffSimilar = false;
+
+        if ( (!this->noteOn && !rhs.noteOn) || (this->noteOn && rhs.noteOn) && *(this->noteOn) == *(rhs.noteOn) ) {
+            noteOnSimilar = true;
+        }
+
+        if ( (!this->noteOff && !rhs.noteOff) || (this->noteOff && rhs.noteOff) && *(this->noteOff) == *(rhs.noteOff)) {
+            noteOffSimilar = true;
+        }
+
+        if (noteOnSimilar && noteOffSimilar) {
             return true;
         } else {
             return false;
@@ -171,7 +190,7 @@ public:
     }
 
     bool operator<(const NoteEventPair& rhs) const {
-        if (this->noteOn && rhs.noteOn && this->noteOn->getTime() < rhs.noteOn->getTime()) {
+        if (this->noteOn && rhs.noteOn && *(this->noteOn) < *(rhs.noteOn)) {
             return true;
         } else {
             return false;
@@ -179,7 +198,11 @@ public:
     }
 
     bool operator>(const NoteEventPair& rhs) const {
-        return false;
+        if (this->noteOn && rhs.noteOn && *(this->noteOn) > *(rhs.noteOn)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 };
 
