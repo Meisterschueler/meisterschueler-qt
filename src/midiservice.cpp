@@ -39,7 +39,7 @@ void MidiService::addNoteOff(QList<NoteEventPair>& pairs, NoteOffEvent noteOff) 
 using namespace jdksmidi;
 using namespace std;
 
-void MidiService::save(const QFile *file, const QList<NoteEventPair>& pairs) {
+void MidiService::save(const QString& fileName, const QList<NoteEventPair>& pairs) {
     QList<QSharedPointer<NoteEvent>> events;
     for (NoteEventPair pair : pairs) {
         events.append(pair.noteOn);
@@ -122,7 +122,7 @@ void MidiService::save(const QFile *file, const QList<NoteEventPair>& pairs) {
 
     tracks.SortEventsOrder();
 
-    const char *outfile_name = file->fileName().toLatin1();
+    const char *outfile_name = fileName.toLatin1();
     MIDIFileWriteStreamFileName out_stream( outfile_name );
 
     if( out_stream.IsValid() ) {
@@ -162,10 +162,10 @@ QList<NoteEventPair> parseMIDIMultiTrack ( MIDIMultiTrack *mlt ) {
     return result;
 }
 
-QList<NoteEventPair> MidiService::load(const QFile *file) {
+QList<NoteEventPair> MidiService::load(const QString fileName) {
     QList<NoteEventPair> result;
 
-    MIDIFileReadStreamFile rs ( file->fileName().toLatin1() );
+    MIDIFileReadStreamFile rs ( fileName.toLatin1() );
     MIDIMultiTrack tracks;
     MIDIFileReadMultiTrack track_loader ( &tracks );
     MIDIFileRead reader ( &rs, &track_loader );

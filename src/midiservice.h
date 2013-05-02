@@ -16,8 +16,8 @@ public:
     static void addNoteOn(QList<NoteEventPair> &pairs, NoteOnEvent noteOn);
     static void addNoteOff(QList<NoteEventPair> &pairs, NoteOffEvent noteOff);
 
-    static void save(const QFile *file, const QList<NoteEventPair>& pairs);
-    static QList<NoteEventPair> load(const QFile *file);
+    static void save(const QString& fileName, const QList<NoteEventPair>& pairs);
+    static QList<NoteEventPair> load(const QString fileName);
 };
 
 #endif // MIDISERVICE_H

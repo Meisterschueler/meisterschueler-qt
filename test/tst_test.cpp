@@ -311,11 +311,9 @@ void Test::midiService_saveLoad() {
     tempFile.open();
     tempFile.close();
 
-    QFile file1(tempFile.fileName());
-    MidiService::save(&file1, saveit);
+    MidiService::save(tempFile.fileName(), saveit);
 
-    QFile file2(tempFile.fileName());
-    QList<NoteEventPair> loadit = MidiService::load(&file2);
+    QList<NoteEventPair> loadit = MidiService::load(tempFile.fileName());
 
     QVERIFY( loadit.size() == saveit.size() );
     for (int i = 0; i < loadit.size(); ++i) {
