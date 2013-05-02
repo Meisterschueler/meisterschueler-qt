@@ -38,3 +38,7 @@ HEADERS  += guidoservice.h \
     score.h \
     notemapper.h \
     needlemanwunsch.h
+
+OTHER_FILES += \
+    midifiles/hanonNo1Left.mid \
+    midifiles/hanonNo1Both.mid

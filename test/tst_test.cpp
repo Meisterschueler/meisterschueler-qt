@@ -33,6 +33,7 @@ private Q_SLOTS:
 
     void midiService_addNote();
     void midiService_saveLoad();
+    void midiService_loadHanon();
 
     void needlemanWunsch_emptySequencesTest();
     void needlemanWunsch_AAA_AAA_mmm_Test();
@@ -319,6 +320,22 @@ void Test::midiService_saveLoad() {
     for (int i = 0; i < loadit.size(); ++i) {
         QVERIFY( loadit.at(i) == saveit.at(i) );
     }
+}
+
+void Test::midiService_loadHanon() {
+    QString fileName1("../../meisterschueler/test/midifiles/hanonNo1Left.mid");
+    QString fileName2("../../meisterschueler/test/midifiles/hanonNo1Both.mid");
+    QFile hanonFile1(fileName1);
+    QFile hanonFile2(fileName2);
+    QVERIFY( hanonFile1.exists() );
+    QVERIFY( hanonFile2.exists() );
+
+    QList<NoteEventPair> loadit;
+    loadit = MidiService::load(fileName1);
+    QVERIFY( loadit.size() == 29*8 );
+
+    loadit = MidiService::load(fileName2);
+    QVERIFY( loadit.size() == 29*8*2 );
 }
 
 // NEEDLEMANWUNSCH
