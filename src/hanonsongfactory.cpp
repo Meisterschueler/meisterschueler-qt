@@ -9,18 +9,6 @@ HanonSongFactory::HanonSongFactory()
 {
 }
 
-//	private List<Song> songs = new ArrayList<Song>();
-
-//	public HanonSongFactory() {
-//		for (int i = 0; i <= 35; i++) {
-//			songs.add(getNo(i));
-//		}
-
-//		songBook.setName("The Virtuoso Pianist");
-//		songBook.setComposer("C. L. Hanon");
-//		songBook.setSongs(songs);
-//	}
-
 Song HanonSongFactory::getNo(int no) {
     QList<Score> leftScores;
     QList<Score> rightScores;
@@ -792,7 +780,6 @@ Song HanonSongFactory::getNo(int no) {
         int stepsDown1[] = {0, -3, -6, -9, -12, -15, -18};
         int stepsDown2[] = {0};
         bothSequences << Sequence2(patternDown1, leftFingersDown1, rightFingersDown1, stepsDown1);
-        bothSequences << Sequence2(patternDown2, leftFingersDown2, rightFingersDown2, stepsDown2);
 
         break;
     }
@@ -855,8 +842,7 @@ Song HanonSongFactory::getNo(int no) {
 
     song.voices.insert(LEFT, leftScores);
     song.voices.insert(RIGHT, rightScores);
-    //song.voices.insert(BOTH, scoreService.mergeScores(leftScores, rightScores));
-    //		song.meter = meter;
+    song.voices.insert(BOTH, scoreService.mergeScores(leftScores, rightScores));
 
     return song;
 }
