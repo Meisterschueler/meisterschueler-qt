@@ -3,6 +3,7 @@
 
 #include "guidoservice.h"
 #include "scoreservice.h"
+#include "matchingservice.h"
 #include "midiservice.h"
 #include "needlemanwunsch.h"
 #include "score.h"
@@ -17,6 +18,7 @@ public:
     
 private Q_SLOTS:
     void noteEvent_comparisons();
+    void noteEventPair_constructors();
     void noteEventPair_comparisons();
 
     void guidoService_gmnToScores_simple();
@@ -35,6 +37,8 @@ private Q_SLOTS:
     void midiService_saveLoad();
     void midiService_loadHanon();
 
+    void matchingService_midiEvents2xy();
+
     void needlemanWunsch_emptySequencesTest();
     void needlemanWunsch_AAA_AAA_mmm_Test();
     void needlemanWunsch_AAA_ABA_mwm_Test();
@@ -50,7 +54,7 @@ Test::Test()
 {
 }
 
-// COMPARISONS
+// BASIC TYPES
 
 void Test::noteEvent_comparisons() {
     NoteOnEvent note(0, 0, 10, 0);
@@ -62,17 +66,24 @@ void Test::noteEvent_comparisons() {
     QVERIFY( higher > note );
 }
 
+void Test::noteEventPair_constructors() {
+    NoteOnEvent A(0, 0, 10, 0);
+    NoteEventPair pair1(A);
+    QVERIFY( A == *(pair1.noteOn) );
+    QVERIFY( NULL == pair1.noteOff );
+
+    NoteOffEvent a(10, 0, 10, 0);
+    NoteEventPair pair2(A, a);
+    QVERIFY( A == *(pair2.noteOn) );
+    QVERIFY( a == *(pair2.noteOff) );
+}
+
 void Test::noteEventPair_comparisons() {
-    NoteEventPair pair;
-    pair.noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(0, 0, 10, 0));
-    NoteEventPair same;
-    same.noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(0, 0, 10, 0));
-    NoteEventPair higher;
-    higher.noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(0, 0, 20, 0));
-    NoteEventPair later;
-    later.noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(10, 0, 10, 0));
-    NoteEventPair higherAndLater;
-    higherAndLater.noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(10, 0, 20, 0));
+    NoteEventPair pair(NoteOnEvent(0, 0, 10, 0));
+    NoteEventPair same(NoteOnEvent(0, 0, 10, 0));
+    NoteEventPair higher(NoteOnEvent(0, 0, 20, 0));
+    NoteEventPair later(NoteOnEvent(10, 0, 10, 0));
+    NoteEventPair higherAndLater(NoteOnEvent(10, 0, 20, 0));
 
     QVERIFY( pair == same );
 
@@ -336,6 +347,43 @@ void Test::midiService_loadHanon() {
 
     loadit = MidiService::load(fileName2);
     QVERIFY( loadit.size() == 29*8*2 );
+}
+
+// MATCHINGSERVICE
+
+void Test::matchingService_midiEvents2xy() {
+    NoteOnEvent A(  0, 0, 64, 0); NoteOffEvent a( 50, 0, 64, 0);
+    NoteOnEvent B(100, 0, 71, 0); NoteOffEvent b(150, 0, 71, 0);
+    NoteOnEvent C(200, 0, 66, 0); NoteOffEvent c(250, 0, 66, 0);
+    NoteOnEvent D(200, 0, 71, 0); NoteOffEvent d(250, 0, 71, 0);
+
+    NoteEventPair Aa(A, a);
+    NoteEventPair Bb(B, b);
+    NoteEventPair Cc(C);
+    NoteEventPair Dd(D, d);
+
+    QList<NoteEventPair> pairs;
+    pairs.append(Aa);
+    pairs.append(Bb);
+    pairs.append(Cc);
+    pairs.append(Dd);
+
+    QString pitchSequence = MatchingService::midiEvents2pitchSequence(pairs);
+    QVERIFY( pitchSequence.length() == 4 );
+    QVERIFY( pitchSequence.at(0).toLatin1() == 64 );
+    QVERIFY( pitchSequence.at(1).toLatin1() == 71 );
+    QVERIFY( pitchSequence.at(2).toLatin1() == 66 );
+    QVERIFY( pitchSequence.at(3).toLatin1() == 71 );
+
+    QString intervalSequence = MatchingService::midiEvents2intervalSequence(pairs);
+    QVERIFY( intervalSequence.length() == 3 );
+    QVERIFY( intervalSequence.at(0).toLatin1() == 7 );
+    QVERIFY( intervalSequence.at(1).toLatin1() == -5 );
+    QVERIFY( intervalSequence.at(2).toLatin1() == 5 );
+
+    QString pressedSequence = MatchingService::midiEvents2pressedSequence(pairs);
+    QVERIFY( pressedSequence.length() == 4 );
+    QVERIFY( pressedSequence.compare("..X.") == 0 );
 }
 
 // NEEDLEMANWUNSCH

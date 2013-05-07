@@ -156,10 +156,12 @@ public:
 
 class NoteEventPair {
 public:
-    NoteEventPair() {}
-
     QSharedPointer<NoteOnEvent> noteOn;
     QSharedPointer<NoteOffEvent> noteOff;
+
+    NoteEventPair() {}
+    NoteEventPair(NoteOnEvent noteOn) { this->noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(noteOn)); }
+    NoteEventPair(NoteOnEvent noteOn, NoteOffEvent noteOff) : noteOn(QSharedPointer<NoteOnEvent>(new NoteOnEvent(noteOn))), noteOff(QSharedPointer<NoteOffEvent>(new NoteOffEvent(noteOff))) {}
 
     bool operator==(const NoteEventPair& rhs) const {
         bool noteOnSimilar = false;

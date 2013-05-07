@@ -25,6 +25,7 @@ VPATH += ../src
 
 SOURCES += guidoservice.cpp \
     scoreservice.cpp \
+    matchingservice.cpp \
     midiservice.cpp \
     score.cpp \
     notemapper.cpp \
@@ -32,6 +33,7 @@ SOURCES += guidoservice.cpp \
 
 HEADERS  += guidoservice.h \
     scoreservice.h \
+    matchingservice.h \
     midiservice.h \
     events.h \
     mididefs.h \
