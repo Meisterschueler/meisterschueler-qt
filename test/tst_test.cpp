@@ -352,10 +352,10 @@ void Test::midiService_loadHanon() {
 // MATCHINGSERVICE
 
 void Test::matchingService_midiEvents2xy() {
-    NoteOnEvent A(  0, 0, 64, 0); NoteOffEvent a( 50, 0, 64, 0);
-    NoteOnEvent B(100, 0, 71, 0); NoteOffEvent b(150, 0, 71, 0);
-    NoteOnEvent C(200, 0, 66, 0); NoteOffEvent c(250, 0, 66, 0);
-    NoteOnEvent D(200, 0, 71, 0); NoteOffEvent d(250, 0, 71, 0);
+    NoteOnEvent A(  0, 0,   0, 0); NoteOffEvent a( 50, 0,   0, 0);
+    NoteOnEvent B(100, 0, 127, 0); NoteOffEvent b(150, 0, 127, 0);
+    NoteOnEvent C(200, 0,   0, 0); NoteOffEvent c(250, 0,   0, 0);
+    NoteOnEvent D(200, 0,  64, 0); NoteOffEvent d(250, 0,  64, 0);
 
     NoteEventPair Aa(A, a);
     NoteEventPair Bb(B, b);
@@ -370,20 +370,23 @@ void Test::matchingService_midiEvents2xy() {
 
     QString pitchSequence = MatchingService::midiEvents2pitchSequence(pairs);
     QVERIFY( pitchSequence.length() == 4 );
-    QVERIFY( pitchSequence.at(0).toLatin1() == 64 );
-    QVERIFY( pitchSequence.at(1).toLatin1() == 71 );
-    QVERIFY( pitchSequence.at(2).toLatin1() == 66 );
-    QVERIFY( pitchSequence.at(3).toLatin1() == 71 );
+    QVERIFY( pitchSequence.at(0).toLatin1() ==   0 );
+    QVERIFY( pitchSequence.at(1).toLatin1() == 127 );
+    QVERIFY( pitchSequence.at(2).toLatin1() ==   0 );
+    QVERIFY( pitchSequence.at(3).toLatin1() ==  64 );
 
-    QString intervalSequence = MatchingService::midiEvents2intervalSequence(pairs);
+    QByteArray intervalSequence = MatchingService::midiEvents2intervalSequence(pairs);
     QVERIFY( intervalSequence.length() == 3 );
-    QVERIFY( intervalSequence.at(0).toLatin1() == 7 );
-    QVERIFY( intervalSequence.at(1).toLatin1() == -5 );
-    QVERIFY( intervalSequence.at(2).toLatin1() == 5 );
+    QVERIFY( intervalSequence.at(0) == 127 );
+    QVERIFY( intervalSequence.at(1) == -127 );
+    QVERIFY( intervalSequence.at(2) == 64 );
 
     QString pressedSequence = MatchingService::midiEvents2pressedSequence(pairs);
     QVERIFY( pressedSequence.length() == 4 );
-    QVERIFY( pressedSequence.compare("..X.") == 0 );
+    QVERIFY( pressedSequence.at(0) == MatchingService::RELEASED );
+    QVERIFY( pressedSequence.at(1) == MatchingService::RELEASED );
+    QVERIFY( pressedSequence.at(2) == MatchingService::PRESSED );
+    QVERIFY( pressedSequence.at(3) == MatchingService::RELEASED );
 }
 
 // NEEDLEMANWUNSCH
