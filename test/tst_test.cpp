@@ -393,7 +393,7 @@ void Test::matchingService_midiEvents2xy() {
 
 void Test::needlemanWunsch_emptySequencesTest() {
     NeedlemanWunsch matcher;
-    QString alignment = matcher.getAlignments("", "AAA");
+    QByteArray alignment = matcher.getAlignments("", "AAA");
     QVERIFY("iii" == alignment);
 
     alignment = matcher.getAlignments("AAA", "");
@@ -405,50 +405,50 @@ void Test::needlemanWunsch_emptySequencesTest() {
 
 void Test::needlemanWunsch_AAA_AAA_mmm_Test() {
     NeedlemanWunsch matcher;
-    QString alignment = matcher.getAlignments("AAA", "AAA");
+    QByteArray alignment = matcher.getAlignments("AAA", "AAA");
     QVERIFY("mmm" == alignment);
 }
 
 void Test::needlemanWunsch_AAA_ABA_mwm_Test() {
     NeedlemanWunsch matcher;
-    QString alignment = matcher.getAlignments("AAA", "ABA");
+    QByteArray alignment = matcher.getAlignments("AAA", "ABA");
     QVERIFY("mwm" == alignment);
 }
 
 void Test::needlemanWunsch_AAA_AZA_midm_Test() {
     NeedlemanWunsch matcher;
-    QString alignment = matcher.getAlignments("AAA", "AZA");
+    QByteArray alignment = matcher.getAlignments("AAA", "AZA");
     //QVERIFY( "midm" == alignment);	// 1. Wahl
     QVERIFY("mimd" ==alignment);	// 2. Wahl (auch nicht falsch, aber unschön)
 }
 
 void Test::needlemanWunsch_ABC_AZC_mwm_Test() {
     NeedlemanWunsch matcher;
-    QString alignment = matcher.getAlignments("ABC", "AZC");
+    QByteArray alignment = matcher.getAlignments("ABC", "AZC");
     QVERIFY("mwm" == alignment);
 }
 
 void Test::needlemanWunsch_AAA_AABA_mmim_Test() {
     NeedlemanWunsch matcher;
-    QString alignment = matcher.getAlignments("AAA", "AABA");
+    QByteArray alignment = matcher.getAlignments("AAA", "AABA");
     QVERIFY("mmim" == alignment);
 }
 
 void Test::needlemanWunsch_AABA_AAA_mmdm_Test() {
     NeedlemanWunsch matcher;
-    QString alignment = matcher.getAlignments("AABA", "AAA");
+    QByteArray alignment = matcher.getAlignments("AABA", "AAA");
     QVERIFY("mmdm" == alignment);
 }
 
 void Test::needlemanWunsch_complexTest() {
     NeedlemanWunsch matcher;
-    QString alignment = matcher.getAlignments("BCEFGH", "ABCDFG");
+    QByteArray alignment = matcher.getAlignments("BCEFGH", "ABCDFG");
     QVERIFY("immwmmd" == alignment );
 }
 
 void Test::needlemanWunsch_matchFirstTest() {
     NeedlemanWunsch matcher;
-    QString alignment = matcher.getAlignments("AAA", "AAAA");
+    QByteArray alignment = matcher.getAlignments("AAA", "AAAA");
     QVERIFY("mmmi" == alignment);
 
     alignment = matcher.getAlignments("AAAA", "AAA");

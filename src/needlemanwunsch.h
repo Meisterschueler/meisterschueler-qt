@@ -1,7 +1,7 @@
 #ifndef NEEDLEMANWUNSCH_H
 #define NEEDLEMANWUNSCH_H
 
-#include <QString>
+#include <QByteArray>
 
 class NeedlemanWunsch
 {
@@ -9,7 +9,7 @@ public:
     NeedlemanWunsch();
     ~NeedlemanWunsch();
 
-    QString getAlignments(QString seq1, QString seq2);
+    QByteArray getAlignments(QByteArray seq1, QByteArray seq2);
 
 private:
     const char MATCH = 'm';
