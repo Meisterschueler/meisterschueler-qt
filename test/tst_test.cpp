@@ -368,12 +368,12 @@ void Test::matchingService_midiEvents2xy() {
     pairs.append(Cc);
     pairs.append(Dd);
 
-    QString pitchSequence = MatchingService::midiEvents2pitchSequence(pairs);
+    QByteArray pitchSequence = MatchingService::midiEvents2pitchSequence(pairs);
     QVERIFY( pitchSequence.length() == 4 );
-    QVERIFY( pitchSequence.at(0).toLatin1() ==   0 );
-    QVERIFY( pitchSequence.at(1).toLatin1() == 127 );
-    QVERIFY( pitchSequence.at(2).toLatin1() ==   0 );
-    QVERIFY( pitchSequence.at(3).toLatin1() ==  64 );
+    QVERIFY( pitchSequence.at(0) ==   0 );
+    QVERIFY( pitchSequence.at(1) == 127 );
+    QVERIFY( pitchSequence.at(2) ==   0 );
+    QVERIFY( pitchSequence.at(3) ==  64 );
 
     QByteArray intervalSequence = MatchingService::midiEvents2intervalSequence(pairs);
     QVERIFY( intervalSequence.length() == 3 );
@@ -381,7 +381,7 @@ void Test::matchingService_midiEvents2xy() {
     QVERIFY( intervalSequence.at(1) == -127 );
     QVERIFY( intervalSequence.at(2) == 64 );
 
-    QString pressedSequence = MatchingService::midiEvents2pressedSequence(pairs);
+    QByteArray pressedSequence = MatchingService::midiEvents2pressedSequence(pairs);
     QVERIFY( pressedSequence.length() == 4 );
     QVERIFY( pressedSequence.at(0) == MatchingService::RELEASED );
     QVERIFY( pressedSequence.at(1) == MatchingService::RELEASED );

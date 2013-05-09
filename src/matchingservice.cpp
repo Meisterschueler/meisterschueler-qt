@@ -6,8 +6,8 @@ MatchingService::MatchingService()
 {
 }
 
-QString MatchingService::midiEvents2pitchSequence(QList<NoteEventPair> events) {
-    QString sequence;
+QByteArray MatchingService::midiEvents2pitchSequence(QList<NoteEventPair> events) {
+    QByteArray sequence;
     for (NoteEventPair midiPair : events) {
         sequence.append(midiPair.noteOn->getNote());
     }
@@ -16,16 +16,16 @@ QString MatchingService::midiEvents2pitchSequence(QList<NoteEventPair> events) {
 
 QByteArray MatchingService::midiEvents2intervalSequence(QList<NoteEventPair> events) {
     QByteArray sequence;
-    QString pitchSequence = midiEvents2pitchSequence(events);
+    QByteArray pitchSequence = midiEvents2pitchSequence(events);
     for (int i=1; i<pitchSequence.length(); i++) {
-        char delta = pitchSequence.at(i).toLatin1() - pitchSequence.at(i-1).toLatin1();
+        char delta = pitchSequence.at(i) - pitchSequence.at(i-1);
         sequence.append(delta);
     }
     return sequence;
 }
 
-QString MatchingService::midiEvents2pressedSequence(QList<NoteEventPair> events) {
-    QString sequence;
+QByteArray MatchingService::midiEvents2pressedSequence(QList<NoteEventPair> events) {
+    QByteArray sequence;
     for (NoteEventPair midiPair : events) {
         if (midiPair.noteOn != NULL && midiPair.noteOff != NULL) {
             sequence.append(".");
