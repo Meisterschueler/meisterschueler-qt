@@ -21,6 +21,7 @@ private Q_SLOTS:
     void noteEvent_comparisons();
     void noteEventPair_constructors();
     void noteEventPair_comparisons();
+    void song_comparisons();
 
     void guidoService_gmnToScores_simple();
     void guidoService_gmnToScores_chord();
@@ -112,6 +113,20 @@ void Test::noteEventPair_comparisons() {
 
     QVERIFY( later < higherAndLater );
     QVERIFY( higherAndLater > later );
+}
+
+void Test::song_comparisons() {
+    Song song1;
+    song1.id = 01L;
+
+    Song song2;
+    song2.id = 01L;
+
+    Song song3;
+    song3.id = 02L;
+
+    QVERIFY( song1 == song2 );
+    QVERIFY( song1 != song3 );
 }
 
 // GUIDOSERVICE

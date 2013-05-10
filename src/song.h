@@ -21,7 +21,11 @@ public:
     QMap<Hand, QList<Score> > voices;
 
     bool operator==(const Song& rhs) const {
-        return false;
+        return (this->id == rhs.id);
+    }
+
+    bool operator!=(const Song& rhs) const {
+        return (this->id != rhs.id);
     }
 };
 
