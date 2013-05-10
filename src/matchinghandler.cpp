@@ -1,6 +1,6 @@
 #include "matchinghandler.h"
 
-MatchingHandler::MatchingHandler()
+MatchingHandler::MatchingHandler(const QList<MatchingItem> &matchingItems) : matchingItems(matchingItems)
 {
 }
 

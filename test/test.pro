@@ -25,21 +25,27 @@ VPATH += ../src
 
 SOURCES += guidoservice.cpp \
     scoreservice.cpp \
+    matchinghandler.cpp \
     matchingservice.cpp \
+    matchingitem.cpp \
     midiservice.cpp \
     score.cpp \
     notemapper.cpp \
-    needlemanwunsch.cpp
+    needlemanwunsch.cpp \
+    song.cpp
 
 HEADERS  += guidoservice.h \
     scoreservice.h \
+    matchinghandler.h \
     matchingservice.h \
+    matchingitem.h \
     midiservice.h \
     events.h \
     mididefs.h \
     score.h \
     notemapper.h \
-    needlemanwunsch.h
+    needlemanwunsch.h \
+    song.h
 
 OTHER_FILES += \
     midifiles/hanonNo1Left.mid \

@@ -64,3 +64,24 @@ QList<Score> ScoreService::merge(const QList<Score>& scores1, const QList<Score>
     qSort(result);
     return result;
 }
+
+QByteArray ScoreService::scoresToPitchSequence(const QList<Score> scores) {
+    QByteArray result;
+
+    for (Score score : scores) {
+        result.append(score.pitch);
+    }
+
+    return result;
+}
+
+QByteArray ScoreService::scoresToIntervalSequence(const QList<Score> scores) {
+    QByteArray result;
+
+    QByteArray pitchSequence = scoresToPitchSequence(scores);
+    for (int i = 1; i < pitchSequence.length(); i++ ) {
+        result.append(pitchSequence.at(i) - pitchSequence.at(i-1));
+    }
+
+    return result;
+}

@@ -4,6 +4,7 @@
 #include "guidoservice.h"
 #include "scoreservice.h"
 #include "matchingservice.h"
+#include "matchinghandler.h"
 #include "midiservice.h"
 #include "needlemanwunsch.h"
 #include "score.h"
@@ -32,6 +33,7 @@ private Q_SLOTS:
     void scoreService_addFingers();
     void scoreService_concat();
     void scoreService_merge();
+    void scoreService_scoresToXYSequence();
 
     void midiService_addNote();
     void midiService_saveLoad();
@@ -48,10 +50,16 @@ private Q_SLOTS:
     void needlemanWunsch_AABA_AAA_mmdm_Test();
     void needlemanWunsch_complexTest();
     void needlemanWunsch_matchFirstTest();
+
+    void matchingHandler_simple();
 };
+
+Q_DECLARE_METATYPE(MatchingItem)
 
 Test::Test()
 {
+    qRegisterMetaType<Fraction>("Fraction");
+    qRegisterMetaType<MatchingItem>("MatchingItem");
 }
 
 // BASIC TYPES
@@ -120,7 +128,7 @@ void Test::guidoService_gmnToScores_simple() {
 }
 
 void Test::guidoService_gmnToScores_chord() {
-    QString gmn = "[ {c,e,g} ]";
+    QString gmn = "[{c,e,g}]";
     QList<Score> notes = GuidoService::gmnToScores(gmn);
     QVERIFY( notes.length() == 3 );
     QVERIFY( notes.at(0).pitch == 60 );
@@ -249,6 +257,23 @@ void Test::scoreService_merge() {
     QVERIFY( merged.at(7).pitch == 36 );
     QVERIFY( merged.at(8).pitch == 48 );
     QVERIFY( merged.at(9).pitch == 52 );
+}
+
+void Test::scoreService_scoresToXYSequence() {
+    QString gmn = "[c0 d _ f g]";
+    QList<Score> scores = GuidoService::gmnToScores(gmn);
+    QByteArray pitchSequence = ScoreService::scoresToPitchSequence(scores);
+    QVERIFY( pitchSequence.length() == 4 );
+    QVERIFY( pitchSequence.at(0) == 48 );
+    QVERIFY( pitchSequence.at(1) == 50 );
+    QVERIFY( pitchSequence.at(2) == 53 );
+    QVERIFY( pitchSequence.at(3) == 55 );
+
+    QByteArray intervalSequence = ScoreService::scoresToIntervalSequence(scores);
+    QVERIFY( intervalSequence.length() == 3 );
+    QVERIFY( intervalSequence.at(0) == 2 );
+    QVERIFY( intervalSequence.at(1) == 3 );
+    QVERIFY( intervalSequence.at(2) == 2 );
 }
 
 // MIDISERVICE
@@ -453,6 +478,58 @@ void Test::needlemanWunsch_matchFirstTest() {
 
     alignment = matcher.getAlignments("AAAA", "AAA");
     QVERIFY("mmmd" == alignment);
+}
+
+// MATCHINGHANDLER
+
+void Test::matchingHandler_simple() {
+    QString gmn = "[c0/16 d e g a c1]";
+    QList<Score> scores = GuidoService::gmnToScores(gmn);
+    QByteArray pitchPattern = ScoreService::scoresToPitchSequence(scores);
+    QByteArray intervalPattern = ScoreService::scoresToIntervalSequence(scores);
+    Song scoresUp;
+    MatchingItem upItem(scoresUp, pitchPattern, intervalPattern);
+
+    gmn = "[c1 b0 a g f e d c]";
+    scores = GuidoService::gmnToScores(gmn);
+    pitchPattern = ScoreService::scoresToPitchSequence(scores);
+    intervalPattern = ScoreService::scoresToIntervalSequence(scores);
+    Song scoresDown;
+    MatchingItem downItem(scoresDown, pitchPattern, intervalPattern);
+
+    QList<MatchingItem> matchingItems;
+    matchingItems.append(upItem);
+    matchingItems.append(downItem);
+
+    MatchingHandler matchingHandler(matchingItems);
+
+    QSignalSpy positionSpy(&matchingHandler, SIGNAL(positionChanged(Fraction)));
+    QSignalSpy songRecognizedSpy(&matchingHandler, SIGNAL(songRecognized(MatchingItem)));
+    QSignalSpy songFinishedSpy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
+
+    NoteOnEvent A(  0, 0, 48, 10); NoteOffEvent a( 10, 0, 48, 0);
+    NoteOnEvent B(100, 0, 50, 10); NoteOffEvent b(110, 0, 50, 0);
+    NoteOnEvent C(200, 0, 52, 10); NoteOffEvent c(210, 0, 52, 0);
+    NoteOnEvent D(300, 0, 55, 10); NoteOffEvent d(310, 0, 55, 0);
+    NoteOnEvent E(400, 0, 57, 10); NoteOffEvent e(410, 0, 57, 0);
+    NoteOnEvent F(500, 0, 60, 10); NoteOffEvent f(510, 0, 60, 0);
+
+    NoteOnEvent G(0, 0, 48, 10); NoteOffEvent g(0, 0, 48, 0);
+    NoteOnEvent H(0, 0, 48, 10); NoteOffEvent h(0, 0, 48, 0);
+
+    matchingHandler.noteOnEvent(A); matchingHandler.noteOffEvent(a);
+    matchingHandler.noteOnEvent(B); matchingHandler.noteOffEvent(b);
+    matchingHandler.noteOnEvent(C); matchingHandler.noteOffEvent(c);
+    matchingHandler.noteOnEvent(D); matchingHandler.noteOffEvent(d);
+    matchingHandler.noteOnEvent(E); matchingHandler.noteOffEvent(e);
+    matchingHandler.noteOnEvent(F); matchingHandler.noteOffEvent(f);
+
+    QCOMPARE( songFinishedSpy.count(), 1 );
+
+    QList<QVariant> arguments = songFinishedSpy.takeFirst();
+    MatchingItem finishedItem = qvariant_cast<MatchingItem>(arguments.at(0));
+
+    QVERIFY( finishedItem.song == scoresUp );
 }
 
 QTEST_APPLESS_MAIN(Test)

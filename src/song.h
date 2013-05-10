@@ -19,6 +19,10 @@ public:
 
     QString pattern;
     QMap<Hand, QList<Score> > voices;
+
+    bool operator==(const Song& rhs) const {
+        return false;
+    }
 };
 
 #endif // SONG_H

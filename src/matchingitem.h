@@ -1,19 +1,19 @@
 #ifndef MATCHINGITEM_H
 #define MATCHINGITEM_H
 
-#include <QString>
+#include <QByteArray>
 
 #include "song.h"
 
 class MatchingItem
 {
 public:
-    MatchingItem(const Song& song, const QString& noteSequence, const QString& intervalSequence);
+    MatchingItem();
+    MatchingItem(const Song& song, const QByteArray& noteSequence, const QByteArray& intervalSequence);
 
-private:
-    const Song song;
-    const QString noteSequence;
-    const QString intervalSequence;
+    Song song;
+    QByteArray noteSequence;
+    QByteArray intervalSequence;
 };
 
 #endif // MATCHINGITEM_H

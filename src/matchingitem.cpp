@@ -1,7 +1,11 @@
 #include "matchingitem.h"
 
+MatchingItem::MatchingItem() {
+
+}
+
 MatchingItem::MatchingItem(const Song& song,
-                           const QString& noteSequence,
-                           const QString& intervalSequence): song(song), noteSequence(noteSequence), intervalSequence(intervalSequence)
+                           const QByteArray& noteSequence,
+                           const QByteArray& intervalSequence) : song(song), noteSequence(noteSequence), intervalSequence(intervalSequence)
 {
 }

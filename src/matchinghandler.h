@@ -13,7 +13,7 @@ class MatchingHandler : public QObject
 {
     Q_OBJECT
 public:
-    MatchingHandler();
+    MatchingHandler(const QList<MatchingItem>& matchingItems);
 
 public slots:
     void reset();
