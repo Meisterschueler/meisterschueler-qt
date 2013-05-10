@@ -1,7 +1,6 @@
 #ifndef NOTEMAPPER_H
 #define NOTEMAPPER_H
 
-#include "MIDIMapper.h"
 #include "TimeUnwrap.h"
 #include "Fraction.h"
 
