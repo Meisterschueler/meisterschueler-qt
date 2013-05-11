@@ -43,6 +43,7 @@ private Q_SLOTS:
 
     void matchingService_midiEvents2xy();
     void matchingService_getTransposition();
+    void matchingService_isFinished();
 
     void needlemanWunsch_emptySequencesTest();
     void needlemanWunsch_AAA_AAA_mmm_Test();
@@ -451,6 +452,20 @@ void Test::matchingService_getTransposition() {
     QByteArray intervalAlignment = "mmmm";
     int transposition = MatchingService::getTransposition(midiPitchSequence, scorePitchSequence, intervalAlignment);
     QCOMPARE( transposition, -6 );
+}
+
+void Test::matchingService_isFinished() {
+    QVERIFY( !MatchingService::isFinished("mmmd", "....") );
+
+    QVERIFY(  MatchingService::isFinished("mmmmmm", "......") );
+    QVERIFY( !MatchingService::isFinished("mmmmmm", "...D..") );
+
+    QVERIFY(  MatchingService::isFinished("mmmmi", ".....") );
+    QVERIFY(  MatchingService::isFinished("mmmmi", "....D") );
+    QVERIFY( !MatchingService::isFinished("mmmmi", "...D.") );
+
+    QVERIFY(  MatchingService::isFinished("mimi", "....") );
+    QVERIFY( !MatchingService::isFinished("mimi", ".D..") );
 }
 
 // NEEDLEMANWUNSCH

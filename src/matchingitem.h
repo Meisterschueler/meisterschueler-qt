@@ -19,6 +19,7 @@ public:
 
     bool prunning;
     double quality;
+    char transposition;
 
     QSharedPointer<QList<NoteEventPair>> midiEvents;
     QSharedPointer<QByteArray> midiPitchSequence;
