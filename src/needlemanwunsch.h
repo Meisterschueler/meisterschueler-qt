@@ -11,13 +11,13 @@ public:
 
     QByteArray getAlignments(QByteArray seq1, QByteArray seq2);
 
-private:
-    const char MATCH = 'm';
-    const char DELETED = 'd';
-    const char INSERT = 'i';
-    const char WRONG = 'w';
-    const char OPEN = 'o';
+    static constexpr char MATCH = 'm';
+    static constexpr char DELETED = 'd';
+    static constexpr char INSERT = 'i';
+    static constexpr char WRONG = 'w';
+    static constexpr char OPEN = 'o';
 
+private:
     const char cost_mat = 0;
     const char cost_del = 10;
     const char cost_ins = 10;

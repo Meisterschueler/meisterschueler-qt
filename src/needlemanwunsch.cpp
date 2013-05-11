@@ -1,8 +1,6 @@
 #include "needlemanwunsch.h"
 
-#define MAX2(x,y) (x<y?y:x)
-#define MIN2(x,y) (x<y?x:y)
-#define MIN3(x,y,z) (x<y?(x<z?x:z):(y<z?y:z))
+#include "util.h"
 
 NeedlemanWunsch::NeedlemanWunsch()
 {

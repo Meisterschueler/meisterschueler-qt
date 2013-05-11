@@ -1,6 +1,10 @@
 #include "matchingservice.h"
 
+#include <QRegExp>
+
 #include "events.h"
+#include "needlemanwunsch.h"
+#include "util.h"
 
 MatchingService::MatchingService()
 {
@@ -57,8 +61,36 @@ char MatchingService::getTransposition(QByteArray midiPitchSequence, QByteArray 
     return notePitch - scorePitch;
 }
 
-double MatchingService::getQuality(QByteArray pitchAlignment) {
-    return 0;
+double MatchingService::getQuality(QByteArray pitchAlignment, char transposition) {
+    QString alignment(pitchAlignment);
+
+    int firstHitChord = alignment.replace(QRegExp("[mwi]"), ".").indexOf(".");
+    int lastHitChord = alignment.replace(QRegExp("[mwi]"), ".").lastIndexOf(".");
+
+    int open = pitchAlignment.count(NeedlemanWunsch::OPEN);
+    int played = pitchAlignment.count(NeedlemanWunsch::MATCH);
+    int missed = pitchAlignment.count(NeedlemanWunsch::DELETED);
+    int extra = pitchAlignment.count(NeedlemanWunsch::INSERT);
+    int wrong = pitchAlignment.count(NeedlemanWunsch::WRONG);
+
+    double rangeFactor = (double)(played+wrong+extra)/(double)(lastHitChord - firstHitChord + 1);
+    double progressFactor = (double)(played+wrong)/(double)(played+wrong+extra+open);
+    double matchFactor = (double)(played)/(double)(played+wrong+extra);
+
+    double transpositionFactor;
+    if (transposition >= 0) {
+        transpositionFactor = 1.0 - transposition/1100.0;
+    } else {
+        transpositionFactor = 0.99 + transposition/1100.0;
+    }
+
+    double quality = rangeFactor*matchFactor*MAX2(0.9, progressFactor)*transpositionFactor;
+
+    if (std::isinf(quality) || std::isnan(quality)) {
+        return 0.0;
+    } else {
+        return quality;
+    }
 }
 
 bool MatchingService::isFinished(QByteArray pitchAlignment, QByteArray pressedSequence) {

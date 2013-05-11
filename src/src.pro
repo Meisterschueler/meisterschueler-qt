@@ -42,7 +42,8 @@ HEADERS  += mainwindow.h \
     hanonsongfactory.h \
     scoreservice.h \
     score.h \
-    midiservice.h
+    midiservice.h \
+    util.h
 
 FORMS    += mainwindow.ui
 

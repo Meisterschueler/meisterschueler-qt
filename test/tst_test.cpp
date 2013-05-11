@@ -456,8 +456,8 @@ void Test::matchingService_getTransposition() {
 }
 
 void Test::matchingService_getQuality() {
-    QVERIFY( MatchingService::getQuality("mmmmm") == 1.0 );
-    QVERIFY( MatchingService::getQuality("xxxxx") == 0.0 );
+    QVERIFY( MatchingService::getQuality("mmmmm", 0) == 1.0 );
+    QVERIFY( MatchingService::getQuality("xxxxx", 0) == 0.0 );
 }
 
 void Test::matchingService_isFinished() {

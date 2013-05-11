@@ -19,7 +19,7 @@ public:
     static QByteArray midiEvents2pressedSequence(QList<NoteEventPair> events);
 
     static char getTransposition(QByteArray midiPitchSequence, QByteArray scorePitchSequence, QByteArray intervalAlignment);
-    static double getQuality(QByteArray pitchAlignment);
+    static double getQuality(QByteArray pitchAlignment, char transposition);
     static bool isFinished(QByteArray pitchAlignment, QByteArray pressedSequence);
 };
 
