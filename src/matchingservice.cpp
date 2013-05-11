@@ -57,6 +57,10 @@ char MatchingService::getTransposition(QByteArray midiPitchSequence, QByteArray 
     return notePitch - scorePitch;
 }
 
+double MatchingService::getQuality(QByteArray pitchAlignment) {
+    return 0;
+}
+
 bool MatchingService::isFinished(QByteArray pitchAlignment, QByteArray pressedSequence) {
     bool result = false;
     while (pitchAlignment.endsWith("i")) {
