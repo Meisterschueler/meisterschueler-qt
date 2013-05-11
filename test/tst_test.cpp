@@ -45,6 +45,7 @@ private Q_SLOTS:
     void matchingService_getTransposition();
     void matchingService_getQuality();
     void matchingService_isFinished();
+    void matchingService_cutMatchingMidiEvents();
 
     void needlemanWunsch_emptySequencesTest();
     void needlemanWunsch_AAA_AAA_mmm_Test();
@@ -472,6 +473,26 @@ void Test::matchingService_isFinished() {
 
     QVERIFY(  MatchingService::isFinished("mimi", "....") );
     QVERIFY( !MatchingService::isFinished("mimi", ".D..") );
+}
+
+void Test::matchingService_cutMatchingMidiEvents() {
+    NoteOnEvent A(  0, 0,   0, 0); NoteOffEvent a( 50, 0,   0, 0);
+    NoteOnEvent B(100, 0, 127, 0); NoteOffEvent b(150, 0, 127, 0);
+    NoteOnEvent C(200, 0,   0, 0); NoteOffEvent c(250, 0,   0, 0);
+
+    NoteEventPair Aa(A, a);
+    NoteEventPair Bb(B, b);
+    NoteEventPair Cc(C, c);
+
+    QList<NoteEventPair> pairs;
+    pairs.append(Aa);
+    pairs.append(Bb);
+    pairs.append(Cc);
+
+    QList<NoteEventPair> rest = MatchingService::cutMatchingMidiEvents(pairs, "mmi");
+    QVERIFY( rest.length() == 1 );
+    QVERIFY( *(rest.at(0).noteOn) == C );
+    QVERIFY( *(rest.at(0).noteOff) == c );
 }
 
 // NEEDLEMANWUNSCH
