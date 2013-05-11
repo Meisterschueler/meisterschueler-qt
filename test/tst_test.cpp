@@ -42,6 +42,7 @@ private Q_SLOTS:
     void midiService_loadHanon();
 
     void matchingService_midiEvents2xy();
+    void matchingService_getTransposition();
 
     void needlemanWunsch_emptySequencesTest();
     void needlemanWunsch_AAA_AAA_mmm_Test();
@@ -442,6 +443,14 @@ void Test::matchingService_midiEvents2xy() {
     QVERIFY( pressedSequence.at(1) == MatchingService::RELEASED );
     QVERIFY( pressedSequence.at(2) == MatchingService::PRESSED );
     QVERIFY( pressedSequence.at(3) == MatchingService::RELEASED );
+}
+
+void Test::matchingService_getTransposition() {
+    QByteArray midiPitchSequence = "abcde";
+    QByteArray scorePitchSequence = "ghijk";
+    QByteArray pitchAlignment = "mmmmm";
+    int transposition = MatchingService::getTransposition(midiPitchSequence, scorePitchSequence, pitchAlignment);
+    QCOMPARE( 6, transposition );
 }
 
 // NEEDLEMANWUNSCH

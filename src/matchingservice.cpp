@@ -39,3 +39,7 @@ QByteArray MatchingService::midiEvents2pressedSequence(QList<NoteEventPair> even
     }
     return sequence;
 }
+
+char MatchingService::getTransposition(QByteArray midiPitchSequence, QByteArray scorePitchSequence, QByteArray pitchAlignment) {
+    return 0;
+}
