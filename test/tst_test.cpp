@@ -491,8 +491,7 @@ void Test::matchingService_cutMatchingMidiEvents() {
 
     QList<NoteEventPair> rest = MatchingService::cutMatchingMidiEvents(pairs, "mmi");
     QVERIFY( rest.length() == 1 );
-    QVERIFY( *(rest.at(0).noteOn) == C );
-    QVERIFY( *(rest.at(0).noteOff) == c );
+    QVERIFY( rest.at(0) == Cc );
 }
 
 // NEEDLEMANWUNSCH

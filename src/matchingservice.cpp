@@ -115,5 +115,15 @@ bool MatchingService::isFinished(QByteArray pitchAlignment, QByteArray pressedSe
 
 QList<NoteEventPair> MatchingService::cutMatchingMidiEvents(QList<NoteEventPair> events, QByteArray pitchAlignment) {
     QList<NoteEventPair> result;
+
+    QString alignment(pitchAlignment);
+    while (alignment.endsWith("i")) {
+        alignment.remove(alignment.size()-1, 1);
+    }
+    alignment.remove('d');
+
+    result = events.mid(alignment.size());
+    events = events.mid(0, alignment.size());
+
     return result;
 }
