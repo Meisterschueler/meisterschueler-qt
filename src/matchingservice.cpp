@@ -58,5 +58,21 @@ char MatchingService::getTransposition(QByteArray midiPitchSequence, QByteArray 
 }
 
 bool MatchingService::isFinished(QByteArray pitchAlignment, QByteArray pressedSequence) {
-    return false;
+    bool result = false;
+    while (pitchAlignment.endsWith("i")) {
+        pitchAlignment = pitchAlignment.mid(0, pitchAlignment.length()-1);
+    }
+    if (pitchAlignment.endsWith("m")) {
+        pitchAlignment.replace("d", "");
+        int idxPressed = pressedSequence.indexOf("D");
+        if (idxPressed != -1 && idxPressed < pitchAlignment.length()) {
+            result = false;
+        } else {
+            result = true;
+        }
+    } else {
+        result = false;
+    }
+
+    return result;
 }
