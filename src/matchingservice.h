@@ -18,7 +18,8 @@ public:
     static QByteArray midiEvents2intervalSequence(QList<NoteEventPair> events);
     static QByteArray midiEvents2pressedSequence(QList<NoteEventPair> events);
 
-    static char getTransposition(QByteArray midiPitchSequence, QByteArray scorePitchSequence, QByteArray intervalAlignment);
+    static QByteArray getAlingment(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray oldAlignment = "");
+    static char getTransposition(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray intervalAlignment);
     static double getQuality(QByteArray pitchAlignment, char transposition);
     static bool isFinished(QByteArray pitchAlignment, QByteArray pressedSequence);
     static QList<NoteEventPair> cutMatchingMidiEvents(QList<NoteEventPair> events, QByteArray pitchAlignment);

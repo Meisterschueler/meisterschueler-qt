@@ -44,7 +44,16 @@ QByteArray MatchingService::midiEvents2pressedSequence(QList<NoteEventPair> even
     return sequence;
 }
 
-char MatchingService::getTransposition(QByteArray midiPitchSequence, QByteArray scorePitchSequence, QByteArray intervalAlignment) {
+QByteArray MatchingService::getAlingment(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray oldAlignment) {
+    NeedlemanWunsch needlemanWunsch;
+    if (oldAlignment.isEmpty()) {
+        return needlemanWunsch.getAlignments(scorePitchSequence, midiPitchSequence);
+    } else {
+        return QByteArray();
+    }
+}
+
+char MatchingService::getTransposition(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray intervalAlignment) {
     int posAlignment = intervalAlignment.lastIndexOf("mmm");
     if (posAlignment < 0) {
         return 0;   // TODO: nicht gut...

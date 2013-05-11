@@ -24,6 +24,16 @@ private Q_SLOTS:
     void song_comparisons();
     void matchingItem_comparisons();
 
+    void needlemanWunsch_emptySequencesTest();
+    void needlemanWunsch_AAA_AAA_mmm_Test();
+    void needlemanWunsch_AAA_ABA_mwm_Test();
+    void needlemanWunsch_AAA_AZA_midm_Test();
+    void needlemanWunsch_ABC_AZC_mwm_Test();
+    void needlemanWunsch_AAA_AABA_mmim_Test();
+    void needlemanWunsch_AABA_AAA_mmdm_Test();
+    void needlemanWunsch_complexTest();
+    void needlemanWunsch_matchFirstTest();
+
     void guidoService_gmnToScores_simple();
     void guidoService_gmnToScores_chord();
     void guidoService_gmnToScores_repeat();
@@ -42,20 +52,11 @@ private Q_SLOTS:
     void midiService_loadHanon();
 
     void matchingService_midiEvents2xy();
+    void matchingService_getAlignment_prunning();
     void matchingService_getTransposition();
     void matchingService_getQuality();
     void matchingService_isFinished();
     void matchingService_cutMatchingMidiEvents();
-
-    void needlemanWunsch_emptySequencesTest();
-    void needlemanWunsch_AAA_AAA_mmm_Test();
-    void needlemanWunsch_AAA_ABA_mwm_Test();
-    void needlemanWunsch_AAA_AZA_midm_Test();
-    void needlemanWunsch_ABC_AZC_mwm_Test();
-    void needlemanWunsch_AAA_AABA_mmim_Test();
-    void needlemanWunsch_AABA_AAA_mmdm_Test();
-    void needlemanWunsch_complexTest();
-    void needlemanWunsch_matchFirstTest();
 
     void matchingHandler_simple();
 
@@ -146,6 +147,72 @@ void Test::matchingItem_comparisons() {
 
     QVERIFY( item1 < item2 );
     QVERIFY( item2 > item1 );
+}
+
+// NEEDLEMANWUNSCH
+
+void Test::needlemanWunsch_emptySequencesTest() {
+    NeedlemanWunsch matcher;
+    QByteArray alignment = matcher.getAlignments("", "AAA");
+    QVERIFY("iii" == alignment);
+
+    alignment = matcher.getAlignments("AAA", "");
+    QVERIFY("ddd" == alignment);
+
+    alignment = matcher.getAlignments("", "");
+    QVERIFY("" == alignment);
+}
+
+void Test::needlemanWunsch_AAA_AAA_mmm_Test() {
+    NeedlemanWunsch matcher;
+    QByteArray alignment = matcher.getAlignments("AAA", "AAA");
+    QVERIFY("mmm" == alignment);
+}
+
+void Test::needlemanWunsch_AAA_ABA_mwm_Test() {
+    NeedlemanWunsch matcher;
+    QByteArray alignment = matcher.getAlignments("AAA", "ABA");
+    QVERIFY("mwm" == alignment);
+}
+
+void Test::needlemanWunsch_AAA_AZA_midm_Test() {
+    NeedlemanWunsch matcher;
+    QByteArray alignment = matcher.getAlignments("AAA", "AZA");
+    //QVERIFY( "midm" == alignment);	// 1. Wahl
+    QVERIFY("mimd" ==alignment);	// 2. Wahl (auch nicht falsch, aber unschön)
+}
+
+void Test::needlemanWunsch_ABC_AZC_mwm_Test() {
+    NeedlemanWunsch matcher;
+    QByteArray alignment = matcher.getAlignments("ABC", "AZC");
+    QVERIFY("mwm" == alignment);
+}
+
+void Test::needlemanWunsch_AAA_AABA_mmim_Test() {
+    NeedlemanWunsch matcher;
+    QByteArray alignment = matcher.getAlignments("AAA", "AABA");
+    QVERIFY("mmim" == alignment);
+}
+
+void Test::needlemanWunsch_AABA_AAA_mmdm_Test() {
+    NeedlemanWunsch matcher;
+    QByteArray alignment = matcher.getAlignments("AABA", "AAA");
+    QVERIFY("mmdm" == alignment);
+}
+
+void Test::needlemanWunsch_complexTest() {
+    NeedlemanWunsch matcher;
+    QByteArray alignment = matcher.getAlignments("BCEFGH", "ABCDFG");
+    QVERIFY("immwmmd" == alignment );
+}
+
+void Test::needlemanWunsch_matchFirstTest() {
+    NeedlemanWunsch matcher;
+    QByteArray alignment = matcher.getAlignments("AAA", "AAAA");
+    QVERIFY("mmmi" == alignment);
+
+    alignment = matcher.getAlignments("AAAA", "AAA");
+    QVERIFY("mmmd" == alignment);
 }
 
 // GUIDOSERVICE
@@ -448,6 +515,19 @@ void Test::matchingService_midiEvents2xy() {
     QVERIFY( pressedSequence.at(3) == MatchingService::RELEASED );
 }
 
+void Test::matchingService_getAlignment_prunning() {
+    QByteArray scorePitchSequence = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    QByteArray midiPitchSequence = "ABCDEFGHIJKLM";
+    QByteArray oldAlignment = "mmmmm";
+    QByteArray expectedAlignment = "mmmmmmmmmmmmmddddddddddddd";
+
+    QByteArray normalAlignment = MatchingService::getAlingment(scorePitchSequence, midiPitchSequence);
+    QByteArray prunnedAlignment = MatchingService::getAlingment(scorePitchSequence, midiPitchSequence, oldAlignment);
+
+    QVERIFY( normalAlignment == expectedAlignment );
+    QVERIFY( normalAlignment == prunnedAlignment );
+}
+
 void Test::matchingService_getTransposition() {
     QByteArray midiPitchSequence = "abcde";
     QByteArray scorePitchSequence = "ghijk";
@@ -492,72 +572,6 @@ void Test::matchingService_cutMatchingMidiEvents() {
     QList<NoteEventPair> rest = MatchingService::cutMatchingMidiEvents(pairs, "mmi");
     QVERIFY( rest.length() == 1 );
     QVERIFY( rest.at(0) == Cc );
-}
-
-// NEEDLEMANWUNSCH
-
-void Test::needlemanWunsch_emptySequencesTest() {
-    NeedlemanWunsch matcher;
-    QByteArray alignment = matcher.getAlignments("", "AAA");
-    QVERIFY("iii" == alignment);
-
-    alignment = matcher.getAlignments("AAA", "");
-    QVERIFY("ddd" == alignment);
-
-    alignment = matcher.getAlignments("", "");
-    QVERIFY("" == alignment);
-}
-
-void Test::needlemanWunsch_AAA_AAA_mmm_Test() {
-    NeedlemanWunsch matcher;
-    QByteArray alignment = matcher.getAlignments("AAA", "AAA");
-    QVERIFY("mmm" == alignment);
-}
-
-void Test::needlemanWunsch_AAA_ABA_mwm_Test() {
-    NeedlemanWunsch matcher;
-    QByteArray alignment = matcher.getAlignments("AAA", "ABA");
-    QVERIFY("mwm" == alignment);
-}
-
-void Test::needlemanWunsch_AAA_AZA_midm_Test() {
-    NeedlemanWunsch matcher;
-    QByteArray alignment = matcher.getAlignments("AAA", "AZA");
-    //QVERIFY( "midm" == alignment);	// 1. Wahl
-    QVERIFY("mimd" ==alignment);	// 2. Wahl (auch nicht falsch, aber unschön)
-}
-
-void Test::needlemanWunsch_ABC_AZC_mwm_Test() {
-    NeedlemanWunsch matcher;
-    QByteArray alignment = matcher.getAlignments("ABC", "AZC");
-    QVERIFY("mwm" == alignment);
-}
-
-void Test::needlemanWunsch_AAA_AABA_mmim_Test() {
-    NeedlemanWunsch matcher;
-    QByteArray alignment = matcher.getAlignments("AAA", "AABA");
-    QVERIFY("mmim" == alignment);
-}
-
-void Test::needlemanWunsch_AABA_AAA_mmdm_Test() {
-    NeedlemanWunsch matcher;
-    QByteArray alignment = matcher.getAlignments("AABA", "AAA");
-    QVERIFY("mmdm" == alignment);
-}
-
-void Test::needlemanWunsch_complexTest() {
-    NeedlemanWunsch matcher;
-    QByteArray alignment = matcher.getAlignments("BCEFGH", "ABCDFG");
-    QVERIFY("immwmmd" == alignment );
-}
-
-void Test::needlemanWunsch_matchFirstTest() {
-    NeedlemanWunsch matcher;
-    QByteArray alignment = matcher.getAlignments("AAA", "AAAA");
-    QVERIFY("mmmi" == alignment);
-
-    alignment = matcher.getAlignments("AAAA", "AAA");
-    QVERIFY("mmmd" == alignment);
 }
 
 // MATCHINGHANDLER
