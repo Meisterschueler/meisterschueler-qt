@@ -46,11 +46,23 @@ QByteArray MatchingService::midiEvents2pressedSequence(QList<NoteEventPair> even
 
 QByteArray MatchingService::getAlingment(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray oldAlignment) {
     NeedlemanWunsch needlemanWunsch;
-    if (oldAlignment.isEmpty()) {
-        return needlemanWunsch.getAlignments(scorePitchSequence, midiPitchSequence);
-    } else {
-        return QByteArray();
+
+
+    if (!oldAlignment.isEmpty()) {
+        int saveRegion = oldAlignment.lastIndexOf("mmmmmmmmmm");
+        if (saveRegion != -1) {
+            QByteArray saveAlignment = oldAlignment.mid(0, saveRegion);
+
+            QByteArray prunnedScorePitchSequence = scorePitchSequence.mid(saveAlignment.replace("i", "").length());
+            QByteArray prunnedMidiPitchSequence = midiPitchSequence.mid(saveAlignment.replace("d", "").length());
+
+            QByteArray prunnedAlignment = needlemanWunsch.getAlignments(prunnedScorePitchSequence, prunnedMidiPitchSequence);
+
+            return saveAlignment + prunnedAlignment;
+        }
     }
+
+    return needlemanWunsch.getAlignments(scorePitchSequence, midiPitchSequence);
 }
 
 char MatchingService::getTransposition(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray intervalAlignment) {

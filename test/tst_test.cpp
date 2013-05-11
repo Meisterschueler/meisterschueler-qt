@@ -525,7 +525,7 @@ void Test::matchingService_getAlignment_prunning() {
     QByteArray prunnedAlignment = MatchingService::getAlingment(scorePitchSequence, midiPitchSequence, oldAlignment);
 
     QVERIFY( normalAlignment == expectedAlignment );
-    QVERIFY( normalAlignment == prunnedAlignment );
+    QVERIFY( prunnedAlignment == expectedAlignment );
 }
 
 void Test::matchingService_getTransposition() {
