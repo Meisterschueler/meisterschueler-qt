@@ -22,6 +22,7 @@ private Q_SLOTS:
     void noteEventPair_constructors();
     void noteEventPair_comparisons();
     void song_comparisons();
+    void matchingItem_comparisons();
 
     void guidoService_gmnToScores_simple();
     void guidoService_gmnToScores_chord();
@@ -53,6 +54,9 @@ private Q_SLOTS:
     void needlemanWunsch_matchFirstTest();
 
     void matchingHandler_simple();
+
+private:
+    MatchingItem gmnToMatchingItem(const QString &gmn);
 };
 
 Q_DECLARE_METATYPE(MatchingItem)
@@ -127,6 +131,17 @@ void Test::song_comparisons() {
 
     QVERIFY( song1 == song2 );
     QVERIFY( song1 != song3 );
+}
+
+void Test::matchingItem_comparisons() {
+    MatchingItem item1;
+    item1.quality = 0.5;
+
+    MatchingItem item2;
+    item2.quality = 0.2;
+
+    QVERIFY( item1 < item2 );
+    QVERIFY( item2 > item1 );
 }
 
 // GUIDOSERVICE
@@ -499,18 +514,10 @@ void Test::needlemanWunsch_matchFirstTest() {
 
 void Test::matchingHandler_simple() {
     QString gmn = "[c0/16 d e g a c1]";
-    QList<Score> scores = GuidoService::gmnToScores(gmn);
-    QByteArray pitchPattern = ScoreService::scoresToPitchSequence(scores);
-    QByteArray intervalPattern = ScoreService::scoresToIntervalSequence(scores);
-    Song scoresUp;
-    MatchingItem upItem(scoresUp, pitchPattern, intervalPattern);
+    MatchingItem upItem = gmnToMatchingItem(gmn);
 
     gmn = "[c1 b0 a g f e d c]";
-    scores = GuidoService::gmnToScores(gmn);
-    pitchPattern = ScoreService::scoresToPitchSequence(scores);
-    intervalPattern = ScoreService::scoresToIntervalSequence(scores);
-    Song scoresDown;
-    MatchingItem downItem(scoresDown, pitchPattern, intervalPattern);
+    MatchingItem downItem = gmnToMatchingItem(gmn);
 
     QList<MatchingItem> matchingItems;
     matchingItems.append(upItem);
@@ -544,7 +551,18 @@ void Test::matchingHandler_simple() {
     QList<QVariant> arguments = songFinishedSpy.takeFirst();
     MatchingItem finishedItem = qvariant_cast<MatchingItem>(arguments.at(0));
 
-    QVERIFY( finishedItem.song == scoresUp );
+    QVERIFY( finishedItem.song == upItem.song );
+}
+
+// HELPER FUNCTIONS
+
+MatchingItem Test::gmnToMatchingItem(const QString& gmn) {
+    QList<Score> scores = GuidoService::gmnToScores(gmn);
+    QByteArray pitchSequence = ScoreService::scoresToPitchSequence(scores);
+    QByteArray intervalSequence = ScoreService::scoresToIntervalSequence(scores);
+    Song song;
+
+    return MatchingItem(song, pitchSequence, intervalSequence);
 }
 
 QTEST_APPLESS_MAIN(Test)

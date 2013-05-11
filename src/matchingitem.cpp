@@ -6,6 +6,6 @@ MatchingItem::MatchingItem() {
 
 MatchingItem::MatchingItem(const Song& song,
                            const QByteArray& noteSequence,
-                           const QByteArray& intervalSequence) : song(song), noteSequence(noteSequence), intervalSequence(intervalSequence)
+                           const QByteArray& intervalSequence) : song(song), scorePitchSequence(noteSequence), scoreIntervalSequence(intervalSequence)
 {
 }
