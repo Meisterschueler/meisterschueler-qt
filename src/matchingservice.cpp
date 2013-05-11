@@ -40,6 +40,19 @@ QByteArray MatchingService::midiEvents2pressedSequence(QList<NoteEventPair> even
     return sequence;
 }
 
-char MatchingService::getTransposition(QByteArray midiPitchSequence, QByteArray scorePitchSequence, QByteArray pitchAlignment) {
-    return 0;
+char MatchingService::getTransposition(QByteArray midiPitchSequence, QByteArray scorePitchSequence, QByteArray intervalAlignment) {
+    int posAlignment = intervalAlignment.lastIndexOf("mmm");
+    if (posAlignment < 0) {
+        return 0;   // TODO: nicht gut...
+    }
+
+    QByteArray goodString = intervalAlignment.mid(0, posAlignment);
+
+    int scorePosition = goodString.replace("i", "").length();
+    int notePosition = goodString.replace("d", "").length();
+
+    char scorePitch = scorePitchSequence.at(scorePosition);
+    char notePitch = midiPitchSequence.at(notePosition);
+
+    return notePitch - scorePitch;
 }

@@ -18,7 +18,7 @@ public:
     static QByteArray midiEvents2intervalSequence(QList<NoteEventPair> events);
     static QByteArray midiEvents2pressedSequence(QList<NoteEventPair> events);
 
-    static char getTransposition(QByteArray midiPitchSequence, QByteArray scorePitchSequence, QByteArray pitchAlignment);
+    static char getTransposition(QByteArray midiPitchSequence, QByteArray scorePitchSequence, QByteArray intervalAlignment);
 };
 
 #endif // MATCHINGSERVICE_H

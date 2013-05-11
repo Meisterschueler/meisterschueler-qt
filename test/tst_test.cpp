@@ -448,9 +448,9 @@ void Test::matchingService_midiEvents2xy() {
 void Test::matchingService_getTransposition() {
     QByteArray midiPitchSequence = "abcde";
     QByteArray scorePitchSequence = "ghijk";
-    QByteArray pitchAlignment = "mmmmm";
-    int transposition = MatchingService::getTransposition(midiPitchSequence, scorePitchSequence, pitchAlignment);
-    QCOMPARE( 6, transposition );
+    QByteArray intervalAlignment = "mmmm";
+    int transposition = MatchingService::getTransposition(midiPitchSequence, scorePitchSequence, intervalAlignment);
+    QCOMPARE( transposition, -6 );
 }
 
 // NEEDLEMANWUNSCH
