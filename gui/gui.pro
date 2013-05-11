@@ -23,9 +23,7 @@ HEADERS  += mainwindow.h \
     settingsdialog.h \
     ../src/midiwrapper.h
 
-# Get Classes
-#INCLUDEPATH += ../src
-#VPATH += ../src
-
 FORMS    += mainwindow.ui \
     settingsdialog.ui
+
+TRANSLATIONS += translations/meisterschueler_de.ts

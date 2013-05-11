@@ -1,18 +1,11 @@
 #include <QApplication>
-#include "mainwindow.h"
 
 #include <QGuidoPainter.h>
 #include <QGuidoWidget.h>
 
-#include "guidoservice.h"
-
 int main(int argc, char *argv[])
 {
     QGuidoPainter::startGuidoEngine();
-
-//    QApplication a(argc, argv);
-//    MainWindow w;
-//    w.show();
 
     QApplication a(argc, argv);
     QGuidoWidget w;

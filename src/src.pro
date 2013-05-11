@@ -14,7 +14,6 @@ TARGET = src
 TEMPLATE = app
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     guidoservice.cpp \
     midiwrapper.cpp \
     notemapper.cpp \
@@ -28,7 +27,7 @@ SOURCES += main.cpp\
     score.cpp \
     midiservice.cpp
 
-HEADERS  += mainwindow.h \
+HEADERS  += \
     guidoservice.h \
     midiwrapper.h \
     mididefs.h \
@@ -45,7 +44,7 @@ HEADERS  += mainwindow.h \
     midiservice.h \
     util.h
 
-FORMS    += mainwindow.ui
+FORMS    +=
 
 OTHER_FILES +=
 
