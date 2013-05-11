@@ -532,7 +532,7 @@ void Test::matchingService_getTransposition() {
     QByteArray midiPitchSequence = "abcde";
     QByteArray scorePitchSequence = "ghijk";
     QByteArray intervalAlignment = "mmmm";
-    int transposition = MatchingService::getTransposition(midiPitchSequence, scorePitchSequence, intervalAlignment);
+    int transposition = MatchingService::getTransposition(scorePitchSequence, midiPitchSequence, intervalAlignment);
     QCOMPARE( transposition, -6 );
 }
 
@@ -545,14 +545,14 @@ void Test::matchingService_isFinished() {
     QVERIFY( !MatchingService::isFinished("mmmd", "....") );
 
     QVERIFY(  MatchingService::isFinished("mmmmmm", "......") );
-    QVERIFY( !MatchingService::isFinished("mmmmmm", "...D..") );
+    QVERIFY( !MatchingService::isFinished("mmmmmm", "...X..") );
 
     QVERIFY(  MatchingService::isFinished("mmmmi", ".....") );
-    QVERIFY(  MatchingService::isFinished("mmmmi", "....D") );
-    QVERIFY( !MatchingService::isFinished("mmmmi", "...D.") );
+    QVERIFY(  MatchingService::isFinished("mmmmi", "....X") );
+    QVERIFY( !MatchingService::isFinished("mmmmi", "...X.") );
 
     QVERIFY(  MatchingService::isFinished("mimi", "....") );
-    QVERIFY( !MatchingService::isFinished("mimi", ".D..") );
+    QVERIFY( !MatchingService::isFinished("mimi", ".X..") );
 }
 
 void Test::matchingService_cutMatchingMidiEvents() {

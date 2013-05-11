@@ -1,6 +1,7 @@
 #ifndef MATCHINGHANDLER_H
 #define MATCHINGHANDLER_H
 
+#include <QSharedPointer>
 #include <QList>
 #include <QObject>
 
@@ -17,8 +18,8 @@ public:
 
 public slots:
     void reset();
-    void noteOnEvent(NoteOnEvent ev);
-    void noteOffEvent(NoteOffEvent ev);
+    void noteOnEvent(NoteOnEvent noteOn);
+    void noteOffEvent(NoteOffEvent noteOff);
 
 signals:
     void positionChanged(Fraction position);
@@ -27,7 +28,9 @@ signals:
 
 private:
     QList<MatchingItem> matchingItems;
-    QList<NoteEventPair> midiEvents;
+    QSharedPointer<QList<NoteEventPair>> midiEvents;
+
+    void match();
 };
 
 #endif // MATCHINGHANDLER_H

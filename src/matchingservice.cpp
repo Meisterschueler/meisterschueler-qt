@@ -32,9 +32,9 @@ QByteArray MatchingService::midiEvents2pressedSequence(QList<NoteEventPair> even
     QByteArray sequence;
     for (NoteEventPair midiPair : events) {
         if (midiPair.noteOn != NULL && midiPair.noteOff != NULL) {
-            sequence.append(".");
+            sequence.append(MatchingService::RELEASED);
         } else if (midiPair.noteOn != NULL){
-            sequence.append("X");
+            sequence.append(MatchingService::PRESSED);
         } else if (midiPair.noteOff != NULL) {
             sequence.append("y");
         } else {
@@ -121,7 +121,7 @@ bool MatchingService::isFinished(QByteArray pitchAlignment, QByteArray pressedSe
     }
     if (pitchAlignment.endsWith("m")) {
         pitchAlignment.replace("d", "");
-        int idxPressed = pressedSequence.indexOf("D");
+        int idxPressed = pressedSequence.indexOf(MatchingService::PRESSED);
         if (idxPressed != -1 && idxPressed < pitchAlignment.length()) {
             result = false;
         } else {
