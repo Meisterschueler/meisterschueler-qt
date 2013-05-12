@@ -29,8 +29,12 @@ void SettingsDialog::init(MidiWrapper *midiWrapper) {
     this->midiWrapper = midiWrapper;
 
     QStringList inputPorts = midiWrapper->getInputPorts();
-    ui->comboBoxInputDevice->addItem(tr("(none)"));
     ui->comboBoxInputDevice->addItems(inputPorts);
     ui->comboBoxInputDevice->setCurrentIndex(inputPorts.indexOf(midiWrapper->getOpenedInputPort()));
     QObject::connect(ui->comboBoxInputDevice, SIGNAL(currentIndexChanged(QString)), midiWrapper, SLOT(openInputPort(QString)));
+
+    QStringList outputPorts = midiWrapper->getOutputPorts();
+    ui->comboBoxOutputDevice->addItems(outputPorts);
+    ui->comboBoxOutputDevice->setCurrentIndex(outputPorts.indexOf(midiWrapper->getOpenedOutputPort()));
+    QObject::connect(ui->comboBoxOutputDevice, SIGNAL(currentIndexChanged(QString)), midiWrapper, SLOT(openOutputPort(QString)));
 }

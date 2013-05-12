@@ -10,6 +10,8 @@ QT       += testlib
 
 QT       -= gui
 
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 TARGET = tst_test
 CONFIG   += console
 CONFIG   -= app_bundle
@@ -29,6 +31,7 @@ SOURCES += guidoservice.cpp \
     matchingservice.cpp \
     matchingitem.cpp \
     midiservice.cpp \
+    midiwrapper.cpp \
     score.cpp \
     notemapper.cpp \
     needlemanwunsch.cpp \
@@ -40,6 +43,7 @@ HEADERS  += guidoservice.h \
     matchingservice.h \
     matchingitem.h \
     midiservice.h \
+    midiwrapper.h \
     events.h \
     mididefs.h \
     score.h \

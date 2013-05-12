@@ -61,7 +61,9 @@ void MatchingHandler::match() {
 
     bool isFinished = MatchingService::isFinished(item.pitchAlignment, *item.pressedSequence);
     if (isFinished) {
-        (*midiEvents).clear();
+
+        midiEvents = QSharedPointer<QList<NoteEventPair>>(new QList<NoteEventPair>());
+
         (*midiEvents).append(MatchingService::cutMatchingMidiEvents(*item.midiEvents, item.pitchAlignment));
 
         *item.midiPitchSequence = MatchingService::midiEvents2pitchSequence(*item.midiEvents);

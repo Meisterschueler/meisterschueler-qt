@@ -1,11 +1,14 @@
 #include <QString>
 #include <QtTest>
 
+#include <QDebug>
+
 #include "guidoservice.h"
 #include "scoreservice.h"
 #include "matchingservice.h"
 #include "matchinghandler.h"
 #include "midiservice.h"
+#include "midiwrapper.h"
 #include "needlemanwunsch.h"
 #include "score.h"
 #include "events.h"
@@ -59,6 +62,8 @@ private Q_SLOTS:
     void matchingService_cutMatchingMidiEvents();
 
     void matchingHandler_simple();
+
+    void midiWrapper_simple();
 
 private:
     MatchingItem gmnToMatchingItem(const QString &gmn);
@@ -577,10 +582,10 @@ void Test::matchingService_cutMatchingMidiEvents() {
 // MATCHINGHANDLER
 
 void Test::matchingHandler_simple() {
-    QString gmn = "[c0/16 d e g a c1]";
+    QString gmn = "[c0/16 d e f]";
     MatchingItem upItem = gmnToMatchingItem(gmn);
 
-    gmn = "[c1 b0 a g f e d c]";
+    gmn = "[g0/16 f e d]";
     MatchingItem downItem = gmnToMatchingItem(gmn);
 
     QList<MatchingItem> matchingItems;
@@ -596,26 +601,45 @@ void Test::matchingHandler_simple() {
     NoteOnEvent A(  0, 0, 48, 10); NoteOffEvent a( 10, 0, 48, 0);
     NoteOnEvent B(100, 0, 50, 10); NoteOffEvent b(110, 0, 50, 0);
     NoteOnEvent C(200, 0, 52, 10); NoteOffEvent c(210, 0, 52, 0);
-    NoteOnEvent D(300, 0, 55, 10); NoteOffEvent d(310, 0, 55, 0);
-    NoteOnEvent E(400, 0, 57, 10); NoteOffEvent e(410, 0, 57, 0);
-    NoteOnEvent F(500, 0, 60, 10); NoteOffEvent f(510, 0, 60, 0);
-
-    NoteOnEvent G(0, 0, 48, 10); NoteOffEvent g(0, 0, 48, 0);
-    NoteOnEvent H(0, 0, 48, 10); NoteOffEvent h(0, 0, 48, 0);
+    NoteOnEvent D(300, 0, 53, 10); NoteOffEvent d(310, 0, 53, 0);
+    NoteOnEvent E(400, 0, 55, 10); NoteOffEvent e(410, 0, 55, 0);
+    NoteOnEvent F(500, 0, 53, 10); NoteOffEvent f(510, 0, 53, 0);
+    NoteOnEvent G(600, 0, 52, 10); NoteOffEvent g(610, 0, 52, 0);
+    NoteOnEvent H(700, 0, 50, 10); NoteOffEvent h(710, 0, 50, 0);
 
     matchingHandler.noteOnEvent(A); matchingHandler.noteOffEvent(a);
     matchingHandler.noteOnEvent(B); matchingHandler.noteOffEvent(b);
     matchingHandler.noteOnEvent(C); matchingHandler.noteOffEvent(c);
     matchingHandler.noteOnEvent(D); matchingHandler.noteOffEvent(d);
-    matchingHandler.noteOnEvent(E); matchingHandler.noteOffEvent(e);
-    matchingHandler.noteOnEvent(F); matchingHandler.noteOffEvent(f);
 
     QCOMPARE( songFinishedSpy.count(), 1 );
 
-    QList<QVariant> arguments = songFinishedSpy.takeFirst();
-    MatchingItem finishedItem = qvariant_cast<MatchingItem>(arguments.at(0));
+    QList<QVariant> arguments1 = songFinishedSpy.takeFirst();
+    MatchingItem finishedItem1 = qvariant_cast<MatchingItem>(arguments1.at(0));
 
-    QVERIFY( finishedItem.song == upItem.song );
+    QVERIFY( finishedItem1.song == upItem.song );
+
+    matchingHandler.noteOnEvent(E); matchingHandler.noteOffEvent(e);
+    matchingHandler.noteOnEvent(F); matchingHandler.noteOffEvent(f);
+    matchingHandler.noteOnEvent(G); matchingHandler.noteOffEvent(g);
+    matchingHandler.noteOnEvent(H); matchingHandler.noteOffEvent(h);
+
+    QCOMPARE( songFinishedSpy.count(), 1 );
+    QList<QVariant> arguments2 = songFinishedSpy.takeFirst();
+    MatchingItem finishedItem2 = qvariant_cast<MatchingItem>(arguments2.at(0));
+
+    QVERIFY( finishedItem2.song == downItem.song );
+}
+
+// MIDIWRAPPER
+
+void Test::midiWrapper_simple() {
+    MidiWrapper midiWrapper;
+    QStringList inputPorts = midiWrapper.getInputPorts();
+    for (QString inputPort : inputPorts) {
+        qDebug( inputPort.toLatin1() );
+    }
+    QVERIFY( inputPorts.size() > 1 );
 }
 
 // HELPER FUNCTIONS

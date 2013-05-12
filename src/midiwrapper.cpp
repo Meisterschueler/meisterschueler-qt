@@ -46,22 +46,34 @@ void midiCallback(double deltatime, std::vector<unsigned char> *message,
 MidiWrapper::MidiWrapper(QObject *parent) :
     QObject(parent)
 {
-    midiIn = new RtMidiIn();
-    midiOut = new RtMidiOut();
+    try {
+        midiIn = new RtMidiIn();
+        midiOut = new RtMidiOut();
+    } catch (...) {
+        qDebug("WTF! Initialization of the sound failed!");
+        midiIn = 0;
+        midiOut = 0;
+    }
 }
 
 MidiWrapper::~MidiWrapper() {
-    delete midiIn;
-    delete midiOut;
+    if (midiIn)
+        delete midiIn;
+
+    if (midiOut)
+        delete midiOut;
 }
 
 QStringList MidiWrapper::getInputPorts() {
     QStringList result;
+    result << tr("(none)");
 
-    for (unsigned int i = 0; i < midiIn->getPortCount(); i++) {
-        QString portName = midiIn->getPortName(i).c_str();
-        if (!portName.startsWith("RtMidi"))
-            result << portName;
+    if (midiIn) {
+        for (unsigned int i = 0; i < midiIn->getPortCount(); i++) {
+            QString portName = midiIn->getPortName(i).c_str();
+            if (!portName.startsWith("RtMidi"))
+                result << portName;
+        }
     }
 
     return result;
@@ -69,11 +81,14 @@ QStringList MidiWrapper::getInputPorts() {
 
 QStringList MidiWrapper::getOutputPorts() {
     QStringList result;
+    result << tr("(none)");
 
-    for (unsigned int i = 0; i < midiOut->getPortCount(); i++) {
-        QString portName = midiOut->getPortName(i).c_str();
-        if (!portName.startsWith("RtMidi"))
-            result << portName;
+    if (midiOut) {
+        for (unsigned int i = 0; i < midiOut->getPortCount(); i++) {
+            QString portName = midiOut->getPortName(i).c_str();
+            if (!portName.startsWith("RtMidi"))
+                result << portName;
+        }
     }
 
     return result;
@@ -127,7 +142,7 @@ void MidiWrapper::openInputPort(QString portName) {
     }
 
     int port = getInputPorts().indexOf(portName);
-    if (port != -1) {
+    if (port != 0) {
         midiIn->openPort(port);
         midiIn->setCallback(&midiCallback, this);
         midiIn->ignoreTypes(false, false, false); // Don't ignore sysex, timing, or active sensing messages.
@@ -143,7 +158,7 @@ void MidiWrapper::openOutputPort(QString portName) {
     }
 
     int port = getOutputPorts().indexOf(portName);
-    if (port != -1) {
+    if (port != 0) {
         midiOut->openPort(port);
         QSettings settings;
         settings.setValue("midi/output", portName);

@@ -11,13 +11,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //midiWrapper = new MidiWrapper();
+    midiWrapper = new MidiWrapper();
 
     QSettings settings;
     restoreGeometry(settings.value("geometry").toByteArray());
     restoreState(settings.value("state").toByteArray());
 
-    //QObject::connect(ui->actionSettings, SIGNAL(triggered()), this, SLOT(showSettingsDialog()));
+    QObject::connect(ui->actionSettings, SIGNAL(triggered()), this, SLOT(showSettingsDialog()));
     QObject::connect(ui->actionFull_Screen, SIGNAL(triggered()), this, SLOT(toggleFullscreen()));
     QObject::connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 }
@@ -26,7 +26,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 
-    //delete midiWrapper;
+    delete midiWrapper;
 }
 
 void MainWindow::changeEvent(QEvent *event)
