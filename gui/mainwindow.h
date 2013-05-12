@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "bubbleview.h"
+
 #include "../src/midiwrapper.h"
 
 namespace Ui {
@@ -25,6 +27,7 @@ private:
     Ui::MainWindow *ui;
 
     MidiWrapper *midiWrapper;
+    BubbleView *bubbleView;
 
 public slots:
     void toggleFullscreen();

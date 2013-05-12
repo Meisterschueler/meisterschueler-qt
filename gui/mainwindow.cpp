@@ -20,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionSettings, SIGNAL(triggered()), this, SLOT(showSettingsDialog()));
     QObject::connect(ui->actionFull_Screen, SIGNAL(triggered()), this, SLOT(toggleFullscreen()));
     QObject::connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+
+    bubbleView = new BubbleView();
+    setCentralWidget(bubbleView);
 }
 
 MainWindow::~MainWindow()
@@ -27,6 +30,7 @@ MainWindow::~MainWindow()
     delete ui;
 
     delete midiWrapper;
+    delete bubbleView;
 }
 
 void MainWindow::changeEvent(QEvent *event)

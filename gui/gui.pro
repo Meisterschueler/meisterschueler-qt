@@ -13,15 +13,18 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = gui
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
         mainwindow.cpp \
     settingsdialog.cpp \
-    ../src/midiwrapper.cpp
+    ../src/midiwrapper.cpp \
+    bubblegraphicsitem.cpp \
+    bubbleview.cpp
 
 HEADERS  += mainwindow.h \
     settingsdialog.h \
-    ../src/midiwrapper.h
+    ../src/midiwrapper.h \
+    bubblegraphicsitem.h \
+    bubbleview.h
 
 FORMS    += mainwindow.ui \
     settingsdialog.ui
