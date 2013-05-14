@@ -607,6 +607,7 @@ void Test::matchingHandler_simple() {
     NoteOnEvent G(600, 0, 52, 10); NoteOffEvent g(610, 0, 52, 0);
     NoteOnEvent H(700, 0, 50, 10); NoteOffEvent h(710, 0, 50, 0);
 
+    // Play accurate scores up
     matchingHandler.noteOnEvent(A); matchingHandler.noteOffEvent(a);
     matchingHandler.noteOnEvent(B); matchingHandler.noteOffEvent(b);
     matchingHandler.noteOnEvent(C); matchingHandler.noteOffEvent(c);
@@ -619,6 +620,7 @@ void Test::matchingHandler_simple() {
 
     QVERIFY( finishedItem1.song == upItem.song );
 
+    // Play accurate scores down
     matchingHandler.noteOnEvent(E); matchingHandler.noteOffEvent(e);
     matchingHandler.noteOnEvent(F); matchingHandler.noteOffEvent(f);
     matchingHandler.noteOnEvent(G); matchingHandler.noteOffEvent(g);
@@ -629,6 +631,38 @@ void Test::matchingHandler_simple() {
     MatchingItem finishedItem2 = qvariant_cast<MatchingItem>(arguments2.at(0));
 
     QVERIFY( finishedItem2.song == downItem.song );
+
+    // And now we play not so accurate:
+    // Play scores up, but lets start with the second song before we really finished the first one
+    matchingHandler.noteOnEvent(A); matchingHandler.noteOffEvent(a);
+    matchingHandler.noteOnEvent(B); matchingHandler.noteOffEvent(b);
+    matchingHandler.noteOnEvent(C); matchingHandler.noteOffEvent(c);
+    matchingHandler.noteOnEvent(D); // ... wait with releasing ...
+
+    matchingHandler.noteOnEvent(E); // ... and start with the second song
+    QCOMPARE( songFinishedSpy.count(), 0 );
+    /* here comes the release    */ matchingHandler.noteOffEvent(d);
+    QCOMPARE( songFinishedSpy.count(), 1 );
+    /* ... and here we continue  */ matchingHandler.noteOffEvent(e);
+    matchingHandler.noteOnEvent(F); matchingHandler.noteOffEvent(f);
+    matchingHandler.noteOnEvent(G); matchingHandler.noteOffEvent(g);
+    matchingHandler.noteOnEvent(H); matchingHandler.noteOffEvent(h);
+    QCOMPARE( songFinishedSpy.count(), 2 );
+
+    QList<QVariant> arguments3 = songFinishedSpy.takeFirst();
+    MatchingItem finishedItem3 = qvariant_cast<MatchingItem>(arguments3.at(0));
+    QList<QVariant> arguments4 = songFinishedSpy.takeFirst();
+    MatchingItem finishedItem4 = qvariant_cast<MatchingItem>(arguments4.at(0));
+
+    QVERIFY( *finishedItem1.midiPitchSequence == *finishedItem3.midiPitchSequence );
+    QVERIFY( *finishedItem1.midiIntervalSequence == *finishedItem3.midiIntervalSequence );
+    QVERIFY( *finishedItem1.pitchAlignment == *finishedItem3.pitchAlignment );
+    QVERIFY( *finishedItem1.intervalAlignment == *finishedItem3.intervalAlignment );
+
+    QVERIFY( *finishedItem2.midiPitchSequence == *finishedItem4.midiPitchSequence );
+    QVERIFY( *finishedItem2.midiIntervalSequence == *finishedItem4.midiIntervalSequence );
+    QVERIFY( *finishedItem2.pitchAlignment == *finishedItem4.pitchAlignment );
+    QVERIFY( *finishedItem2.intervalAlignment == *finishedItem4.intervalAlignment );
 }
 
 // MIDIWRAPPER
