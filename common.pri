@@ -26,9 +26,11 @@ LIBS += -L$$RTMIDI \
         -lrtmidi
 
 unix {
-    DEFINES += __LINUX_ALSASEQ__
-    LIBS += -lasound \
-            -pthread
+    DEFINES += __UNIX_JACK__
+    LIBS += -ljack
+#    DEFINES += __LINUX_ALSASEQ__
+#    LIBS += -lasound \
+#            -pthread
 }
 
 win32 {
