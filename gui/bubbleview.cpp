@@ -3,7 +3,7 @@
 #include <QPropertyAnimation>
 
 BubbleView::BubbleView(QGraphicsView *parent) :
-    QGraphicsView(parent)
+    QGraphicsView(parent), pitch(-1), keystroke(-1)
 {
     graphicsScene = new QGraphicsScene(this);
     setScene(graphicsScene);
@@ -11,6 +11,8 @@ BubbleView::BubbleView(QGraphicsView *parent) :
     setRenderHint( QPainter::Antialiasing );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
+    backgroundItem = graphicsScene->addPixmap( getBackgroundPixmap() );
 }
 
 BubbleView::~BubbleView()
@@ -18,6 +20,18 @@ BubbleView::~BubbleView()
 }
 
 void BubbleView::makeBubble( const QPoint& pos ) {
+    QPointF itemCoords = mapToScene(pos);
+    int pitch_temp = static_cast<int>(itemCoords.x());
+    int keystroke_temp = 127-static_cast<int>(itemCoords.y());
+    bool coordinatesChanged = (pitch != pitch_temp || keystroke != keystroke_temp);
+    if (coordinatesChanged) {
+        pitch = pitch_temp;
+        keystroke = keystroke_temp;
+        emit note(pitch, keystroke);
+    } else {
+        return;
+    }
+
     BubbleGraphicsItem *bubble = new BubbleGraphicsItem();
     bubble->pen().setWidth( 10 );
     bubble->setFlag( QGraphicsItem::ItemIgnoresTransformations );
@@ -44,8 +58,36 @@ void BubbleView::makeBubble( const QPoint& pos ) {
     animPenColor->start();
 }
 
+QPixmap BubbleView::getBackgroundPixmap() {
+    QImage image(128, 128, QImage::Format_ARGB32);
+
+    QPainter painter(&image);
+    painter.fillRect(image.rect(), Qt::white);
+
+    QVector<int> blackKeys {1, 3, 6, 8, 10};
+
+    for (int x = 0; x < 128; ++x) {
+        for (int y = 0; y < 128; ++y) {
+            int gray;
+            if (blackKeys.contains(x % 12)) {
+                gray = 220;
+            } else {
+                gray = 250;
+            }
+
+            if ((x + y) % 2 == 0) {
+                gray += 5;
+            }
+
+            image.setPixel(x, y, qRgb(gray, gray, gray));
+        }
+    }
+
+    return QPixmap::fromImage(image);
+}
+
 void BubbleView::resizeEvent(QResizeEvent *event) {
-    //fitInView(backgroundItem);
+    fitInView(backgroundItem);
 }
 
 void BubbleView::mousePressEvent( QMouseEvent *event ) {
@@ -54,8 +96,13 @@ void BubbleView::mousePressEvent( QMouseEvent *event ) {
     makeBubble(pos);
 }
 
-void BubbleView::mouseMoveEvent( QMouseEvent *event ) {
+void BubbleView::mouseMoveEvent( QMouseEvent *event ) {    
     QGraphicsView::mouseMoveEvent(event);
     QPoint pos = event->pos();
     makeBubble(pos);
+}
+
+void BubbleView::mouseReleaseEvent(QMouseEvent *event) {
+    pitch = -1;
+    keystroke = -1;
 }
