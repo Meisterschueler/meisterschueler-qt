@@ -44,7 +44,7 @@ void MatchingHandler::match() {
         if (pitchSequenceChanged) {
             if (!item.prunning) {
                 item.intervalAlignment = MatchingService::getAlingment(item.scoreIntervalSequence, *item.midiIntervalSequence);
-                item.transposition = MatchingService::getTransposition(*item.midiPitchSequence, item.scorePitchSequence, item.intervalAlignment);
+                item.transposition = MatchingService::getTransposition(item.scorePitchSequence, *item.midiPitchSequence, item.intervalAlignment);
             } else {
 
             }
@@ -69,7 +69,8 @@ void MatchingHandler::match() {
         *item.midiPitchSequence = MatchingService::midiEvents2pitchSequence(*item.midiEvents);
         *item.midiIntervalSequence = MatchingService::midiEvents2intervalSequence(*item.midiEvents);
         *item.pressedSequence = MatchingService::midiEvents2pressedSequence(*item.midiEvents);
-        item.pitchAlignment = MatchingService::getAlingment(*item.midiPitchSequence, item.scoreIntervalSequence);
+        item.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence);
+        item.intervalAlignment = MatchingService::getAlingment(item.scoreIntervalSequence, *item.midiIntervalSequence);
 
         emit songFinished(item);
     }

@@ -36,6 +36,7 @@ private Q_SLOTS:
     void needlemanWunsch_AABA_AAA_mmdm_Test();
     void needlemanWunsch_complexTest();
     void needlemanWunsch_matchFirstTest();
+    void needlemanWunsch_intervals();
 
     void guidoService_gmnToScores_simple();
     void guidoService_gmnToScores_chord();
@@ -218,6 +219,16 @@ void Test::needlemanWunsch_matchFirstTest() {
 
     alignment = matcher.getAlignments("AAAA", "AAA");
     QVERIFY("mmmd" == alignment);
+}
+
+void Test::needlemanWunsch_intervals() {
+    NeedlemanWunsch matcher;
+    QByteArray seq;
+    seq.append(-3);
+    seq.append(4);
+    seq.append(-5);
+    QByteArray alignment = matcher.getAlignments(seq, seq);
+    QVERIFY("mmm" == alignment);
 }
 
 // GUIDOSERVICE
