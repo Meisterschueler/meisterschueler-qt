@@ -22,7 +22,7 @@ public:
     static char getTransposition(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray intervalAlignment);
     static double getQuality(QByteArray pitchAlignment, char transposition);
     static bool isFinished(QByteArray pitchAlignment, QByteArray pressedSequence);
-    static QList<NoteEventPair> cutMatchingMidiEvents(QList<NoteEventPair> events, QByteArray pitchAlignment);
+    static QList<NoteEventPair> cutMatchingMidiEvents(QList<NoteEventPair> &events, QByteArray pitchAlignment);
 };
 
 #endif // MATCHINGSERVICE_H

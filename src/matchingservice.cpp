@@ -134,7 +134,7 @@ bool MatchingService::isFinished(QByteArray pitchAlignment, QByteArray pressedSe
     return result;
 }
 
-QList<NoteEventPair> MatchingService::cutMatchingMidiEvents(QList<NoteEventPair> events, QByteArray pitchAlignment) {
+QList<NoteEventPair> MatchingService::cutMatchingMidiEvents(QList<NoteEventPair>& events, QByteArray pitchAlignment) {
     QList<NoteEventPair> result;
 
     QString alignment(pitchAlignment);

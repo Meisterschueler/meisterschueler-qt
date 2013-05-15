@@ -586,6 +586,7 @@ void Test::matchingService_cutMatchingMidiEvents() {
     pairs.append(Cc);
 
     QList<NoteEventPair> rest = MatchingService::cutMatchingMidiEvents(pairs, "mmi");
+    QVERIFY( pairs.length() == 2 );
     QVERIFY( rest.length() == 1 );
     QVERIFY( rest.at(0) == Cc );
 }
