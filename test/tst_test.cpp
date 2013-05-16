@@ -23,7 +23,8 @@ public:
 private Q_SLOTS:
     void noteEvent_comparisons();
     void noteEventPair_constructors();
-    void noteEventPair_comparisons();
+    void noteEventPair_comparisons_single();
+    void noteEventPair_comparisons_chord();
     void song_comparisons();
     void matchingItem_comparisons();
 
@@ -102,12 +103,12 @@ void Test::noteEventPair_constructors() {
     QVERIFY( a == *(pair2.noteOff) );
 }
 
-void Test::noteEventPair_comparisons() {
+void Test::noteEventPair_comparisons_single() {
     NoteEventPair pair(NoteOnEvent(0, 0, 10, 0));
     NoteEventPair same(NoteOnEvent(0, 0, 10, 0));
     NoteEventPair higher(NoteOnEvent(0, 0, 20, 0));
-    NoteEventPair later(NoteOnEvent(10, 0, 10, 0));
-    NoteEventPair higherAndLater(NoteOnEvent(10, 0, 20, 0));
+    NoteEventPair later(NoteOnEvent(100, 0, 10, 0));
+    NoteEventPair higherAndLater(NoteOnEvent(100, 0, 20, 0));
 
     QVERIFY( pair == same );
 
@@ -128,6 +129,21 @@ void Test::noteEventPair_comparisons() {
 
     QVERIFY( later < higherAndLater );
     QVERIFY( higherAndLater > later );
+}
+
+void Test::noteEventPair_comparisons_chord() {
+    NoteEventPair chord1note1(NoteOnEvent(0, 0, 30, 0));
+    NoteEventPair chord1note2(NoteOnEvent(10, 0, 10, 0));
+    NoteEventPair chord1note3(NoteOnEvent(20, 0, 20, 0));
+
+    NoteEventPair chord2note1(NoteOnEvent(100, 0, 20, 0));
+    NoteEventPair chord2note2(NoteOnEvent(110, 0, 30, 0));
+
+    QVERIFY( chord1note1 > chord1note2 );
+    QVERIFY( chord1note1 > chord1note3 );
+
+    QVERIFY( chord1note1 < chord2note1 );
+    QVERIFY( chord1note1 < chord2note2 );
 }
 
 void Test::song_comparisons() {
