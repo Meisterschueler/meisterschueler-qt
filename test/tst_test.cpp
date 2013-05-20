@@ -137,8 +137,8 @@ void Test::noteEventPair_comparisons_single() {
     QVERIFY( later < higherAndLater );
     QCOMPARE( higherAndLater < later, false );
 
-    QVERIFY( later > lowerAndLater );
-    QCOMPARE( lowerAndLater > later, false );
+    QVERIFY( lowerAndLater < later );
+    QCOMPARE( later < lowerAndLater, false );
 }
 
 void Test::noteEventPair_comparisons_chord() {

@@ -186,19 +186,6 @@ public:
         }
         return false;
     }
-
-    bool operator>(const NoteEventPair& rhs) const {
-        if (this->noteOn && rhs.noteOn) {
-            if ( (*this->noteOn).getTime() - 50 > (*rhs.noteOn).getTime() ) {
-                return true;
-            } else if ( (*this->noteOn).getTime() < (*rhs.noteOn).getTime() - 50 ) {
-                return false;
-            } else if ( *(this->noteOn) > *(rhs.noteOn) ) {
-                return true;
-            }
-        }
-        return false;
-    }
 };
 
 #endif /* EVENTS_H */
