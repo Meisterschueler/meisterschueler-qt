@@ -109,26 +109,36 @@ void Test::noteEventPair_comparisons_single() {
     NoteEventPair higher(NoteOnEvent(0, 0, 20, 0));
     NoteEventPair later(NoteOnEvent(100, 0, 10, 0));
     NoteEventPair higherAndLater(NoteOnEvent(100, 0, 20, 0));
+    NoteEventPair lowerAndLater(NoteOnEvent(100, 0, 5, 0));
 
     QVERIFY( pair == same );
 
     QVERIFY( pair < higher );
-    QVERIFY( higher > pair );
+    QCOMPARE( higher < pair, false );
 
     QVERIFY( pair < later );
-    QVERIFY( later > pair );
+    QCOMPARE( later < pair, false );
 
     QVERIFY( pair < higherAndLater );
-    QVERIFY( higherAndLater > pair );
+    QCOMPARE( higherAndLater < pair, false );
+
+    QVERIFY( pair < lowerAndLater );
+    QCOMPARE( lowerAndLater < pair, false );
 
     QVERIFY( higher < later );
-    QVERIFY( later > higher );
+    QCOMPARE( later < higher, false );
 
     QVERIFY( higher < higherAndLater );
-    QVERIFY( higherAndLater > higher );
+    QCOMPARE( higherAndLater < higher, false );
+
+    QVERIFY( higher < lowerAndLater );
+    QCOMPARE( lowerAndLater < higher, false );
 
     QVERIFY( later < higherAndLater );
-    QVERIFY( higherAndLater > later );
+    QCOMPARE( higherAndLater < later, false );
+
+    QVERIFY( later > lowerAndLater );
+    QCOMPARE( lowerAndLater < later, false );
 }
 
 void Test::noteEventPair_comparisons_chord() {
@@ -139,11 +149,21 @@ void Test::noteEventPair_comparisons_chord() {
     NoteEventPair chord2note1(NoteOnEvent(100, 0, 20, 0));
     NoteEventPair chord2note2(NoteOnEvent(110, 0, 30, 0));
 
-    QVERIFY( chord1note1 > chord1note2 );
-    QVERIFY( chord1note1 > chord1note3 );
-
+    //QVERIFY( chord1note1 > chord1note2 );
+    QVERIFY( chord1note2 < chord1note1 );
+    //QVERIFY( chord1note1 > chord1note3 );
+    QVERIFY( chord1note3 < chord1note1 );
     QVERIFY( chord1note1 < chord2note1 );
     QVERIFY( chord1note1 < chord2note2 );
+
+    QVERIFY( chord1note2 < chord1note3 );
+    QVERIFY( chord1note2 < chord2note1 );
+    QVERIFY( chord1note2 < chord2note2 );
+
+    QVERIFY( chord1note3 < chord2note1 );
+    QVERIFY( chord1note3 < chord2note2 );
+
+    QVERIFY( chord2note1 < chord2note2 );
 }
 
 void Test::song_comparisons() {
