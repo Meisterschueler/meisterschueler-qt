@@ -107,14 +107,19 @@ void Test::noteEventPair_comparisons_single() {
     NoteEventPair pair(NoteOnEvent(0, 0, 10, 0));
     NoteEventPair same(NoteOnEvent(0, 0, 10, 0));
     NoteEventPair higher(NoteOnEvent(0, 0, 20, 0));
+    NoteEventPair lower(NoteOnEvent(0, 0, 5, 0));
     NoteEventPair later(NoteOnEvent(100, 0, 10, 0));
     NoteEventPair higherAndLater(NoteOnEvent(100, 0, 20, 0));
     NoteEventPair lowerAndLater(NoteOnEvent(100, 0, 5, 0));
 
     QVERIFY( pair == same );
 
+
     QVERIFY( pair < higher );
     QCOMPARE( higher < pair, false );
+
+    QVERIFY( lower < pair );
+    QCOMPARE( pair < lower, false );
 
     QVERIFY( pair < later );
     QCOMPARE( later < pair, false );
@@ -125,14 +130,29 @@ void Test::noteEventPair_comparisons_single() {
     QVERIFY( pair < lowerAndLater );
     QCOMPARE( lowerAndLater < pair, false );
 
+
     QVERIFY( higher < later );
     QCOMPARE( later < higher, false );
+
+    QVERIFY( lower < higher );
+    QCOMPARE( higher < lower, false );
 
     QVERIFY( higher < higherAndLater );
     QCOMPARE( higherAndLater < higher, false );
 
     QVERIFY( higher < lowerAndLater );
     QCOMPARE( lowerAndLater < higher, false );
+
+
+    QVERIFY( lower < later );
+    QCOMPARE( later < lower, false );
+
+    QVERIFY( lower < higherAndLater );
+    QCOMPARE( higherAndLater < lower, false );
+
+    QVERIFY( lower < lowerAndLater );
+    QCOMPARE( lowerAndLater < lower, false );
+
 
     QVERIFY( later < higherAndLater );
     QCOMPARE( higherAndLater < later, false );
