@@ -47,7 +47,6 @@ QByteArray MatchingService::midiEvents2pressedSequence(QList<NoteEventPair> even
 QByteArray MatchingService::getAlingment(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray oldAlignment) {
     NeedlemanWunsch needlemanWunsch;
 
-
     if (!oldAlignment.isEmpty()) {
         int saveRegion = oldAlignment.lastIndexOf("mmmmmmmmmm");
         if (saveRegion != -1) {

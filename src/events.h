@@ -69,19 +69,11 @@ public:
     }
 
     bool operator<(ChannelEvent const& rhs) {
-        if (this->m_time != rhs.getTime()) {
-            return this->m_time<rhs.getTime();
-        } else {
-            return this->m_note<rhs.getNote();
-        }
+        return this->m_note<rhs.getNote();
     }
 
     bool operator>(ChannelEvent const& rhs) {
-        if (this->m_time != rhs.getTime()) {
-            return this->m_time>rhs.getTime();
-        } else {
-            return this->m_note>rhs.getNote();
-        }
+        return this->m_note>rhs.getNote();
     }
 
 protected:
@@ -183,19 +175,29 @@ public:
     }
 
     bool operator<(const NoteEventPair& rhs) const {
-        if (this->noteOn && rhs.noteOn && *(this->noteOn) < *(rhs.noteOn)) {
-            return true;
-        } else {
-            return false;
+        if (this->noteOn && rhs.noteOn) {
+            if ( (*this->noteOn).getTime() + 50 < (*rhs.noteOn).getTime() ) {
+                return true;
+            } else if ( (*this->noteOn).getTime() > (*rhs.noteOn).getTime() + 50 ) {
+                return false;
+            } else if ( *this->noteOn < *rhs.noteOn ) {
+                return true;
+            }
         }
+        return false;
     }
 
     bool operator>(const NoteEventPair& rhs) const {
-        if (this->noteOn && rhs.noteOn && *(this->noteOn) > *(rhs.noteOn)) {
-            return true;
-        } else {
-            return false;
+        if (this->noteOn && rhs.noteOn) {
+            if ( (*this->noteOn).getTime() - 50 > (*rhs.noteOn).getTime() ) {
+                return true;
+            } else if ( (*this->noteOn).getTime() < (*rhs.noteOn).getTime() - 50 ) {
+                return false;
+            } else if ( *(this->noteOn) > *(rhs.noteOn) ) {
+                return true;
+            }
         }
+        return false;
     }
 };
 
