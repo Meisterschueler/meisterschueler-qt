@@ -27,6 +27,7 @@ VPATH += ../src
 
 SOURCES += guidoservice.cpp \
     scoreservice.cpp \
+    hanonsongfactory.cpp \
     matchinghandler.cpp \
     matchingservice.cpp \
     matchingitem.cpp \
@@ -39,6 +40,7 @@ SOURCES += guidoservice.cpp \
 
 HEADERS  += guidoservice.h \
     scoreservice.h \
+    hanonsongfactory.h \
     matchinghandler.h \
     matchingservice.h \
     matchingitem.h \

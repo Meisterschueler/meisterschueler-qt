@@ -9,6 +9,15 @@ HanonSongFactory::HanonSongFactory()
 {
 }
 
+QList<Song> HanonSongFactory::getSongs() {
+    QList<Song> songs;
+    for (int i = 0; i < 36; ++i) {
+        songs.append(getNo(i));
+    }
+
+    return songs;
+}
+
 Song HanonSongFactory::getNo(int no) {
     QList<Score> leftScores;
     QList<Score> rightScores;

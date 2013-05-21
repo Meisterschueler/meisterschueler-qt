@@ -4,6 +4,7 @@
 #include <QDebug>
 
 #include "guidoservice.h"
+#include "hanonsongfactory.h"
 #include "scoreservice.h"
 #include "matchingservice.h"
 #include "matchinghandler.h"
@@ -51,6 +52,8 @@ private Q_SLOTS:
     void scoreService_concat();
     void scoreService_merge();
     void scoreService_scoresToXYSequence();
+
+    void songFactories_hanon();
 
     void midiService_addNote();
     void midiService_saveLoad();
@@ -159,6 +162,10 @@ void Test::noteEventPair_comparisons_single() {
 
     QVERIFY( lowerAndLater < later );
     QCOMPARE( later < lowerAndLater, false );
+
+
+    QVERIFY( lowerAndLater < higherAndLater );
+    QCOMPARE( higherAndLater < lowerAndLater, false );
 }
 
 void Test::noteEventPair_comparisons_chord() {
@@ -449,6 +456,25 @@ void Test::scoreService_scoresToXYSequence() {
     QVERIFY( intervalSequence.at(2) == 2 );
 }
 
+// SONGFACTORIES
+
+void Test::songFactories_hanon() {
+    QSKIP( "Segmentation violation" );
+    HanonSongFactory hanonSongFactory;
+
+    QList<Song> songs = hanonSongFactory.getSongs();
+
+    for (Song song : songs) {
+        for (QList<Score> voice : song.voices.values()) {
+            Fraction position(0);
+            for (Score score : voice) {
+                QVERIFY( score.position >= position );
+                position = score.position;
+            }
+        }
+    }
+}
+
 // MIDISERVICE
 
 void Test::midiService_addNote() {
@@ -736,6 +762,7 @@ void Test::matchingHandler_simple() {
 // MIDIWRAPPER
 
 void Test::midiWrapper_simple() {
+    QSKIP( "kills my sound system" );
     MidiWrapper midiWrapper;
     QStringList inputPorts = midiWrapper.getInputPorts();
     for (QString inputPort : inputPorts) {

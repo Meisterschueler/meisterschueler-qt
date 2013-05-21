@@ -37,6 +37,7 @@ class HanonSongFactory
 public:
     HanonSongFactory();
 
+    QList<Song> getSongs();
     Song getNo(int no);
     QList<Score> sequencesToScores(QList<Sequence> sequences);
 };
