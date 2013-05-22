@@ -32,8 +32,11 @@ QList<Score> ScoreService::transposeStep(const QList<Score>& scores, const int& 
     return result;
 }
 
-QList<Score> ScoreService::transposeSteps(QList<Score> scores, int * steps) {
+QList<Score> ScoreService::transposeSteps(QList<Score> scores, const QVector<int>& steps) {
     QList<Score> result;
+    for (int step : steps) {
+        result = concat(result, transposeStep(scores, step));
+    }
     return result;
 }
 
@@ -48,7 +51,11 @@ QList<Score> ScoreService::addFingers(const QList<Score>& scores, const QVector<
 
 QList<Score> ScoreService::concat(const QList<Score>& scores1, const QList<Score>& scores2) {
     QList<Score> result;
-    Fraction offset = scores1.last().position + scores1.last().duration;
+    Fraction offset(0);
+    if (!scores1.isEmpty()) {
+        offset = scores1.last().position + scores1.last().duration;
+    }
+
     result.append(scores1);
     for (Score score : scores2) {
         score.position += offset;

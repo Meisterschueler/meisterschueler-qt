@@ -10,7 +10,7 @@ class Score;
 
 class Sequence {
 public:
-    Sequence(QString pattern, QVector<int> fingers, int steps[]) {
+    Sequence(QString pattern, QVector<int> fingers, QVector<int> steps) {
         m_pattern = pattern;
         m_fingers = fingers;
         m_steps = steps;
@@ -18,12 +18,12 @@ public:
 
     QString m_pattern;
     QVector<int> m_fingers;
-    int * m_steps;
+    QVector<int> m_steps;
 };
 
 class Sequence2 : public Sequence{
 public:
-    Sequence2(QString pattern, QVector<int> leftFingers, QVector<int> rightFingers, int steps[]) : Sequence(pattern, leftFingers, steps){
+    Sequence2(QString pattern, QVector<int> leftFingers, QVector<int> rightFingers, QVector<int> steps) : Sequence(pattern, leftFingers, steps){
         m_leftFingers = leftFingers;
         m_rightFingers = rightFingers;
     }

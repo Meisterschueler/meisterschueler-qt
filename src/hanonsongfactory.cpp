@@ -39,13 +39,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 e f g a g f e]";
         QVector<int> leftFingersUp { 5, 4, 3, 2, 1, 2, 3, 4 };
         QVector<int> rightFingersUp { 1, 2, 3, 4, 5, 4, 3, 2 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 e d c b1 c2 d e]";
         QVector<int> leftFingersDown { 1, 2, 3, 4, 5, 4, 3, 2 };
         QVector<int> rightFingersDown { 5, 4, 3, 2, 1, 2, 3, 4 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -59,13 +59,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 e a g f g f e]";
         QVector<int> leftFingersUp { 5, 3, 1, 2, 3, 2, 3, 4 };
         QVector<int> rightFingersUp { 1, 2, 5, 4, 3, 4, 3, 2 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 d b1 c2 d c d e]";
         QVector<int> leftFingersDown { 1, 3, 5, 4, 3, 4, 3, 2 };
         QVector<int> rightFingersDown { 5, 2, 1, 2, 3, 2, 3, 4 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -79,13 +79,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 e a g f e f g]";
         QVector<int> leftFingersUp { 5, 3, 1, 2, 3, 4, 3, 2 };
         QVector<int> rightFingersUp { 1, 2, 5, 4, 3, 2, 3, 4 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 d b1 c2 d e d c]";
         QVector<int> leftFingersDown { 1, 3, 5, 4, 3, 2, 3, 4 };
         QVector<int> rightFingersDown { 5, 2, 1, 2, 3, 4, 3, 2 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -99,13 +99,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 d c e a g f e]";
         QVector<int> leftFingersUp { 5, 4, 5, 3, 1, 2, 3, 4 };
         QVector<int> rightFingersUp { 1, 2, 1, 2, 5, 4, 3, 2 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 f g d b1 c2 d e]";
         QVector<int> leftFingersDown { 1, 2, 1, 3, 5, 4, 3, 2 };
         QVector<int> rightFingersDown { 5, 4, 5, 2, 1, 2, 3, 4 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -119,13 +119,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 a g a f g e f]";
         QVector<int> leftFingersUp { 5, 1, 2, 1, 3, 2, 4, 3 };
         QVector<int> rightFingersUp { 1, 5, 4, 5, 3, 4, 2, 3 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[c2/16 d c e d f e g]";
         QVector<int> leftFingersDown { 5, 4, 5, 3, 4, 2, 3, 1 };
         QVector<int> rightFingersDown { 1, 2, 1, 3, 2, 4, 3, 5 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -142,8 +142,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersUp2 { 5, 1, 2, 1, 3, 1, 4, 5 };
         QVector<int> rightFingersUp1 { 1, 5, 4, 5, 3, 5, 2, 5 };
         QVector<int> rightFingersUp2 { 1, 5, 4, 5, 3, 5, 2, 1 };
-        int stepsUp1[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        int stepsUp2[] = {13};
+        QVector<int> stepsUp1  {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        QVector<int> stepsUp2 {13};
         bothSequences << Sequence2(patternUp1, leftFingersUp1, rightFingersUp1, stepsUp1);
         bothSequences << Sequence2(patternUp2, leftFingersUp2, rightFingersUp2, stepsUp2);
 
@@ -153,8 +153,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersDown2 { 1, 5, 4, 5, 3, 5, 2, 3 };
         QVector<int> rightFingersDown1 { 5, 1, 2, 1, 3, 1, 4, 1 };
         QVector<int> rightFingersDown2 { 5, 1, 2, 1, 3, 1, 4, 3 };
-        int stepsDown1[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
-        int stepsDown2[] = {-13};
+        QVector<int> stepsDown1 {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
+        QVector<int> stepsDown2 {-13};
         bothSequences << Sequence2(patternDown1, leftFingersDown1, rightFingersDown1, stepsDown1);
         bothSequences << Sequence2(patternDown2, leftFingersDown2, rightFingersDown2, stepsDown2);
 
@@ -169,13 +169,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 e d f e g f e]";
         QVector<int> leftFingersUp { 5, 3, 4, 2, 3, 1, 2, 3 };
         QVector<int> rightFingersUp { 1, 3, 2, 4, 3, 5, 4, 3 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 e f d e c d e]";
         QVector<int> leftFingersDown { 1, 3, 2, 4, 3, 5, 4, 3 };
         QVector<int> rightFingersDown { 5, 3, 4, 2, 3, 1, 3, 4 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -189,13 +189,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 e g a f g e f]";
         QVector<int> leftFingersUp { 5, 4, 2, 1, 3, 2, 4, 3 };
         QVector<int> rightFingersUp { 1, 2, 4, 5, 3, 4, 2, 3 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 e c b1 d2 c e d]";
         QVector<int> leftFingersDown { 1, 2, 4, 5, 3, 4, 2, 3 };
         QVector<int> rightFingersDown { 5, 4, 2, 1, 3, 2, 4, 3};
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -209,7 +209,7 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 e f e g f a g]";
         QVector<int> leftFingersUp { 5, 4, 3, 4, 2, 3, 1, 2 };
         QVector<int> rightFingersUp { 1, 2, 3, 2, 4, 3, 5, 4 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown1 = "[g2/16 e d e c d b1 c2]";
@@ -218,8 +218,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersDown2 { 1, 2, 3, 2, 4, 3, 4, 3 };
         QVector<int> rightFingersDown1 { 5, 4, 3, 4, 2, 3, 1, 2 };
         QVector<int> rightFingersDown2 { 5, 4, 3, 4, 2, 3, 2, 3 };
-        int stepsDown1[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
-        int stepsDown2[] = {-13};
+        QVector<int> stepsDown1 {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
+        QVector<int> stepsDown2 {-13};
         bothSequences << Sequence2(patternDown1, leftFingersDown1, rightFingersDown1, stepsDown1);
         bothSequences << Sequence2(patternDown2, leftFingersDown2, rightFingersDown2, stepsDown2);
 
@@ -234,13 +234,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 a g f e f e f]";
         QVector<int> leftFingersUp { 5, 1, 2, 3, 4, 3, 4, 3 };
         QVector<int> rightFingersUp { 1, 5, 4, 3, 2, 3, 2, 3 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 b1 c2 d e d e d]";
         QVector<int> leftFingersDown { 1, 5, 4, 3, 2, 3, 2, 3 };
         QVector<int> rightFingersDown { 5, 1, 2, 3, 4, 3, 4, 3 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -254,13 +254,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 e a g a g f g]";
         QVector<int> leftFingersUp { 5, 3, 1, 2, 1, 2, 3, 2 };
         QVector<int> rightFingersUp { 1, 2, 5, 4, 5, 4, 3, 4 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 d b1 c2 b1 c2 d c]";
         QVector<int> leftFingersDown { 1, 3, 5, 4, 5, 4, 3, 2 };
         QVector<int> rightFingersDown { 5, 2, 1, 2, 1, 2, 3, 2 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -278,9 +278,9 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersUp3 { 1, 5, 3, 4, 5, 4, 3, 2 };
         QVector<int> rightFingersUp12 { 5, 1, 3, 2, 1, 2, 3, 1 };
         QVector<int> rightFingersUp3 { 5, 1, 3, 2, 1, 2, 3, 4 };
-        int stepsUp1[] = {0};
-        int stepsUp2[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        int stepsUp3[] = {13};
+        QVector<int> stepsUp1  {0};
+        QVector<int> stepsUp2 {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        QVector<int> stepsUp3 {13};
         bothSequences << Sequence2(patternUp1, leftFingersUp12, rightFingersUp12, stepsUp1);
         bothSequences << Sequence2(patternUp2, leftFingersUp12, rightFingersUp12, stepsUp2);
         bothSequences << Sequence2(patternUp3, leftFingersUp3, rightFingersUp3, stepsUp3);
@@ -289,8 +289,8 @@ Song HanonSongFactory::getNo(int no) {
         QString patternDown2 = "[c0/16 g e f g f e f]";
         QVector<int> leftFingersDown12 { 1, 5, 3, 4, 5, 4, 3, 5 };
         QVector<int> rightFingersDown12 { 5, 1, 3, 2, 1, 2, 3, 4 };
-        int stepsDown1[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
-        int stepsDown2[] = {0};
+        QVector<int> stepsDown1 {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown2 {0};
         bothSequences << Sequence2(patternDown1, leftFingersDown12, rightFingersDown12, stepsDown1);
         bothSequences << Sequence2(patternDown2, leftFingersDown12, rightFingersDown12, stepsDown2);
 
@@ -305,13 +305,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[e0/16 c f d g e f g]";
         QVector<int> leftFingersUp { 3, 5, 2, 4, 1, 3, 2, 1 };
         QVector<int> rightFingersUp { 3, 1, 4, 2, 5, 3, 4, 5 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[e2/16 g d f e c d e]";
         QVector<int> leftFingersDown { 3, 1, 4, 2, 3, 5, 4, 3 };
         QVector<int> rightFingersDown { 3, 5, 2, 4, 3, 1, 3, 4 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -325,13 +325,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 d f e f e g f]";
         QVector<int> leftFingersUp { 5, 4, 2, 3, 2, 3, 1, 2 };
         QVector<int> rightFingersUp { 1, 2, 4, 3, 4, 3, 5, 4 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 f d e d e c d]";
         QVector<int> leftFingersDown { 1, 2, 4, 3, 4, 3, 5, 4 };
         QVector<int> rightFingersDown { 5, 4, 2, 3, 2, 3, 1, 3 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -348,8 +348,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersUp2 { 5, 3, 4, 2, 3, 1, 3, 2 };
         QVector<int> rightFingersUp1 { 1, 2, 1, 3, 2, 4, 3, 5 };
         QVector<int> rightFingersUp2 { 1, 2, 1, 3, 2, 4, 3, 4 };
-        int stepsUp1[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        int stepsUp2[] = {13};
+        QVector<int> stepsUp1 {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        QVector<int> stepsUp2 {13};
         bothSequences << Sequence2(patternUp1, leftFingersUp1, rightFingersUp1, stepsUp1);
         bothSequences << Sequence2(patternUp2, leftFingersUp2, rightFingersUp2, stepsUp2);
 
@@ -359,8 +359,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersDown2 { 1, 2, 1, 3, 2, 4, 3, 4 };
         QVector<int> rightFingersDown1 { 5, 3, 4, 2, 3, 1, 2, 1 };
         QVector<int> rightFingersDown2 { 5, 3, 4, 2, 3, 1, 3, 2 };
-        int stepsDown1[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10,- 11, -12};
-        int stepsDown2[] = {-13};
+        QVector<int> stepsDown1 {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10,- 11, -12};
+        QVector<int> stepsDown2 {-13};
         bothSequences << Sequence2(patternDown1, leftFingersDown1, rightFingersDown1, stepsDown1);
         bothSequences << Sequence2(patternDown2, leftFingersDown2, rightFingersDown2, stepsDown2);
 
@@ -375,13 +375,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 e0 d0 e0 a0 g0 f0 g0]";
         QVector<int> leftFingersUp { 5, 3, 4, 3, 1, 2, 3, 2 };
         QVector<int> rightFingersUp { 1, 3, 2, 3, 5, 4, 3, 4 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 d2 e2 d2 b1 c2 d2 c2]";
         QVector<int> leftFingersDown { 1, 3, 2, 3, 5, 4, 3, 4 };
         QVector<int> rightFingersDown { 1, 3, 2, 3, 5, 4, 3, 4 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -398,8 +398,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersUp2 { 5, 4, 2, 3, 1, 2, 3, 4 };
         QVector<int> rightFingersUp1 { 1, 2, 4, 3, 5, 4, 3, 4 };
         QVector<int> rightFingersUp2 { 1, 2, 4, 3, 5, 4, 3, 2 };
-        int stepsUp1[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        int stepsUp2[] = {13};
+        QVector<int> stepsUp1  {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        QVector<int> stepsUp2 {13};
         bothSequences << Sequence2(patternUp1, leftFingersUp1, rightFingersUp1, stepsUp1);
         bothSequences << Sequence2(patternUp2, leftFingersUp2, rightFingersUp2, stepsUp2);
 
@@ -409,8 +409,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersDown2 { 1, 2, 4, 3, 5, 4, 3, 5 };
         QVector<int> rightFingersDown1 { 5, 3, 2, 3, 1, 2, 3, 1 };
         QVector<int> rightFingersDown2 { 5, 3, 2, 3, 1, 2, 3, 1 };
-        int stepsDown1[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11};
-        int stepsDown2[] = {-12};
+        QVector<int> stepsDown1 {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11};
+        QVector<int> stepsDown2 {-12};
         bothSequences << Sequence2(patternDown1, leftFingersDown1, rightFingersDown1, stepsDown1);
         bothSequences << Sequence2(patternDown2, leftFingersDown2, rightFingersDown2, stepsDown2);
 
@@ -425,13 +425,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 d f e g f d e]";
         QVector<int> leftFingersUp { 5, 4, 2, 3, 1, 2, 4, 3 };
         QVector<int> rightFingersUp { 1, 2, 4, 3, 5, 4, 2, 3 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 f d e c d f e]";
         QVector<int> leftFingersDown { 1, 2, 4, 3, 5, 4, 2, 3 };
         QVector<int> rightFingersDown { 5, 4, 2, 3, 1, 2, 4, 3 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -445,13 +445,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 a f g a f e g]";
         QVector<int> leftFingersUp { 5, 1, 3, 2, 1, 3, 4, 2 };
         QVector<int> rightFingersUp { 1, 5, 3, 4, 5, 3, 2, 4 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 b1 d2 c b1 d2 e c]";
         QVector<int> leftFingersDown { 1, 5, 3, 4, 5, 3, 2, 4 };
         QVector<int> rightFingersDown { 5, 1, 3, 2, 1, 3, 4, 2 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -466,8 +466,8 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp2 = "[e0/16 g c1 e c b0 c1 g0]";
         QVector<int> leftFingersUp12 { 5, 4, 2, 1, 2, 3, 2, 4 };
         QVector<int> rightFingersUp12 { 1, 2, 4, 5, 4, 3, 4, 2 };
-        int stepsUp1[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-        int stepsUp2[] = {14};
+        QVector<int> stepsUp1  {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp2 {14};
         bothSequences << Sequence2(patternUp1, leftFingersUp12, rightFingersUp12, stepsUp1);
         bothSequences << Sequence2(patternUp2, leftFingersUp12, rightFingersUp12, stepsUp2);
 
@@ -477,8 +477,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersDown2 { 1, 2, 4, 5, 3, 4, 3, 4 };
         QVector<int> rightFingersDown1 { 5, 4, 2, 1, 3, 2, 3, 1 };
         QVector<int> rightFingersDown2 { 5, 4, 2, 1, 3, 2, 3, 2 };
-        int stepsDown1[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
-        int stepsDown2[] = {-14};
+        QVector<int> stepsDown1 {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown2 {-14};
         bothSequences << Sequence2(patternDown1, leftFingersDown1, rightFingersDown1, stepsDown1);
         bothSequences << Sequence2(patternDown2, leftFingersDown2, rightFingersDown2, stepsDown2);
 
@@ -492,7 +492,7 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 d e d c e f g a g f g a g f e]";
         QVector<int> leftFingersUp { 5, 4, 3, 4, 5, 4, 3, 2, 1, 2, 3, 2, 1, 2, 3, 4 };
         QVector<int> rightFingersUp { 1, 2, 3, 2, 1, 2, 3, 4, 5, 4, 3, 4, 5, 4, 3, 2 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown1 = "[g2/16 f e f g e d c b1 c2 d c b1 c2 d e]";
@@ -501,8 +501,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersDown2 { 1, 2, 3, 2, 1, 2, 3, 4, 5, 4, 3, 4, 5, 4, 3, 4 };
         QVector<int> rightFingersDown1 { 5, 4, 3, 4, 5, 4, 3, 2, 1, 2, 3, 2, 1, 2, 3, 4 };
         QVector<int> rightFingersDown2 { 5, 4, 3, 4, 5, 4, 3, 2, 1, 2, 3, 2, 1, 2, 3, 2 };
-        int stepsDown1[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
-        int stepsDown2[] = {0};
+        QVector<int> stepsDown1 {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
+        QVector<int> stepsDown2 {0};
         bothSequences << Sequence2(patternDown1, leftFingersDown1, rightFingersDown1, stepsDown1);
         bothSequences << Sequence2(patternDown2, leftFingersDown2, rightFingersDown2, stepsDown2);
 
@@ -516,7 +516,7 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 e d e c e f g a f g f a g f e]";
         QVector<int> leftFingersUp { 5, 3, 2, 3, 5, 4, 3, 2, 1, 3, 2, 3, 1, 2, 3, 4 };
         QVector<int> rightFingersUp { 1, 3, 2, 3, 1, 2, 3, 4, 5, 3, 4, 3, 5, 4, 3, 2 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown1 = "[g2/16 e f e g e d c b1 d2 c d b1 c2 d e]";
@@ -525,8 +525,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersDown2 { 1, 3, 2, 3, 1, 2, 3, 4, 5, 3, 4, 3, 5, 2, 3, 4 };
         QVector<int> rightFingersDown1 { 5, 3, 4, 3, 5, 4, 3, 2, 1, 3, 2, 3, 1, 2, 3, 4 };
         QVector<int> rightFingersDown2 { 5, 3, 4, 3, 5, 4, 3, 2, 1, 3, 2, 3, 1, 4, 3, 2 };
-        int stepsDown1[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
-        int stepsDown2[] = {0};
+        QVector<int> stepsDown1 {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
+        QVector<int> stepsDown2 {0};
         bothSequences << Sequence2(patternDown1, leftFingersDown1, rightFingersDown1, stepsDown1);
         bothSequences << Sequence2(patternDown2, leftFingersDown2, rightFingersDown2, stepsDown2);
 
@@ -540,13 +540,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0 d e d c d e d c a g f e f g f]";
         QVector<int> leftFingersUp { 5, 4, 3, 4, 5, 4, 3, 4, 5, 1, 2, 3, 4, 3, 2, 3 };
         QVector<int> rightFingersUp { 1, 2, 3, 2, 1, 2, 3, 2, 1, 5, 4, 3, 2, 3, 4, 3 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2 f e f g f e f g b1 c2 d e d c d]";
         QVector<int> leftFingersDown { 1, 2, 3, 2, 1, 2, 3, 2, 1, 5, 4, 3, 2, 3, 4, 3 };
         QVector<int> rightFingersDown { 5, 4, 3, 4, 5, 4, 3, 4, 5, 1, 2, 3, 4, 3, 2, 3 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -559,13 +559,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[e0/16 d e c e d e c e d e c a f g e]";
         QVector<int> leftFingersUp { 3, 4, 3, 5, 3, 4, 3, 5, 3, 4, 3, 5, 1, 3, 2, 4 };
         QVector<int> rightFingersUp { 3, 2, 3, 1, 3, 2, 3, 1, 3, 2, 3, 1, 5, 3, 4, 2 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[e2/16 g f g e g f g e g f g b1 d2 c e]";
         QVector<int> leftFingersDown { 3, 1, 2, 1, 3, 1, 2, 1, 3, 1, 2, 1, 5, 3, 4, 2 };
         QVector<int> rightFingersDown { 3, 5, 4, 5, 3, 5, 4, 5, 3, 5, 4, 5, 1, 3, 2, 4 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -580,8 +580,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersUp2 { 5, 4, 3, 5, 4, 3, 2, 4, 3, 2, 1, 2, 3, 1, 3, 4 };
         QVector<int> rightFingersUp1 { 1, 2, 3, 1, 2, 3, 4, 2, 3, 4, 5, 4, 3, 5, 4, 3 };
         QVector<int> rightFingersUp2 { 1, 2, 3, 1, 2, 3, 4, 2, 3, 4, 5, 4, 3, 5, 3, 2 };
-        int stepsUp1[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        int stepsUp2[] = {13};
+        QVector<int> stepsUp1  {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        QVector<int> stepsUp2 {13};
         bothSequences << Sequence2(patternUp12, leftFingersUp1, rightFingersUp1, stepsUp1);
         bothSequences << Sequence2(patternUp12, leftFingersUp2, rightFingersUp2, stepsUp2);
 
@@ -589,8 +589,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersDown1 { 1, 2, 3, 1, 2, 3, 4, 2, 3, 4, 5, 3, 4, 5, 4, 3 };
         QVector<int> leftFingersDown2 { 1, 2, 3, 1, 2, 3, 4, 2, 3, 4, 5, 3, 4, 5, 3, 2 };
         QVector<int> rightFingersDown12 { 5, 4, 3, 5, 4, 3, 2, 4, 3, 2, 1, 3, 2, 1, 3, 4 };
-        int stepsDown1[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
-        int stepsDown2[] = {-13};
+        QVector<int> stepsDown1 {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
+        QVector<int> stepsDown2 {-13};
         bothSequences << Sequence2(patternDown12, leftFingersDown1, rightFingersDown12, stepsDown1);
         bothSequences << Sequence2(patternDown12, leftFingersDown2, rightFingersDown12, stepsDown2);
 
@@ -604,13 +604,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[e0/16 f g e d e f d c d e c a g a g]";
         QVector<int> leftFingersUp { 3, 2, 1, 3, 4, 3, 2, 4, 5, 4, 3, 5, 1, 2, 1, 2 };
         QVector<int> rightFingersUp { 3, 4, 5, 3, 2, 3, 4, 2, 1, 2, 3, 1, 5, 4, 5, 4 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 e f g f d e f e c d e d c d c]";
         QVector<int> leftFingersDown { 1, 3, 2, 1, 2, 4, 3, 2, 3, 5, 4, 3, 4, 3, 4, 3 };
         QVector<int> rightFingersDown { 5, 3, 4, 5, 4, 2, 3, 4, 3, 1, 2, 3, 2, 1, 2, 1 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -623,13 +623,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[e0/16 f d e c e f g a g a g a g f e]";
         QVector<int> leftFingersUp { 3, 2, 4, 2, 5, 4, 3, 2, 1, 2, 1, 2, 1, 2, 3, 4 };
         QVector<int> rightFingersUp { 3, 4, 2, 3, 1, 2, 3, 4, 5, 4, 5, 4, 5, 4, 3, 2 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 f g e f e d c b1 c2 b1 c2 b1 c2 d e]";
         QVector<int> leftFingersDown { 1, 2, 1, 3, 1, 2, 3, 4, 5, 4, 5, 4, 5, 4, 3, 2 };
         QVector<int> rightFingersDown { 5, 4, 5, 3, 5, 4, 3, 2, 1, 2, 1, 2, 1, 2, 3, 4 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -642,13 +642,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 e d e c e d e c a g a f g e f]";
         QVector<int> leftFingersUp { 5, 3, 4, 3, 5, 3, 4, 3, 5, 1, 2, 1, 3, 2, 4, 3 };
         QVector<int> rightFingersUp { 1, 3, 2, 3, 1, 3, 2, 3, 1, 5, 4, 5, 3, 4, 2, 3 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[g2/16 e f e g e f e g b1 c2 b1 d2 c e d]";
         QVector<int> leftFingersDown { 1, 3, 2, 3, 1, 3, 2, 3, 1, 5, 4, 5, 3, 4, 2, 3 };
         QVector<int> rightFingersDown { 5, 3, 4, 3, 5, 3, 4, 3, 5, 1, 2, 1, 3, 2, 4, 3 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -663,8 +663,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersUp2 { 5, 4, 5, 3, 4, 3, 4, 2, 3, 2, 3, 1, 3, 2, 3, 2 };
         QVector<int> rightFingersUp1 { 1, 2, 1, 3, 2, 3, 2, 4, 3, 4, 3, 5, 4, 5, 4, 5 };
         QVector<int> rightFingersUp2 { 1, 2, 1, 3, 2, 3, 2, 4, 3, 4, 3, 5, 4, 5, 3, 4 };
-        int stepsUp1[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        int stepsUp2[] = {13};
+        QVector<int> stepsUp1  {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        QVector<int> stepsUp2 {13};
         bothSequences << Sequence2(patternUp12, leftFingersUp1, rightFingersUp1, stepsUp1);
         bothSequences << Sequence2(patternUp12, leftFingersUp2, rightFingersUp2, stepsUp2);
 
@@ -674,8 +674,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersDown2 { 1, 2, 1, 3, 2, 3, 2, 4, 3, 4, 3, 5, 3, 2, 3, 4 };
         QVector<int> rightFingersDown1 { 5, 4, 5, 3, 4, 3, 4, 2, 3, 2, 3, 1, 2, 3, 2, 3 };
         QVector<int> rightFingersDown2 { 5, 4, 5, 3, 4, 3, 4, 2, 3, 2, 3, 1, 3, 4, 3, 2 };
-        int stepsDown1[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
-        int stepsDown2[] = {0};
+        QVector<int> stepsDown1 {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
+        QVector<int> stepsDown2 {0};
         bothSequences << Sequence2(patternDown1, leftFingersDown1, rightFingersDown1, stepsDown1);
         bothSequences << Sequence2(patternDown2, leftFingersDown2, rightFingersDown2, stepsDown2);
 
@@ -689,7 +689,7 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 d c d c d c e a g a g a g a f]";
         QVector<int> leftFingersUp { 5, 4, 5, 4, 5, 4, 5, 3, 1, 2, 1, 2, 1, 2, 1, 3 };
         QVector<int> rightFingersUp { 1, 2, 1, 2, 1, 2, 1, 3, 5, 4, 5, 4, 5, 4, 5, 3 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown1 = "[g2/16 f g f g f g e b1 c2 b1 c2 b1 c2 b1 d2]";
@@ -698,8 +698,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersDown2 { 1, 2, 1, 2, 1, 2, 1, 3, 5, 4, 5, 4, 5, 4, 5, 4 };
         QVector<int> rightFingersDown1 { 5, 4, 5, 4, 5, 4, 5, 3, 1, 2, 1, 2, 1, 2, 1, 3 };
         QVector<int> rightFingersDown2 { 5, 4, 5, 4, 5, 4, 5, 3, 1, 2, 1, 2, 1, 2, 1, 2 };
-        int stepsDown1[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
-        int stepsDown2[] = {-13};
+        QVector<int> stepsDown1 {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
+        QVector<int> stepsDown2 {-13};
         bothSequences << Sequence2(patternDown1, leftFingersDown1, rightFingersDown1, stepsDown1);
         bothSequences << Sequence2(patternDown2, leftFingersDown2, rightFingersDown2, stepsDown2);
 
@@ -714,7 +714,7 @@ Song HanonSongFactory::getNo(int no) {
         QString rightPatternUp = "[e1/16 e2 d e c e b1 e2 a1 e2 g1 e2]";
         QVector<int> leftFingersUp { 5, 1, 2, 1, 3, 1, 4, 1, 5, 1, 5, 1 };
         QVector<int> rightFingersUp { 1, 5, 4, 5, 3, 5, 2, 5, 1, 5, 1, 5 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         leftSequences << Sequence(leftPatternUp, leftFingersUp, stepsUp);
         rightSequences << Sequence(rightPatternUp, rightFingersUp, stepsUp);
 
@@ -722,7 +722,7 @@ Song HanonSongFactory::getNo(int no) {
         QString rightPatternDown = "[e4/16 e3 f e g e a e b e c4 e3]";
         QVector<int> leftFingersDown { 1, 5, 4, 5, 3, 5, 2, 5, 1, 5, 1, 5 };
         QVector<int> rightFingersDown { 5, 1, 2, 1, 3, 1, 4, 1, 5, 1, 5, 1 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
         leftSequences << Sequence(leftPatternDown, leftFingersDown, stepsDown);
         rightSequences << Sequence(rightPatternDown, rightFingersDown, stepsDown);
 
@@ -736,13 +736,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[c0/16 d e f g a b c1]";
         QVector<int> leftFingersUp { 5, 4, 3, 2, 1, 3, 2, 1 };
         QVector<int> rightFingersUp { 1, 2, 3, 1, 2, 3, 4, 5 };
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[c3/16 b2 a2 g2 f2 e2 d2 c2]";
         QVector<int> leftFingersDown { 1, 2, 3, 1, 2, 3, 4, 5 };
         QVector<int> rightFingersDown { 5, 4, 3, 2, 1, 3, 2, 1 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -755,15 +755,15 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp12 = "[{c0,e0} {d0,f0} {e0,g0} {d0,f0}]";
         QVector<int> leftFingersUp12 { 5, 3, 4, 2, 3, 1, 4, 2 };
         QVector<int> rightFingersUp12 { 1, 3, 2, 4, 3, 5, 2, 4 };
-        int stepsUp1[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        int stepsUp2[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+        QVector<int> stepsUp1  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        QVector<int> stepsUp2 {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
         bothSequences << Sequence2(patternUp12, leftFingersUp12, rightFingersUp12, stepsUp1);
         bothSequences << Sequence2(patternUp12, leftFingersUp12, rightFingersUp12, stepsUp2);
 
         QString patternDown = "[{e2,g2} {d2,f2} {c2,e2} {d2,f2}]";
         QVector<int> leftFingersDown { 3, 1, 4, 2, 5, 3, 4, 2 };
         QVector<int> rightFingersDown { 3, 5, 2, 4, 1, 3, 2, 4 };
-        int stepsDown[] = {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
+        QVector<int> stepsDown {0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -777,7 +777,7 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[{c0,e} {d,f} {e,g}]";
         QVector<int> leftFingersUp { 5, 3, 4, 2, 3, 1 };
         QVector<int> rightFingersUp { 1, 3, 2, 4, 3, 5 };
-        int stepsUp[] = {0, 3, 6, 9, 12, 15, 18, 21};
+        QVector<int> stepsUp {0, 3, 6, 9, 12, 15, 18, 21};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown1 = "[{d3,f} {c,e} {b2,d3}]";
@@ -786,8 +786,8 @@ Song HanonSongFactory::getNo(int no) {
         QVector<int> leftFingersDown2 { 4, 2, 5, 3, 4, 2 };
         QVector<int> rightFingersDown1 { 2, 4, 1, 3, 3, 5 };
         QVector<int> rightFingersDown2 { 2, 4, 1, 3, 2, 4 };
-        int stepsDown1[] = {0, -3, -6, -9, -12, -15, -18};
-        int stepsDown2[] = {0};
+        QVector<int> stepsDown1 {0, -3, -6, -9, -12, -15, -18};
+        QVector<int> stepsDown2 {0};
         bothSequences << Sequence2(patternDown1, leftFingersDown1, rightFingersDown1, stepsDown1);
         bothSequences << Sequence2(patternDown2, leftFingersDown2, rightFingersDown2, stepsDown2);
 
@@ -802,13 +802,13 @@ Song HanonSongFactory::getNo(int no) {
         QString patternUp = "[{c1,e} {d,f} {c,e} {d,f} {c,e} {d,f} {c,e} {d,f} {e,g} {d,f} {e,g} {d,f} {e,g} {d,f} {e,g} {d,f}]";
         QVector<int> leftFingersUp { 5, 3, 4, 2, 5, 3, 4, 2, 5, 3, 4, 2, 5, 3, 4, 2, 3, 1, 4, 2, 3, 1, 4, 2, 3, 1, 4, 2, 3, 1, 4, 2};
         QVector<int> rightFingersUp { 1, 3, 2, 4, 1, 3, 2, 4, 1, 3, 2, 4, 1, 3, 2, 4, 3, 5, 2, 4, 3, 5, 2, 4, 3, 5, 2, 4, 3, 5, 2, 4};
-        int stepsUp[] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+        QVector<int> stepsUp {0, 1, 2, 3, 4, 5, 6, 7, 8};
         bothSequences << Sequence2(patternUp, leftFingersUp, rightFingersUp, stepsUp);
 
         QString patternDown = "[{d2,f} {c,e} {d,f} {c,e} {d,f} {c,e} {d,f} {c,e} {b1,d2} {c,e} {b1,d2} {c,e} {b1,d2} {c,e} {b1,d2} {c,e}]";
         QVector<int> leftFingersDown { 3, 1, 4, 2, 3, 1, 4, 2, 3, 1, 4, 2, 3, 1, 4, 2, 5, 3, 4, 2, 5, 3, 4, 2, 5, 3, 4, 2, 5, 3, 4, 2};
         QVector<int> rightFingersDown { 3, 5, 2, 4, 3, 5, 2, 4, 3, 5, 2, 4, 3, 5, 2, 4, 1, 3, 2, 4, 1, 3, 2, 4, 1, 3, 2, 4, 1, 3, 2, 4};
-        int stepsDown[] = { 0, -1, -2, -3, -4, -5, -6};
+        QVector<int> stepsDown { 0, -1, -2, -3, -4, -5, -6};
         bothSequences << Sequence2(patternDown, leftFingersDown, rightFingersDown, stepsDown);
 
         break;
@@ -823,7 +823,7 @@ Song HanonSongFactory::getNo(int no) {
         QString pattern = "[c0 d e f g a b c1 d e f g a b c2 b1 a g f e d c b0 a g f e d]";
         QVector<int> leftFingers { 5, 4, 3, 2, 1, 3, 2, 1, 4, 3, 2, 1, 3, 2, 1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 1, 2, 3, 4, 5 };
         QVector<int> rightFingers { 1, 2, 3, 1, 2, 3, 4, 1, 2, 3, 1, 2, 3, 4, 5, 4, 3, 2, 1, 3, 2, 1, 4, 3, 2, 1, 3, 2, 1 };
-        int steps[] = {0};
+        QVector<int> steps = {0};
         bothSequences << Sequence2(pattern, leftFingers, rightFingers, steps);
 
         break;
@@ -848,7 +848,7 @@ Song HanonSongFactory::getNo(int no) {
     song.id = id;
     song.name = "No. " + name;
     song.description = description;
-    song.gmn = bothSequences.at(0).m_pattern;
+    song.gmn = leftSequences.at(0).m_pattern;
 
     song.voices.insert(LEFT, leftScores);
     song.voices.insert(RIGHT, rightScores);
@@ -860,7 +860,7 @@ Song HanonSongFactory::getNo(int no) {
 QList<Score> HanonSongFactory::sequencesToScores(QList<Sequence> sequences) {
     QList<QString> patterns;
     QList<QVector<int>> fingers;
-    QList<int*> steps;
+    QList<QVector<int>> steps;
 
     for (Sequence sequence : sequences) {
         patterns.append(sequence.m_pattern);

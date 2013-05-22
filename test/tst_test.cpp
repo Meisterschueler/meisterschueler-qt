@@ -48,6 +48,7 @@ private Q_SLOTS:
     void guidoService_gmnToScores_duration_position();
 
     void scoreService_transposeStep();
+    void scoreService_transposeSteps();
     void scoreService_addFingers();
     void scoreService_concat();
     void scoreService_merge();
@@ -67,6 +68,7 @@ private Q_SLOTS:
     void matchingService_cutMatchingMidiEvents();
 
     void matchingHandler_simple();
+    void matchingHandler_hanonNo1Left();
 
     void midiWrapper_simple();
 
@@ -387,6 +389,16 @@ void Test::scoreService_transposeStep() {
     QVERIFY( aeolisch.at(3).pitch == 57 );
 }
 
+void Test::scoreService_transposeSteps() {
+    QString gmn = "[c e]";
+    QList<Score> scores = GuidoService::gmnToScores(gmn);
+    QVector<int> steps {0, 1, 2};
+
+    QList<Score> steppedScores = ScoreService::transposeSteps(scores, steps);
+
+    QCOMPARE( steppedScores.size(), 6 );
+}
+
 void Test::scoreService_addFingers() {
     QString gmn = "[c d e f g]";
     QList<Score> scores = GuidoService::gmnToScores(gmn);
@@ -403,6 +415,13 @@ void Test::scoreService_addFingers() {
 }
 
 void Test::scoreService_concat() {
+    QList<Score> empty1;
+    QList<Score> empty2;
+
+    QList<Score> empty3 = ScoreService::concat(empty1, empty2);
+    QVERIFY( empty3.isEmpty() );
+
+
     QString gmn = "[c0/4 d e]";
     QList<Score> scores1 = GuidoService::gmnToScores(gmn);
     QList<Score> scores2 = GuidoService::gmnToScores(gmn);
@@ -459,7 +478,6 @@ void Test::scoreService_scoresToXYSequence() {
 // SONGFACTORIES
 
 void Test::songFactories_hanon() {
-    QSKIP( "Segmentation violation" );
     HanonSongFactory hanonSongFactory;
 
     QList<Song> songs = hanonSongFactory.getSongs();
@@ -757,6 +775,41 @@ void Test::matchingHandler_simple() {
     QVERIFY( *finishedItem2.midiIntervalSequence == *finishedItem4.midiIntervalSequence );
     QVERIFY( *finishedItem2.pitchAlignment == *finishedItem4.pitchAlignment );
     QVERIFY( *finishedItem2.intervalAlignment == *finishedItem4.intervalAlignment );
+}
+
+void Test::matchingHandler_hanonNo1Left() {
+    QSKIP( "erstmal die anderen machen" );
+    QString fileName1("../../meisterschueler/test/midifiles/hanonNo1Left.mid");
+    QFile hanonFile1(fileName1);
+    QVERIFY( hanonFile1.exists() );
+
+    QList<NoteEventPair> loadit;
+    loadit = MidiService::load(fileName1);
+    QVERIFY( loadit.size() == 29*8 );
+
+    QList<NoteEvent> events;
+    for (NoteEventPair p : loadit) {
+        events.append(*p.noteOn);
+        events.append(*p.noteOff);
+    }
+
+    //qSort(events);
+
+    HanonSongFactory hanonSongFactory;
+
+    MatchingHandler matchingHandler(QList<MatchingItem>());
+
+    /*QSignalSpy positionSpy(&matchingHandler, SIGNAL(positionChanged(Fraction)));
+    QSignalSpy songRecognizedSpy(&matchingHandler, SIGNAL(songRecognized(MatchingItem)));
+    QSignalSpy songFinishedSpy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
+
+    for (NoteEvent e : events) {
+        if (e.type() == NoteOnEvent::type()) {
+            matchingHandler.noteOnEvent(e);
+        } else if (e.type() == NoteOffEvent.type()) {
+            matchingHandler.noteOffEvent(e);
+        }
+    }*/
 }
 
 // MIDIWRAPPER
