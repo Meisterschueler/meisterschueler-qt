@@ -361,28 +361,28 @@ void Test::guidoService_gmnToScores_duration_position() {
 void Test::scoreService_transposeStep() {
     QString gmn = "[c0 e g c1]";
     QList<Score> ionisch = GuidoService::gmnToScores(gmn);
-    QVERIFY( ionisch.size() == 4 );
+    QCOMPARE( ionisch.size(), 4 );
     QVERIFY( ionisch.at(0).pitch == 48 );
     QVERIFY( ionisch.at(1).pitch == 52 );
     QVERIFY( ionisch.at(2).pitch == 55 );
     QVERIFY( ionisch.at(3).pitch == 60 );
 
     QList<Score> dorisch = ScoreService::transposeStep(ionisch, 1);
-    QVERIFY( dorisch.size() == 4 );
+    QCOMPARE( dorisch.size(), 4 );
     QVERIFY( dorisch.at(0).pitch == 50 );
     QVERIFY( dorisch.at(1).pitch == 53 );
     QVERIFY( dorisch.at(2).pitch == 57 );
     QVERIFY( dorisch.at(3).pitch == 62 );
 
     QList<Score> mixolydisch = ScoreService::transposeStep(ionisch, 4);
-    QVERIFY( mixolydisch.size() == 4 );
+    QCOMPARE( mixolydisch.size(), 4 );
     QVERIFY( mixolydisch.at(0).pitch == 55 );
     QVERIFY( mixolydisch.at(1).pitch == 59 );
     QVERIFY( mixolydisch.at(2).pitch == 62 );
     QVERIFY( mixolydisch.at(3).pitch == 67 );
 
     QList<Score> aeolisch = ScoreService::transposeStep(ionisch, -2);
-    QVERIFY( aeolisch.size() == 4 );
+    QCOMPARE( aeolisch.size(), 4 );
     QVERIFY( aeolisch.at(0).pitch == 45 );
     QVERIFY( aeolisch.at(1).pitch == 48 );
     QVERIFY( aeolisch.at(2).pitch == 52 );
@@ -406,7 +406,7 @@ void Test::scoreService_addFingers() {
 
     QList<Score> fingeredScores = ScoreService::addFingers(scores, fingers);
 
-    QVERIFY( fingeredScores.size() == 5 );
+    QCOMPARE( fingeredScores.size(), 5 );
     QVERIFY( fingeredScores.at(0).finger == 1 );
     QVERIFY( fingeredScores.at(1).finger == 2 );
     QVERIFY( fingeredScores.at(2).finger == 3 );
@@ -427,7 +427,7 @@ void Test::scoreService_concat() {
     QList<Score> scores2 = GuidoService::gmnToScores(gmn);
 
     QList<Score> scores3 = ScoreService::concat(scores1, scores2);
-    QVERIFY( scores3.size() == 6 );
+    QCOMPARE( scores3.size(), 6 );
 
     Fraction nextPosition;
     for (Score score : scores3) {
@@ -444,7 +444,7 @@ void Test::scoreService_merge() {
     QList<Score> leftScores = GuidoService::gmnToScores(leftGmn);
     QList<Score> merged = ScoreService::merge(rightScores, leftScores);
 
-    QVERIFY( merged.size() == 10);
+    QCOMPARE( merged.size(), 10);
 
     QVERIFY( merged.at(0).pitch == 48 );
     QVERIFY( merged.at(1).pitch == 36 );
@@ -527,7 +527,7 @@ void Test::midiService_addNote() {
     MidiService::addNoteOff(pairs, h);
     MidiService::addNoteOff(pairs, d);
 
-    QVERIFY( pairs.size() == 8 );
+    QCOMPARE( pairs.size(), 8 );
 
     QVERIFY( A == *pairs.at(0).noteOn );
     QVERIFY( a == *pairs.at(0).noteOff );
@@ -569,7 +569,7 @@ void Test::midiService_saveLoad() {
 
     QList<NoteEventPair> loadit = MidiService::load(tempFile.fileName());
 
-    QVERIFY( loadit.size() == saveit.size() );
+    QCOMPARE( loadit.size(), saveit.size() );
     for (int i = 0; i < loadit.size(); ++i) {
         QVERIFY( loadit.at(i) == saveit.at(i) );
     }
@@ -585,10 +585,10 @@ void Test::midiService_loadHanon() {
 
     QList<NoteEventPair> loadit;
     loadit = MidiService::load(fileName1);
-    QVERIFY( loadit.size() == 29*8 );
+    QCOMPARE( loadit.size(), 29*8 );
 
     loadit = MidiService::load(fileName2);
-    QVERIFY( loadit.size() == 29*8*2 );
+    QCOMPARE( loadit.size(), 29*8*2 );
 }
 
 // MATCHINGSERVICE
@@ -785,7 +785,7 @@ void Test::matchingHandler_hanonNo1Left() {
 
     QList<NoteEventPair> loadit;
     loadit = MidiService::load(fileName1);
-    QVERIFY( loadit.size() == 29*8 );
+    QCOMPARE( loadit.size(), 29*8 );
 
     QList<NoteEvent> events;
     for (NoteEventPair p : loadit) {
