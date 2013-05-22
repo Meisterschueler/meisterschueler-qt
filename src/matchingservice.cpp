@@ -89,7 +89,7 @@ double MatchingService::getQuality(QByteArray pitchAlignment, char transposition
 
     int open = pitchAlignment.count(NeedlemanWunsch::OPEN);
     int played = pitchAlignment.count(NeedlemanWunsch::MATCH);
-    int missed = pitchAlignment.count(NeedlemanWunsch::DELETED);
+    //int missed = pitchAlignment.count(NeedlemanWunsch::DELETED);
     int extra = pitchAlignment.count(NeedlemanWunsch::INSERT);
     int wrong = pitchAlignment.count(NeedlemanWunsch::WRONG);
 

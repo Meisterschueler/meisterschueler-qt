@@ -87,6 +87,7 @@ QPixmap BubbleView::getBackgroundPixmap() {
 }
 
 void BubbleView::resizeEvent(QResizeEvent *event) {
+    QGraphicsView::resizeEvent(event);
     fitInView(backgroundItem);
 }
 
@@ -103,6 +104,7 @@ void BubbleView::mouseMoveEvent( QMouseEvent *event ) {
 }
 
 void BubbleView::mouseReleaseEvent(QMouseEvent *event) {
+    QGraphicsView::mouseReleaseEvent(event);
     pitch = -1;
     keystroke = -1;
 }

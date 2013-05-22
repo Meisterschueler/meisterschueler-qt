@@ -52,7 +52,7 @@ void MidiService::save(const QString& fileName, const QList<NoteEventPair>& pair
     unsigned char chan, note, velocity;
 
     MIDIClockTime t; // time in midi ticks
-    MIDIClockTime dt = 100; // time interval (1 second)
+    //MIDIClockTime dt = 100; // time interval (1 second)
     int clks_per_beat = 100; // number of ticks in crotchet (1...32767)
     int num_tracks = 2; // tracks 0 and 1
 
