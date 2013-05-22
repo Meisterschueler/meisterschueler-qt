@@ -69,8 +69,9 @@ public:
     }
 
     bool operator<(ChannelEvent const& rhs) const {
-        return this->m_note<rhs.getNote();
+        return this->m_time<rhs.getTime();
     }
+
 
 protected:
     unsigned char m_channel;
@@ -81,6 +82,10 @@ class NoteOffEvent : public ChannelEvent
 public:
     NoteOffEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel)
         : ChannelEvent(time, chan, note, vel, NoteOffEventType) { }
+
+    bool operator<(NoteOffEvent const& rhs) const {
+        return this->m_note<rhs.getNote();
+    }
 };
 
 class NoteOnEvent : public ChannelEvent
@@ -88,6 +93,10 @@ class NoteOnEvent : public ChannelEvent
 public:
     NoteOnEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel)
         : ChannelEvent(time, chan, note, vel, NoteOnEventType) { }
+
+    bool operator<(NoteOnEvent const& rhs) const {
+        return this->m_note<rhs.getNote();
+    }
 };
 
 class PolyKeyPressEvent : public NoteEvent

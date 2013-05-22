@@ -23,7 +23,8 @@ public:
     Test();
     
 private Q_SLOTS:
-    void noteEvent_comparisons();
+    void channelEvent_comparisons();
+    void noteOnEvent_comparisons();
     void noteEventPair_constructors();
     void noteEventPair_comparisons_single();
     void noteEventPair_comparisons_chord();
@@ -87,10 +88,19 @@ Test::Test()
 
 // BASIC TYPES
 
-void Test::noteEvent_comparisons() {
+void Test::channelEvent_comparisons() {
+    ChannelEvent event(100, 0, 0, 0, NoteOnEventType);
+    ChannelEvent earlier(50, 0, 0, 0, NoteOnEventType);
+    ChannelEvent later(150, 0, 0, 0, NoteOnEventType);
+
+    QVERIFY( earlier < event );
+    QVERIFY( event < later );
+}
+
+void Test::noteOnEvent_comparisons() {
     NoteOnEvent note(0, 0, 10, 0);
-    NoteOffEvent same(0, 0, 10, 0);
-    NoteOffEvent higher(0, 0, 20, 0);
+    NoteOnEvent same(0, 0, 10, 0);
+    NoteOnEvent higher(0, 0, 20, 0);
 
     QVERIFY( note == same );
     QVERIFY( note < higher );
