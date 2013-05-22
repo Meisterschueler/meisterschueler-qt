@@ -12,6 +12,7 @@
 #include "midiwrapper.h"
 #include "needlemanwunsch.h"
 #include "score.h"
+#include "songservice.h"
 #include "events.h"
 
 class Test : public QObject
@@ -93,7 +94,6 @@ void Test::noteEvent_comparisons() {
 
     QVERIFY( note == same );
     QVERIFY( note < higher );
-    QVERIFY( higher > note );
 }
 
 void Test::noteEventPair_constructors() {
@@ -778,7 +778,6 @@ void Test::matchingHandler_simple() {
 }
 
 void Test::matchingHandler_hanonNo1Left() {
-    QSKIP( "erstmal die anderen machen" );
     QString fileName1("../../meisterschueler/test/midifiles/hanonNo1Left.mid");
     QFile hanonFile1(fileName1);
     QVERIFY( hanonFile1.exists() );
@@ -787,29 +786,38 @@ void Test::matchingHandler_hanonNo1Left() {
     loadit = MidiService::load(fileName1);
     QCOMPARE( loadit.size(), 29*8 );
 
-    QList<NoteEvent> events;
+    QList<ChannelEvent> events;
     for (NoteEventPair p : loadit) {
         events.append(*p.noteOn);
         events.append(*p.noteOff);
     }
 
-    //qSort(events);
+    qSort(events);
 
-    HanonSongFactory hanonSongFactory;
+    SongService songService;
 
-    MatchingHandler matchingHandler(QList<MatchingItem>());
+    MatchingHandler matchingHandler(songService.getMatchingItems());
 
-    /*QSignalSpy positionSpy(&matchingHandler, SIGNAL(positionChanged(Fraction)));
+    QSignalSpy positionSpy(&matchingHandler, SIGNAL(positionChanged(Fraction)));
     QSignalSpy songRecognizedSpy(&matchingHandler, SIGNAL(songRecognized(MatchingItem)));
     QSignalSpy songFinishedSpy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
 
     for (NoteEvent e : events) {
-        if (e.type() == NoteOnEvent::type()) {
-            matchingHandler.noteOnEvent(e);
-        } else if (e.type() == NoteOffEvent.type()) {
-            matchingHandler.noteOffEvent(e);
+        if (e.type() == QEvent::User + STATUS_NOTEON) {
+            //matchingHandler.noteOnEvent(static_cast<NoteOnEvent>(e));
+            matchingHandler.noteOnEvent(NoteOnEvent(e.getTime(), 0, e.getNote(), e.getVelocity()));
+        } else if (e.type() == QEvent::User + STATUS_NOTEOFF) {
+            //matchingHandler.noteOffEvent(static_cast<NoteOffEvent>(e));
+            matchingHandler.noteOffEvent(NoteOffEvent(e.getTime(), 0, e.getNote(), e.getVelocity()));
         }
-    }*/
+    }
+
+    QCOMPARE( songFinishedSpy.count(), 1 );
+
+    QList<QVariant> arguments = songFinishedSpy.takeFirst();
+    MatchingItem finishedItem = qvariant_cast<MatchingItem>(arguments.at(0));
+
+    QVERIFY( finishedItem.song.name == "1" );
 }
 
 // MIDIWRAPPER

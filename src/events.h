@@ -60,7 +60,7 @@ public:
         : NoteEvent(time, note, vel, type), m_channel(chan) { }
     unsigned char getChannel() const { return m_channel; }
 
-    bool operator==(ChannelEvent const& rhs) {
+    bool operator==(ChannelEvent const& rhs) const {
         if (this->m_channel == rhs.m_channel && this->m_note == rhs.m_note && this->m_time == rhs.m_time && this->m_velocity == rhs.m_velocity) {
             return true;
         } else {
@@ -68,12 +68,8 @@ public:
         }
     }
 
-    bool operator<(ChannelEvent const& rhs) {
+    bool operator<(ChannelEvent const& rhs) const {
         return this->m_note<rhs.getNote();
-    }
-
-    bool operator>(ChannelEvent const& rhs) {
-        return this->m_note>rhs.getNote();
     }
 
 protected:
