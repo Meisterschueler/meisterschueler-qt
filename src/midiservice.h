@@ -13,8 +13,8 @@ class MidiService
 public:
     MidiService();
 
-    static void addNoteOn(QList<NoteEventPair> &pairs, NoteOnEvent noteOn);
-    static void addNoteOff(QList<NoteEventPair> &pairs, NoteOffEvent noteOff);
+    static void addNoteOn(QList<NoteEventPair> &pairs, const NoteOnEvent& noteOn);
+    static void addNoteOff(QList<NoteEventPair> &pairs, const NoteOffEvent& noteOff);
 
     static void save(const QString& fileName, const QList<NoteEventPair>& pairs);
     static QList<NoteEventPair> load(const QString fileName);

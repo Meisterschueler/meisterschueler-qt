@@ -27,7 +27,7 @@ private:
 
     int *similarity;
 
-    int getSimilarity(unsigned char i, unsigned char j);
+    int getSimilarity(const unsigned char i, const unsigned char j);
     void calcSimilarityMatrix();
 };
 

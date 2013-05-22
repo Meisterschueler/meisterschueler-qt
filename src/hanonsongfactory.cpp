@@ -9,7 +9,7 @@ HanonSongFactory::HanonSongFactory()
 {
 }
 
-QList<Song> HanonSongFactory::getSongs() {
+QList<Song> HanonSongFactory::getSongs() const {
     QList<Song> songs;
     for (int i = 0; i < 36; ++i) {
         songs.append(getNo(i));
@@ -18,7 +18,7 @@ QList<Song> HanonSongFactory::getSongs() {
     return songs;
 }
 
-Song HanonSongFactory::getNo(int no) {
+Song HanonSongFactory::getNo(int no) const {
     QList<Score> leftScores;
     QList<Score> rightScores;
     QString name = "";
@@ -857,7 +857,7 @@ Song HanonSongFactory::getNo(int no) {
     return song;
 }
 
-QList<Score> HanonSongFactory::sequencesToScores(QList<Sequence> sequences) {
+QList<Score> HanonSongFactory::sequencesToScores(const QList<Sequence>& sequences) const {
     QList<QString> patterns;
     QList<QVector<int>> fingers;
     QList<QVector<int>> steps;

@@ -10,7 +10,7 @@ MatchingService::MatchingService()
 {
 }
 
-QByteArray MatchingService::midiEvents2pitchSequence(QList<NoteEventPair> events) {
+QByteArray MatchingService::midiEvents2pitchSequence(const QList<NoteEventPair>& events) {
     QByteArray sequence;
     for (NoteEventPair midiPair : events) {
         sequence.append(midiPair.noteOn->getNote());
@@ -18,7 +18,7 @@ QByteArray MatchingService::midiEvents2pitchSequence(QList<NoteEventPair> events
     return sequence;
 }
 
-QByteArray MatchingService::midiEvents2intervalSequence(QList<NoteEventPair> events) {
+QByteArray MatchingService::midiEvents2intervalSequence(const QList<NoteEventPair>& events) {
     QByteArray sequence;
     QByteArray pitchSequence = midiEvents2pitchSequence(events);
     for (int i=1; i<pitchSequence.length(); i++) {
@@ -28,7 +28,7 @@ QByteArray MatchingService::midiEvents2intervalSequence(QList<NoteEventPair> eve
     return sequence;
 }
 
-QByteArray MatchingService::midiEvents2pressedSequence(QList<NoteEventPair> events) {
+QByteArray MatchingService::midiEvents2pressedSequence(const QList<NoteEventPair>& events) {
     QByteArray sequence;
     for (NoteEventPair midiPair : events) {
         if (midiPair.noteOn != NULL && midiPair.noteOff != NULL) {
@@ -44,11 +44,11 @@ QByteArray MatchingService::midiEvents2pressedSequence(QList<NoteEventPair> even
     return sequence;
 }
 
-QByteArray MatchingService::getAlingment(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray oldAlignment) {
+QByteArray MatchingService::getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& oldAlignment) {
     NeedlemanWunsch needlemanWunsch;
 
     if (!oldAlignment.isEmpty()) {
-        int saveRegion = oldAlignment.lastIndexOf("mmmmmmmmmm");
+        int saveRegion = getSaveRegion(oldAlignment);
         if (saveRegion != -1) {
             QByteArray saveAlignment = oldAlignment.mid(0, saveRegion);
 
@@ -64,7 +64,11 @@ QByteArray MatchingService::getAlingment(QByteArray scorePitchSequence, QByteArr
     return needlemanWunsch.getAlignments(scorePitchSequence, midiPitchSequence);
 }
 
-char MatchingService::getTransposition(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray intervalAlignment) {
+int MatchingService::getSaveRegion(const QByteArray &alignment) {
+    return alignment.lastIndexOf("mmmmmmmmmm");
+}
+
+char MatchingService::getTransposition(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& intervalAlignment) {
     int posAlignment = intervalAlignment.lastIndexOf("mmm");
     if (posAlignment < 0) {
         return 0;   // TODO: nicht gut...
@@ -81,7 +85,7 @@ char MatchingService::getTransposition(QByteArray scorePitchSequence, QByteArray
     return notePitch - scorePitch;
 }
 
-double MatchingService::getQuality(QByteArray pitchAlignment, char transposition) {
+double MatchingService::getQuality(const QByteArray &pitchAlignment, char transposition) {
     QString alignment(pitchAlignment);
 
     int firstHitChord = alignment.replace(QRegExp("[mwi]"), ".").indexOf(".");
@@ -113,15 +117,16 @@ double MatchingService::getQuality(QByteArray pitchAlignment, char transposition
     }
 }
 
-bool MatchingService::isFinished(QByteArray pitchAlignment, QByteArray pressedSequence) {
+bool MatchingService::isFinished(const QByteArray& pitchAlignment, const QByteArray& pressedSequence) {
     bool result = false;
-    while (pitchAlignment.endsWith("i")) {
-        pitchAlignment = pitchAlignment.mid(0, pitchAlignment.length()-1);
+    QString alignment(pitchAlignment);
+    while (alignment.endsWith("i")) {
+        alignment = alignment.mid(0, alignment.length()-1);
     }
-    if (pitchAlignment.endsWith("m")) {
-        pitchAlignment.replace("d", "");
+    if (alignment.endsWith("m")) {
+        alignment.replace("d", "");
         int idxPressed = pressedSequence.indexOf(MatchingService::PRESSED);
-        if (idxPressed != -1 && idxPressed < pitchAlignment.length()) {
+        if (idxPressed != -1 && idxPressed < alignment.length()) {
             result = false;
         } else {
             result = true;
@@ -133,7 +138,7 @@ bool MatchingService::isFinished(QByteArray pitchAlignment, QByteArray pressedSe
     return result;
 }
 
-QList<NoteEventPair> MatchingService::cutMatchingMidiEvents(QList<NoteEventPair>& events, QByteArray pitchAlignment) {
+QList<NoteEventPair> MatchingService::cutMatchingMidiEvents(QList<NoteEventPair>& events, const QByteArray& pitchAlignment) {
     QList<NoteEventPair> result;
 
     QString alignment(pitchAlignment);

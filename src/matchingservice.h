@@ -14,15 +14,16 @@ public:
     static const char PRESSED = 'X';
     static const char RELEASED = '.';
 
-    static QByteArray midiEvents2pitchSequence(QList<NoteEventPair> events);
-    static QByteArray midiEvents2intervalSequence(QList<NoteEventPair> events);
-    static QByteArray midiEvents2pressedSequence(QList<NoteEventPair> events);
+    static QByteArray midiEvents2pitchSequence(const QList<NoteEventPair>& events);
+    static QByteArray midiEvents2intervalSequence(const QList<NoteEventPair>& events);
+    static QByteArray midiEvents2pressedSequence(const QList<NoteEventPair>& events);
 
-    static QByteArray getAlingment(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray oldAlignment = "");
-    static char getTransposition(QByteArray scorePitchSequence, QByteArray midiPitchSequence, QByteArray intervalAlignment);
-    static double getQuality(QByteArray pitchAlignment, char transposition);
-    static bool isFinished(QByteArray pitchAlignment, QByteArray pressedSequence);
-    static QList<NoteEventPair> cutMatchingMidiEvents(QList<NoteEventPair> &events, QByteArray pitchAlignment);
+    static QByteArray getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& oldAlignment = "");
+    static int getSaveRegion(const QByteArray& alignment);
+    static char getTransposition(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& intervalAlignment);
+    static double getQuality(const QByteArray& pitchAlignment, char transposition);
+    static bool isFinished(const QByteArray& pitchAlignment, const QByteArray& pressedSequence);
+    static QList<NoteEventPair> cutMatchingMidiEvents(QList<NoteEventPair> &events, const QByteArray& pitchAlignment);
 };
 
 #endif // MATCHINGSERVICE_H

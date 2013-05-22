@@ -16,7 +16,7 @@ MidiService::MidiService()
 {
 }
 
-void MidiService::addNoteOn(QList<NoteEventPair>& pairs, NoteOnEvent noteOn) {
+void MidiService::addNoteOn(QList<NoteEventPair>& pairs, const NoteOnEvent &noteOn) {
     QSharedPointer<NoteOnEvent> pointer(new NoteOnEvent(noteOn));
     NoteEventPair pair;
     pair.noteOn = pointer;
@@ -24,7 +24,7 @@ void MidiService::addNoteOn(QList<NoteEventPair>& pairs, NoteOnEvent noteOn) {
     qSort(pairs);
 }
 
-void MidiService::addNoteOff(QList<NoteEventPair>& pairs, NoteOffEvent noteOff) {
+void MidiService::addNoteOff(QList<NoteEventPair>& pairs, const NoteOffEvent &noteOff) {
     QSharedPointer<NoteOffEvent> pointer(new NoteOffEvent(noteOff));
     QMutableListIterator<NoteEventPair> it(pairs);
     while (it.hasNext()) {

@@ -10,7 +10,7 @@ class Score;
 
 class Sequence {
 public:
-    Sequence(QString pattern, QVector<int> fingers, QVector<int> steps) {
+    Sequence(const QString& pattern, const QVector<int>& fingers, const QVector<int>& steps) {
         m_pattern = pattern;
         m_fingers = fingers;
         m_steps = steps;
@@ -23,7 +23,7 @@ public:
 
 class Sequence2 : public Sequence{
 public:
-    Sequence2(QString pattern, QVector<int> leftFingers, QVector<int> rightFingers, QVector<int> steps) : Sequence(pattern, leftFingers, steps){
+    Sequence2(const QString& pattern, const QVector<int>& leftFingers, const QVector<int>& rightFingers, const QVector<int>& steps) : Sequence(pattern, leftFingers, steps){
         m_leftFingers = leftFingers;
         m_rightFingers = rightFingers;
     }
@@ -37,9 +37,9 @@ class HanonSongFactory
 public:
     HanonSongFactory();
 
-    QList<Song> getSongs();
-    Song getNo(int no);
-    QList<Score> sequencesToScores(QList<Sequence> sequences);
+    QList<Song> getSongs() const;
+    Song getNo(int no) const;
+    QList<Score> sequencesToScores(const QList<Sequence>& sequences) const;
 };
 
 
