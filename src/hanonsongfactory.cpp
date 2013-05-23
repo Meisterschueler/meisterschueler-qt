@@ -874,7 +874,7 @@ QList<Score> HanonSongFactory::sequencesToScores(const QList<Sequence>& sequence
         QList<Score> scores = GuidoService::gmnToScores(patterns.at(i));
         scores = ScoreService::addFingers(scores, fingers.at(i));
         scores = ScoreService::transposeSteps(scores, steps.at(i));
-        scores = ScoreService::concat(result, scores);
+        result = ScoreService::concat(result, scores);
     }
 
     return result;

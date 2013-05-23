@@ -19,7 +19,7 @@ public:
     static QByteArray midiEvents2pressedSequence(const QList<NoteEventPair>& events);
 
     static QByteArray getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& oldAlignment = "");
-    static int getSaveRegion(const QByteArray& alignment);
+    static QByteArray getSaveAlignment(const QByteArray& alignment);
     static char getTransposition(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& intervalAlignment);
     static double getQuality(const QByteArray& pitchAlignment, char transposition);
     static bool isFinished(const QByteArray& pitchAlignment, const QByteArray& pressedSequence);

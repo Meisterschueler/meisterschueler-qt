@@ -17,7 +17,6 @@ public:
     QByteArray scorePitchSequence;
     QByteArray scoreIntervalSequence;
 
-    bool prunning;
     double quality;
     char transposition;
 

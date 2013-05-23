@@ -14,6 +14,11 @@ QList<MatchingItem> SongService::getMatchingItems() {
     HanonSongFactory hanonSongFactory;
 
     for (Song song : hanonSongFactory.getSongs()) {
+        QList<Hand> haende = song.voices.keys();
+        QList<Score> scores = song.voices.value(LEFT);
+        scores.at(0);
+        haende.at(0);
+
         QByteArray scorePitchSequence = ScoreService::scoresToPitchSequence(song.voices.value(LEFT));
         QByteArray scoreIntervallSequence = ScoreService::scoresToIntervalSequence(song.voices.value(LEFT));
         MatchingItem item(song, scorePitchSequence, scoreIntervallSequence);

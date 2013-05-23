@@ -63,6 +63,7 @@ private Q_SLOTS:
     void midiService_loadHanon();
 
     void matchingService_midiEvents2xy();
+    void matchingService_getSaveAlignment();
     void matchingService_getAlignment_prunning();
     void matchingService_getTransposition();
     void matchingService_getQuality();
@@ -639,6 +640,16 @@ void Test::matchingService_midiEvents2xy() {
     QVERIFY( pressedSequence.at(1) == MatchingService::RELEASED );
     QVERIFY( pressedSequence.at(2) == MatchingService::PRESSED );
     QVERIFY( pressedSequence.at(3) == MatchingService::RELEASED );
+}
+
+void Test::matchingService_getSaveAlignment() {
+    QVERIFY( MatchingService::getSaveAlignment("mid") == "" );
+    QVERIFY( MatchingService::getSaveAlignment("immmmmmmmm") == "" );
+    QVERIFY( MatchingService::getSaveAlignment("immmmmmmmmm") == "i" );
+    QVERIFY( MatchingService::getSaveAlignment("dmmmmmmmmmm") == "d" );
+    QVERIFY( MatchingService::getSaveAlignment("idmmmmmmmmmm") == "id" );
+    QVERIFY( MatchingService::getSaveAlignment("idmmmmmmmmmmm") == "idm" );
+    QVERIFY( MatchingService::getSaveAlignment("idmmmmmmmmmmmi") == "idm" );
 }
 
 void Test::matchingService_getAlignment_prunning() {

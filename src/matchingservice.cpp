@@ -44,28 +44,30 @@ QByteArray MatchingService::midiEvents2pressedSequence(const QList<NoteEventPair
     return sequence;
 }
 
-QByteArray MatchingService::getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& oldAlignment) {
+QByteArray MatchingService::getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& saveAlignment) {
     NeedlemanWunsch needlemanWunsch;
 
-    if (!oldAlignment.isEmpty()) {
-        int saveRegion = getSaveRegion(oldAlignment);
-        if (saveRegion != -1) {
-            QByteArray saveAlignment = oldAlignment.mid(0, saveRegion);
+    if (saveAlignment.isEmpty()) {
+        return needlemanWunsch.getAlignments(scorePitchSequence, midiPitchSequence);
+    } else {
+        QByteArray saveAlignment_temp1(saveAlignment);
+        QByteArray saveAlignment_temp2(saveAlignment);
+        QByteArray prunnedScorePitchSequence = scorePitchSequence.mid(saveAlignment_temp1.replace("i", "").length());
+        QByteArray prunnedMidiPitchSequence = midiPitchSequence.mid(saveAlignment_temp2.replace("d", "").length());
 
-            QByteArray prunnedScorePitchSequence = scorePitchSequence.mid(saveAlignment.replace("i", "").length());
-            QByteArray prunnedMidiPitchSequence = midiPitchSequence.mid(saveAlignment.replace("d", "").length());
+        QByteArray prunnedAlignment = needlemanWunsch.getAlignments(prunnedScorePitchSequence, prunnedMidiPitchSequence);
 
-            QByteArray prunnedAlignment = needlemanWunsch.getAlignments(prunnedScorePitchSequence, prunnedMidiPitchSequence);
-
-            return saveAlignment + prunnedAlignment;
-        }
+        return saveAlignment + prunnedAlignment;
     }
-
-    return needlemanWunsch.getAlignments(scorePitchSequence, midiPitchSequence);
 }
 
-int MatchingService::getSaveRegion(const QByteArray &alignment) {
-    return alignment.lastIndexOf("mmmmmmmmmm");
+QByteArray MatchingService::getSaveAlignment(const QByteArray &alignment) {
+    int saveRegion = alignment.lastIndexOf("mmmmmmmmmm");
+    if (saveRegion >= 0) {
+        return alignment.mid(0, saveRegion);
+    } else {
+        return "";
+    }
 }
 
 char MatchingService::getTransposition(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& intervalAlignment) {
