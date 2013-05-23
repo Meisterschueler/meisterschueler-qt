@@ -10,7 +10,9 @@ MatchingHandler::MatchingHandler(const QList<MatchingItem> &matchingItems) : mat
 }
 
 void MatchingHandler::reset() {
-
+    for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
+        (*i).enabled = true;
+    }
 }
 
 void MatchingHandler::noteOnEvent(NoteOnEvent noteOn) {
@@ -33,9 +35,12 @@ void MatchingHandler::match() {
     bool pitchSequenceChanged = !oldPitchSequence || !(*oldPitchSequence == *midiPitchSequence);
     oldPitchSequence = midiPitchSequence;
 
-    //for (MatchingItem item : matchingItems) {
     for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
         MatchingItem item = *i;
+        if (!item.enabled) {
+            continue;
+        }
+
         item.midiEvents = midiEvents;
         item.midiPitchSequence = midiPitchSequence;
         item.midiIntervalSequence = midiIntervalSequence;
@@ -49,7 +54,7 @@ void MatchingHandler::match() {
                 item.transposition = MatchingService::getTransposition(item.scorePitchSequence, *item.midiPitchSequence, item.intervalAlignment);
                 item.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence);
             } else {
-                item.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, item.pitchAlignment);
+                item.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, saveAlignment);
             }
         }
 
@@ -59,6 +64,14 @@ void MatchingHandler::match() {
 
     qSort(matchingItems);
     MatchingItem item = matchingItems[0];
+
+    double bestQuality = item.quality;
+    double badQuality = bestQuality/5.0;
+    for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
+        if ((*i).quality < badQuality) {
+            (*i).enabled = false;
+        }
+    }
 
     bool isFinished = MatchingService::isFinished(item.pitchAlignment, *item.pressedSequence);
     if (isFinished) {
@@ -74,5 +87,6 @@ void MatchingHandler::match() {
         item.intervalAlignment = MatchingService::getAlingment(item.scoreIntervalSequence, *item.midiIntervalSequence);
 
         emit songFinished(item);
+        reset();
     }
 }

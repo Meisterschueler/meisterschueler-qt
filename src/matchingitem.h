@@ -13,6 +13,8 @@ public:
     MatchingItem();
     MatchingItem(const Song& song, const QByteArray& scorePitchSequence, const QByteArray& scoreIntervalSequence);
 
+    bool enabled = true;
+
     Song song;
     QByteArray scorePitchSequence;
     QByteArray scoreIntervalSequence;
