@@ -653,10 +653,10 @@ void Test::matchingService_getSaveAlignment() {
 }
 
 void Test::matchingService_getAlignment_prunning() {
-    QByteArray scorePitchSequence = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    QByteArray midiPitchSequence = "ABCDEFGHIJKLM";
-    QByteArray oldAlignment = "mmmmm";
-    QByteArray expectedAlignment = "mmmmmmmmmmmmmddddddddddddd";
+    QByteArray scorePitchSequence = "AbCdGhIjKlMnOpQrStUvWxYz";
+    QByteArray midiPitchSequence = "AbdEfGhIjKlM";
+    QByteArray oldAlignment = "mmdmiim";
+    QByteArray expectedAlignment = "mmdmiimmmmmmmddddddddddddd";
 
     QByteArray normalAlignment = MatchingService::getAlingment(scorePitchSequence, midiPitchSequence);
     QByteArray prunnedAlignment = MatchingService::getAlingment(scorePitchSequence, midiPitchSequence, oldAlignment);
