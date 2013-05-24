@@ -44,18 +44,18 @@ QByteArray MatchingService::midiEvents2pressedSequence(const QList<NoteEventPair
     return sequence;
 }
 
-QByteArray MatchingService::getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& saveAlignment) {
+QByteArray MatchingService::getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const char& transposition, const QByteArray& saveAlignment) {
     NeedlemanWunsch needlemanWunsch;
 
     if (saveAlignment.isEmpty()) {
-        return needlemanWunsch.getAlignments(scorePitchSequence, midiPitchSequence);
+        return needlemanWunsch.getAlignments(scorePitchSequence, midiPitchSequence, transposition);
     } else {
         QByteArray saveAlignment_temp1(saveAlignment);
         QByteArray saveAlignment_temp2(saveAlignment);
         QByteArray prunnedScorePitchSequence = scorePitchSequence.mid(saveAlignment_temp1.replace("i", "").length());
         QByteArray prunnedMidiPitchSequence = midiPitchSequence.mid(saveAlignment_temp2.replace("d", "").length());
 
-        QByteArray prunnedAlignment = needlemanWunsch.getAlignments(prunnedScorePitchSequence, prunnedMidiPitchSequence);
+        QByteArray prunnedAlignment = needlemanWunsch.getAlignments(prunnedScorePitchSequence, prunnedMidiPitchSequence, transposition);
 
         return saveAlignment + prunnedAlignment;
     }

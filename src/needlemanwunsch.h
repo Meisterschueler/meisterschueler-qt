@@ -9,7 +9,7 @@ public:
     NeedlemanWunsch();
     ~NeedlemanWunsch();
 
-    QByteArray getAlignments(QByteArray seq1, QByteArray seq2);
+    QByteArray getAlignments(QByteArray seq1, QByteArray seq2, char offset=0);
 
     static constexpr char MATCH = 'm';
     static constexpr char DELETED = 'd';

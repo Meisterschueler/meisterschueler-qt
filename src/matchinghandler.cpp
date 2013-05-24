@@ -52,9 +52,9 @@ void MatchingHandler::match() {
             if (saveAlignment.isEmpty()) {
                 item.intervalAlignment = MatchingService::getAlingment(item.scoreIntervalSequence, *item.midiIntervalSequence);
                 item.transposition = MatchingService::getTransposition(item.scorePitchSequence, *item.midiPitchSequence, item.intervalAlignment);
-                item.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence);
+                item.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, item.transposition);
             } else {
-                item.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, saveAlignment);
+                item.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, item.transposition, saveAlignment);
             }
         }
 

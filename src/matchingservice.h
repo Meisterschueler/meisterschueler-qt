@@ -18,7 +18,7 @@ public:
     static QByteArray midiEvents2intervalSequence(const QList<NoteEventPair>& events);
     static QByteArray midiEvents2pressedSequence(const QList<NoteEventPair>& events);
 
-    static QByteArray getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& oldAlignment = "");
+    static QByteArray getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const char& transposition=0, const QByteArray& oldAlignment = "");
     static QByteArray getSaveAlignment(const QByteArray& alignment);
     static char getTransposition(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& intervalAlignment);
     static double getQuality(const QByteArray& pitchAlignment, char transposition);

@@ -41,6 +41,7 @@ private Q_SLOTS:
     void needlemanWunsch_complexTest();
     void needlemanWunsch_matchFirstTest();
     void needlemanWunsch_intervals();
+    void needlemanWunsch_transposition();
 
     void guidoService_gmnToScores_simple();
     void guidoService_gmnToScores_chord();
@@ -305,6 +306,15 @@ void Test::needlemanWunsch_intervals() {
     seq.append(-5);
     QByteArray alignment = matcher.getAlignments(seq, seq);
     QVERIFY( "mmm" == alignment );
+}
+
+void Test::needlemanWunsch_transposition() {
+    NeedlemanWunsch matcher;
+    QByteArray alignment = matcher.getAlignments("ABC", "GHI", 6);
+    QVERIFY( "mmm" == alignment );
+
+    alignment = matcher.getAlignments("MURX", "AIFL", -12);
+    QVERIFY( "mmmm" == alignment );
 }
 
 // GUIDOSERVICE
@@ -659,7 +669,7 @@ void Test::matchingService_getAlignment_prunning() {
     QByteArray expectedAlignment = "mmdmiimmmmmmmddddddddddddd";
 
     QByteArray normalAlignment = MatchingService::getAlingment(scorePitchSequence, midiPitchSequence);
-    QByteArray prunnedAlignment = MatchingService::getAlingment(scorePitchSequence, midiPitchSequence, oldAlignment);
+    QByteArray prunnedAlignment = MatchingService::getAlingment(scorePitchSequence, midiPitchSequence, 0, oldAlignment);
 
     QVERIFY( normalAlignment == expectedAlignment );
     QVERIFY( prunnedAlignment == expectedAlignment );
@@ -796,6 +806,24 @@ void Test::matchingHandler_simple() {
     QVERIFY( *finishedItem2.midiIntervalSequence == *finishedItem4.midiIntervalSequence );
     QVERIFY( *finishedItem2.pitchAlignment == *finishedItem4.pitchAlignment );
     QVERIFY( *finishedItem2.intervalAlignment == *finishedItem4.intervalAlignment );
+
+    // Lets play one octave lower
+    NoteOnEvent lA(  0, 0, 36, 10); NoteOffEvent la( 10, 0, 36, 0);
+    NoteOnEvent lB(100, 0, 38, 10); NoteOffEvent lb(110, 0, 38, 0);
+    NoteOnEvent lC(200, 0, 40, 10); NoteOffEvent lc(210, 0, 40, 0);
+    NoteOnEvent lD(300, 0, 41, 10); NoteOffEvent ld(310, 0, 41, 0);
+
+    matchingHandler.noteOnEvent(lA); matchingHandler.noteOffEvent(la);
+    matchingHandler.noteOnEvent(lB); matchingHandler.noteOffEvent(lb);
+    matchingHandler.noteOnEvent(lC); matchingHandler.noteOffEvent(lc);
+    matchingHandler.noteOnEvent(lD); matchingHandler.noteOffEvent(ld);
+
+    QCOMPARE( songFinishedSpy.count(), 1 );
+
+    QList<QVariant> arguments5 = songFinishedSpy.takeFirst();
+    MatchingItem finishedItem5 = qvariant_cast<MatchingItem>(arguments5.at(0));
+
+    QCOMPARE( (int)finishedItem5.transposition, -12 );
 }
 
 void Test::matchingHandler_hanonNo1Left() {
