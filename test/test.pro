@@ -37,7 +37,8 @@ SOURCES += guidoservice.cpp \
     songservice.cpp \
     notemapper.cpp \
     needlemanwunsch.cpp \
-    song.cpp
+    song.cpp \
+    statisticsservice.cpp
 
 HEADERS  += guidoservice.h \
     scoreservice.h \
@@ -53,7 +54,8 @@ HEADERS  += guidoservice.h \
     songservice.h \
     notemapper.h \
     needlemanwunsch.h \
-    song.h
+    song.h \
+    statisticsservice.h
 
 OTHER_FILES += \
     midifiles/hanonNo1Left.mid \

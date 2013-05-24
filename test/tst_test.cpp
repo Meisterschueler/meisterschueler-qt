@@ -13,6 +13,7 @@
 #include "needlemanwunsch.h"
 #include "score.h"
 #include "songservice.h"
+#include "statisticsservice.h"
 #include "events.h"
 
 class Test : public QObject
@@ -74,6 +75,9 @@ private Q_SLOTS:
 
     void matchingHandler_simple();
     void matchingHandler_hanonNo1Left();
+
+    void statisticsService_statisticItem();
+    void statisticsService_statisticCluster();
 
     void midiWrapper_simple();
 
@@ -912,6 +916,24 @@ void Test::matchingHandler_hanonNo1Left() {
     QVERIFY( finishedItem.song.name == "No. 1" );
     QVERIFY( finishedItem.pitchAlignment == QString("m").repeated(232) );
     QVERIFY( finishedItem.intervalAlignment.startsWith("mmmmmmmmmm") );
+}
+
+// STATISTICSSERVICE
+
+void Test::statisticsService_statisticItem() {
+    QVector<double> values {0.0, 1.0, 2.0, 3.0};
+    StatisticItem item = StatisticsService::getStatisticItem(values);
+    QCOMPARE( item.min, 0.0 );
+    QCOMPARE( item.max, 3.0 );
+    QCOMPARE( item.mean, 1.5 );
+    QCOMPARE( item.variance, 1.25 );
+
+    QCOMPARE( item.spectrum.size(), 4 );
+    QCOMPARE( item.spectrum.at(0), item.mean );
+}
+
+void Test::statisticsService_statisticCluster() {
+    QSKIP( "not yet implemented" );
 }
 
 // MIDIWRAPPER
