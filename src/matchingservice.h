@@ -4,6 +4,7 @@
 #include <QByteArray>
 #include <QList>
 
+class Score;
 class NoteEventPair;
 
 class MatchingService
@@ -14,16 +15,21 @@ public:
     static const char PRESSED = 'X';
     static const char RELEASED = '.';
 
+    // pre matching
     static QByteArray midiEvents2pitchSequence(const QList<NoteEventPair>& events);
     static QByteArray midiEvents2intervalSequence(const QList<NoteEventPair>& events);
     static QByteArray midiEvents2pressedSequence(const QList<NoteEventPair>& events);
 
+    // matching
     static QByteArray getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const char& transposition=0, const QByteArray& oldAlignment = "");
     static QByteArray getSaveAlignment(const QByteArray& alignment);
     static char getTransposition(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& intervalAlignment);
     static double getQuality(const QByteArray& pitchAlignment, char transposition);
     static bool isFinished(const QByteArray& pitchAlignment, const QByteArray& pressedSequence);
     static QList<NoteEventPair> cutMatchingMidiEvents(QList<NoteEventPair> &events, const QByteArray& pitchAlignment);
+
+    // post matching
+    static QList<Score> merge(const QList<Score>& scores, const QList<NoteEventPair>& midiEvents, const QByteArray& pitchAlignment);
 };
 
 #endif // MATCHINGSERVICE_H

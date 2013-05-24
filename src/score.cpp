@@ -2,6 +2,6 @@
 
 #include "events.h"
 
-Score::Score()
+Score::Score(char pitch) : pitch(pitch)
 {
 }

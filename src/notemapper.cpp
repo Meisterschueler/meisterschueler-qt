@@ -40,7 +40,7 @@ void NoteMapper::Event(const ARMusicalObject *ev, EventType type) {
 
 void NoteMapper::Note(const ARMusicalObject *ev) {
     const ARNote *arn = dynamic_cast<const ARNote*>(ev);
-    Score note;
+    Score note(0); // WTF!!!
     note.pitch = arn->midiPitch();
     note.duration = arn->getDuration();
     note.position = position;

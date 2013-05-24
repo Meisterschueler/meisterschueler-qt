@@ -5,8 +5,9 @@
 
 #include "Fraction.h"
 
-class NoteOnEvent;
-class NoteOffEvent;
+#include "events.h"
+
+class NoteEventPair;
 
 enum Finger { UNKNOWN_FINGER = 0, THUMB, POINTER, MIDDLE, RING, LITTLE };
 enum Hand { UNKNOWN_HAND, LEFT, RIGHT, BOTH };
@@ -15,14 +16,14 @@ enum Status { UNKNOWN_STATUS, PLAYED, MISSED, EXTRA, FAILED, OPEN };
 class Score
 {
 public:
-    Score();
+    Score(char pitch);
 
     char pitch;
     Fraction duration;
     Fraction position;
 
-    QSharedPointer<NoteOnEvent> noteOn;
-    QSharedPointer<NoteOffEvent> noteOff;
+    NoteEventPair noteEventPair;
+
     Finger finger;
     Hand hand;
     Status status;

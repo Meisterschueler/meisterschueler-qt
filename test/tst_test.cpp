@@ -70,6 +70,7 @@ private Q_SLOTS:
     void matchingService_getQuality();
     void matchingService_isFinished();
     void matchingService_cutMatchingMidiEvents();
+    void matchingService_merge();
 
     void matchingHandler_simple();
     void matchingHandler_hanonNo1Left();
@@ -720,6 +721,40 @@ void Test::matchingService_cutMatchingMidiEvents() {
     QCOMPARE( pairs.size(), 2 );
     QCOMPARE( rest.size(), 1 );
     QVERIFY( rest.at(0) == Cc );
+}
+
+void Test::matchingService_merge() {
+    QList<Score> scores;
+    scores.append(Score(48));
+    scores.append(Score(51));
+    scores.append(Score(54));
+    scores.append(Score(57));
+
+    NoteEventPair A(NoteOnEvent(  0, 0, 48, 0));
+    NoteEventPair Bb(NoteOnEvent(100, 0, 51, 0), NoteOffEvent(110, 0, 51, 0));
+    NoteEventPair Cc(NoteOnEvent(100, 0, 57, 0), NoteOffEvent(110, 0, 57, 0));
+    NoteEventPair Dd(NoteOnEvent(100, 0, 60, 0), NoteOffEvent(110, 0, 60, 0));
+
+    QList<NoteEventPair> midiEvents;
+    midiEvents.append(A);
+    midiEvents.append(Bb);
+    midiEvents.append(Cc);
+    midiEvents.append(Dd);
+
+    QByteArray pitchAlignment = "mmdmi";
+
+    QList<Score> mergedScores = MatchingService::merge(scores, midiEvents, pitchAlignment);
+
+    QCOMPARE( mergedScores.size(), 5 );
+    QVERIFY( mergedScores.at(0).status == PLAYED );
+    QVERIFY( mergedScores.at(0).noteEventPair == A );
+    QVERIFY( mergedScores.at(1).status == PLAYED );
+    QVERIFY( mergedScores.at(1).noteEventPair == Bb );
+    QVERIFY( mergedScores.at(2).status == MISSED );
+    QVERIFY( mergedScores.at(3).status == PLAYED );
+    QVERIFY( mergedScores.at(3).noteEventPair == Cc );
+    QVERIFY( mergedScores.at(4).status == EXTRA );
+    QVERIFY( mergedScores.at(4).noteEventPair == Dd );
 }
 
 // MATCHINGHANDLER

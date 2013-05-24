@@ -4,6 +4,7 @@
 
 #include "events.h"
 #include "needlemanwunsch.h"
+#include "score.h"
 #include "util.h"
 
 MatchingService::MatchingService()
@@ -152,5 +153,10 @@ QList<NoteEventPair> MatchingService::cutMatchingMidiEvents(QList<NoteEventPair>
     result = events.mid(alignment.size());
     events = events.mid(0, alignment.size());
 
+    return result;
+}
+
+QList<Score> MatchingService::merge(const QList<Score>& scores, const QList<NoteEventPair>& midiEvents, const QByteArray& pitchAlignment) {
+    QList<Score> result;
     return result;
 }
