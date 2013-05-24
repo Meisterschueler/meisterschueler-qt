@@ -22,7 +22,7 @@ public:
     double quality;
     char transposition;
 
-    QSharedPointer<QList<NoteEventPair>> midiEvents;
+    QSharedPointer<QList<MidiPair>> midiPairs;
     QSharedPointer<QByteArray> midiPitchSequence;
     QSharedPointer<QByteArray> midiIntervalSequence;
     QSharedPointer<QByteArray> pressedSequence;

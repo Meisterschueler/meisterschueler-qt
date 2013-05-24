@@ -151,16 +151,16 @@ public:
         : ValueEvent(value, PitchWheelEventType) { }
 };
 
-class NoteEventPair {
+class MidiPair {
 public:
     QSharedPointer<NoteOnEvent> noteOn;
     QSharedPointer<NoteOffEvent> noteOff;
 
-    NoteEventPair() {}
-    NoteEventPair(NoteOnEvent noteOn) { this->noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(noteOn)); }
-    NoteEventPair(NoteOnEvent noteOn, NoteOffEvent noteOff) : noteOn(QSharedPointer<NoteOnEvent>(new NoteOnEvent(noteOn))), noteOff(QSharedPointer<NoteOffEvent>(new NoteOffEvent(noteOff))) {}
+    MidiPair() {}
+    MidiPair(NoteOnEvent noteOn) { this->noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(noteOn)); }
+    MidiPair(NoteOnEvent noteOn, NoteOffEvent noteOff) : noteOn(QSharedPointer<NoteOnEvent>(new NoteOnEvent(noteOn))), noteOff(QSharedPointer<NoteOffEvent>(new NoteOffEvent(noteOff))) {}
 
-    bool operator==(const NoteEventPair& rhs) const {
+    bool operator==(const MidiPair& rhs) const {
         bool noteOnSimilar = false;
         bool noteOffSimilar = false;
 
@@ -179,7 +179,7 @@ public:
         }
     }
 
-    bool operator<(const NoteEventPair& rhs) const {
+    bool operator<(const MidiPair& rhs) const {
         if (this->noteOn && rhs.noteOn) {
             if ( (*this->noteOn).getTime() + 50 < (*rhs.noteOn).getTime() ) {
                 return true;

@@ -25,9 +25,9 @@ public:
 private Q_SLOTS:
     void channelEvent_comparisons();
     void noteOnEvent_comparisons();
-    void noteEventPair_constructors();
-    void noteEventPair_comparisons_single();
-    void noteEventPair_comparisons_chord();
+    void midiPair_constructors();
+    void midiPair_comparisons_single();
+    void midiPair_comparisons_chord();
     void song_comparisons();
     void matchingItem_comparisons();
 
@@ -63,13 +63,13 @@ private Q_SLOTS:
     void midiService_saveLoad();
     void midiService_loadHanon();
 
-    void matchingService_midiEvents2xy();
+    void matchingService_midiPairs2xy();
     void matchingService_getSaveAlignment();
     void matchingService_getAlignment_prunning();
     void matchingService_getTransposition();
     void matchingService_getQuality();
     void matchingService_isFinished();
-    void matchingService_cutMatchingMidiEvents();
+    void matchingService_cutMatchingMidiPairs();
     void matchingService_merge();
 
     void matchingHandler_simple();
@@ -109,26 +109,26 @@ void Test::noteOnEvent_comparisons() {
     QVERIFY( note < higher );
 }
 
-void Test::noteEventPair_constructors() {
+void Test::midiPair_constructors() {
     NoteOnEvent A(0, 0, 10, 0);
-    NoteEventPair pair1(A);
+    MidiPair pair1(A);
     QVERIFY( A == *(pair1.noteOn) );
     QVERIFY( NULL == pair1.noteOff );
 
     NoteOffEvent a(10, 0, 10, 0);
-    NoteEventPair pair2(A, a);
+    MidiPair pair2(A, a);
     QVERIFY( A == *(pair2.noteOn) );
     QVERIFY( a == *(pair2.noteOff) );
 }
 
-void Test::noteEventPair_comparisons_single() {
-    NoteEventPair pair(NoteOnEvent(0, 0, 10, 0));
-    NoteEventPair same(NoteOnEvent(0, 0, 10, 0));
-    NoteEventPair higher(NoteOnEvent(0, 0, 20, 0));
-    NoteEventPair lower(NoteOnEvent(0, 0, 5, 0));
-    NoteEventPair later(NoteOnEvent(100, 0, 10, 0));
-    NoteEventPair higherAndLater(NoteOnEvent(100, 0, 20, 0));
-    NoteEventPair lowerAndLater(NoteOnEvent(100, 0, 5, 0));
+void Test::midiPair_comparisons_single() {
+    MidiPair pair(NoteOnEvent(0, 0, 10, 0));
+    MidiPair same(NoteOnEvent(0, 0, 10, 0));
+    MidiPair higher(NoteOnEvent(0, 0, 20, 0));
+    MidiPair lower(NoteOnEvent(0, 0, 5, 0));
+    MidiPair later(NoteOnEvent(100, 0, 10, 0));
+    MidiPair higherAndLater(NoteOnEvent(100, 0, 20, 0));
+    MidiPair lowerAndLater(NoteOnEvent(100, 0, 5, 0));
 
     QVERIFY( pair == same );
 
@@ -183,13 +183,13 @@ void Test::noteEventPair_comparisons_single() {
     QCOMPARE( higherAndLater < lowerAndLater, false );
 }
 
-void Test::noteEventPair_comparisons_chord() {
-    NoteEventPair chord1note1(NoteOnEvent(0, 0, 30, 0));
-    NoteEventPair chord1note2(NoteOnEvent(10, 0, 10, 0));
-    NoteEventPair chord1note3(NoteOnEvent(20, 0, 20, 0));
+void Test::midiPair_comparisons_chord() {
+    MidiPair chord1note1(NoteOnEvent(0, 0, 30, 0));
+    MidiPair chord1note2(NoteOnEvent(10, 0, 10, 0));
+    MidiPair chord1note3(NoteOnEvent(20, 0, 20, 0));
 
-    NoteEventPair chord2note1(NoteOnEvent(100, 0, 20, 0));
-    NoteEventPair chord2note2(NoteOnEvent(110, 0, 30, 0));
+    MidiPair chord2note1(NoteOnEvent(100, 0, 20, 0));
+    MidiPair chord2note2(NoteOnEvent(110, 0, 30, 0));
 
     //QVERIFY( chord1note1 > chord1note2 );
     QVERIFY( chord1note2 < chord1note1 );
@@ -529,7 +529,7 @@ void Test::midiService_addNote() {
     NoteOnEvent G(600, 0, 80, 0); NoteOffEvent g(650, 0, 80, 0);
     NoteOnEvent H(700, 0, 90, 0); NoteOffEvent h(750, 0, 90, 0);
 
-    QList<NoteEventPair> pairs;
+    QList<MidiPair> pairs;
 
     MidiService::addNoteOn(pairs, A);
     MidiService::addNoteOff(pairs, a);
@@ -574,7 +574,7 @@ void Test::midiService_saveLoad() {
     NoteOnEvent B(100, 0, 52, 0); NoteOffEvent b(150, 0, 52, 0);
     NoteOnEvent C(200, 0, 55, 0); NoteOffEvent c(250, 0, 55, 0);
 
-    QList<NoteEventPair> saveit;
+    QList<MidiPair> saveit;
 
     MidiService::addNoteOn(saveit, A);
     MidiService::addNoteOff(saveit, a);
@@ -589,7 +589,7 @@ void Test::midiService_saveLoad() {
 
     MidiService::save(tempFile.fileName(), saveit);
 
-    QList<NoteEventPair> loadit = MidiService::load(tempFile.fileName());
+    QList<MidiPair> loadit = MidiService::load(tempFile.fileName());
 
     QCOMPARE( loadit.size(), saveit.size() );
     for (int i = 0; i < loadit.size(); ++i) {
@@ -605,7 +605,7 @@ void Test::midiService_loadHanon() {
     QVERIFY( hanonFile1.exists() );
     QVERIFY( hanonFile2.exists() );
 
-    QList<NoteEventPair> loadit;
+    QList<MidiPair> loadit;
     loadit = MidiService::load(fileName1);
     QCOMPARE( loadit.size(), 29*8 );
 
@@ -615,37 +615,37 @@ void Test::midiService_loadHanon() {
 
 // MATCHINGSERVICE
 
-void Test::matchingService_midiEvents2xy() {
+void Test::matchingService_midiPairs2xy() {
     NoteOnEvent A(  0, 0,   0, 0); NoteOffEvent a( 50, 0,   0, 0);
     NoteOnEvent B(100, 0, 127, 0); NoteOffEvent b(150, 0, 127, 0);
     NoteOnEvent C(200, 0,   0, 0); NoteOffEvent c(250, 0,   0, 0);
     NoteOnEvent D(200, 0,  64, 0); NoteOffEvent d(250, 0,  64, 0);
 
-    NoteEventPair Aa(A, a);
-    NoteEventPair Bb(B, b);
-    NoteEventPair Cc(C);
-    NoteEventPair Dd(D, d);
+    MidiPair Aa(A, a);
+    MidiPair Bb(B, b);
+    MidiPair Cc(C);
+    MidiPair Dd(D, d);
 
-    QList<NoteEventPair> pairs;
+    QList<MidiPair> pairs;
     pairs.append(Aa);
     pairs.append(Bb);
     pairs.append(Cc);
     pairs.append(Dd);
 
-    QByteArray pitchSequence = MatchingService::midiEvents2pitchSequence(pairs);
+    QByteArray pitchSequence = MatchingService::midiPairs2pitchSequence(pairs);
     QVERIFY( pitchSequence.size() == 4 );
     QVERIFY( pitchSequence.at(0) ==   0 );
     QVERIFY( pitchSequence.at(1) == 127 );
     QVERIFY( pitchSequence.at(2) ==   0 );
     QVERIFY( pitchSequence.at(3) ==  64 );
 
-    QByteArray intervalSequence = MatchingService::midiEvents2intervalSequence(pairs);
+    QByteArray intervalSequence = MatchingService::midiPairs2intervalSequence(pairs);
     QVERIFY( intervalSequence.size() == 3 );
     QVERIFY( intervalSequence.at(0) == 127 );
     QVERIFY( intervalSequence.at(1) == -127 );
     QVERIFY( intervalSequence.at(2) == 64 );
 
-    QByteArray pressedSequence = MatchingService::midiEvents2pressedSequence(pairs);
+    QByteArray pressedSequence = MatchingService::midiPairs2pressedSequence(pairs);
     QVERIFY( pressedSequence.size() == 4 );
     QVERIFY( pressedSequence.at(0) == MatchingService::RELEASED );
     QVERIFY( pressedSequence.at(1) == MatchingService::RELEASED );
@@ -703,21 +703,21 @@ void Test::matchingService_isFinished() {
     QVERIFY( !MatchingService::isFinished("mimi", ".X..") );
 }
 
-void Test::matchingService_cutMatchingMidiEvents() {
+void Test::matchingService_cutMatchingMidiPairs() {
     NoteOnEvent A(  0, 0,   0, 0); NoteOffEvent a( 50, 0,   0, 0);
     NoteOnEvent B(100, 0, 127, 0); NoteOffEvent b(150, 0, 127, 0);
     NoteOnEvent C(200, 0,   0, 0); NoteOffEvent c(250, 0,   0, 0);
 
-    NoteEventPair Aa(A, a);
-    NoteEventPair Bb(B, b);
-    NoteEventPair Cc(C, c);
+    MidiPair Aa(A, a);
+    MidiPair Bb(B, b);
+    MidiPair Cc(C, c);
 
-    QList<NoteEventPair> pairs;
+    QList<MidiPair> pairs;
     pairs.append(Aa);
     pairs.append(Bb);
     pairs.append(Cc);
 
-    QList<NoteEventPair> rest = MatchingService::cutMatchingMidiEvents(pairs, "mmi");
+    QList<MidiPair> rest = MatchingService::cutMatchingMidiPairs(pairs, "mmi");
     QCOMPARE( pairs.size(), 2 );
     QCOMPARE( rest.size(), 1 );
     QVERIFY( rest.at(0) == Cc );
@@ -730,31 +730,31 @@ void Test::matchingService_merge() {
     scores.append(Score(54));
     scores.append(Score(57));
 
-    NoteEventPair A(NoteOnEvent(  0, 0, 48, 0));
-    NoteEventPair Bb(NoteOnEvent(100, 0, 51, 0), NoteOffEvent(110, 0, 51, 0));
-    NoteEventPair Cc(NoteOnEvent(100, 0, 57, 0), NoteOffEvent(110, 0, 57, 0));
-    NoteEventPair Dd(NoteOnEvent(100, 0, 60, 0), NoteOffEvent(110, 0, 60, 0));
+    MidiPair A(NoteOnEvent(  0, 0, 48, 0));
+    MidiPair Bb(NoteOnEvent(100, 0, 51, 0), NoteOffEvent(110, 0, 51, 0));
+    MidiPair Cc(NoteOnEvent(100, 0, 57, 0), NoteOffEvent(110, 0, 57, 0));
+    MidiPair Dd(NoteOnEvent(100, 0, 60, 0), NoteOffEvent(110, 0, 60, 0));
 
-    QList<NoteEventPair> midiEvents;
-    midiEvents.append(A);
-    midiEvents.append(Bb);
-    midiEvents.append(Cc);
-    midiEvents.append(Dd);
+    QList<MidiPair> midiPairs;
+    midiPairs.append(A);
+    midiPairs.append(Bb);
+    midiPairs.append(Cc);
+    midiPairs.append(Dd);
 
     QByteArray pitchAlignment = "mmdmi";
 
-    QList<Score> mergedScores = MatchingService::merge(scores, midiEvents, pitchAlignment);
+    QList<Score> mergedScores = MatchingService::merge(scores, midiPairs, pitchAlignment);
 
     QCOMPARE( mergedScores.size(), 5 );
     QVERIFY( mergedScores.at(0).status == PLAYED );
-    QVERIFY( mergedScores.at(0).noteEventPair == A );
+    QVERIFY( mergedScores.at(0).midiPair == A );
     QVERIFY( mergedScores.at(1).status == PLAYED );
-    QVERIFY( mergedScores.at(1).noteEventPair == Bb );
+    QVERIFY( mergedScores.at(1).midiPair == Bb );
     QVERIFY( mergedScores.at(2).status == MISSED );
     QVERIFY( mergedScores.at(3).status == PLAYED );
-    QVERIFY( mergedScores.at(3).noteEventPair == Cc );
+    QVERIFY( mergedScores.at(3).midiPair == Cc );
     QVERIFY( mergedScores.at(4).status == EXTRA );
-    QVERIFY( mergedScores.at(4).noteEventPair == Dd );
+    QVERIFY( mergedScores.at(4).midiPair == Dd );
 }
 
 // MATCHINGHANDLER
@@ -873,12 +873,12 @@ void Test::matchingHandler_hanonNo1Left() {
     QFile hanonFile1(fileName1);
     QVERIFY( hanonFile1.exists() );
 
-    QList<NoteEventPair> loadit;
+    QList<MidiPair> loadit;
     loadit = MidiService::load(fileName1);
     QCOMPARE( loadit.size(), 29*8 );
 
     QList<ChannelEvent> events;
-    for (NoteEventPair p : loadit) {
+    for (MidiPair p : loadit) {
         events.append(*p.noteOn);
         events.append(*p.noteOff);
     }

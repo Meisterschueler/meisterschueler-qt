@@ -7,7 +7,7 @@
 
 #include "events.h"
 
-class NoteEventPair;
+class MidiPair;
 
 enum Finger { UNKNOWN_FINGER = 0, THUMB, POINTER, MIDDLE, RING, LITTLE };
 enum Hand { UNKNOWN_HAND, LEFT, RIGHT, BOTH };
@@ -22,7 +22,7 @@ public:
     Fraction duration;
     Fraction position;
 
-    NoteEventPair noteEventPair;
+    MidiPair midiPair;
 
     Finger finger;
     Hand hand;

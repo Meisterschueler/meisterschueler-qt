@@ -28,7 +28,7 @@ signals:
 
 private:
     QList<MatchingItem> matchingItems;
-    QSharedPointer<QList<NoteEventPair>> midiEvents;
+    QSharedPointer<QList<MidiPair>> midiPairs;
 
     void match();
 };

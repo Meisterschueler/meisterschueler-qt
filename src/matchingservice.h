@@ -5,7 +5,7 @@
 #include <QList>
 
 class Score;
-class NoteEventPair;
+class MidiPair;
 
 class MatchingService
 {
@@ -16,9 +16,9 @@ public:
     static const char RELEASED = '.';
 
     // pre matching
-    static QByteArray midiEvents2pitchSequence(const QList<NoteEventPair>& events);
-    static QByteArray midiEvents2intervalSequence(const QList<NoteEventPair>& events);
-    static QByteArray midiEvents2pressedSequence(const QList<NoteEventPair>& events);
+    static QByteArray midiPairs2pitchSequence(const QList<MidiPair>& pairs);
+    static QByteArray midiPairs2intervalSequence(const QList<MidiPair>& pairs);
+    static QByteArray midiPairs2pressedSequence(const QList<MidiPair>& pairs);
 
     // matching
     static QByteArray getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const char& transposition=0, const QByteArray& oldAlignment = "");
@@ -26,10 +26,10 @@ public:
     static char getTransposition(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& intervalAlignment);
     static double getQuality(const QByteArray& pitchAlignment, char transposition);
     static bool isFinished(const QByteArray& pitchAlignment, const QByteArray& pressedSequence);
-    static QList<NoteEventPair> cutMatchingMidiEvents(QList<NoteEventPair> &events, const QByteArray& pitchAlignment);
+    static QList<MidiPair> cutMatchingMidiPairs(QList<MidiPair>& pairs, const QByteArray& pitchAlignment);
 
     // post matching
-    static QList<Score> merge(const QList<Score>& scores, const QList<NoteEventPair>& midiEvents, const QByteArray& pitchAlignment);
+    static QList<Score> merge(const QList<Score>& scores, const QList<MidiPair>& midiPairs, const QByteArray& pitchAlignment);
 };
 
 #endif // MATCHINGSERVICE_H

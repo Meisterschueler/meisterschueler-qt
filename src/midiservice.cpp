@@ -16,17 +16,17 @@ MidiService::MidiService()
 {
 }
 
-void MidiService::addNoteOn(QList<NoteEventPair>& pairs, const NoteOnEvent &noteOn) {
+void MidiService::addNoteOn(QList<MidiPair>& pairs, const NoteOnEvent &noteOn) {
     QSharedPointer<NoteOnEvent> pointer(new NoteOnEvent(noteOn));
-    NoteEventPair pair;
+    MidiPair pair;
     pair.noteOn = pointer;
     pairs.append(pair);
     qSort(pairs);
 }
 
-void MidiService::addNoteOff(QList<NoteEventPair>& pairs, const NoteOffEvent &noteOff) {
+void MidiService::addNoteOff(QList<MidiPair>& pairs, const NoteOffEvent &noteOff) {
     QSharedPointer<NoteOffEvent> pointer(new NoteOffEvent(noteOff));
-    QMutableListIterator<NoteEventPair> it(pairs);
+    QMutableListIterator<MidiPair> it(pairs);
     while (it.hasNext()) {
         it.next();
         if (it.value().noteOn->getNote() == pointer->getNote() && !it.value().noteOff) {
@@ -39,9 +39,9 @@ void MidiService::addNoteOff(QList<NoteEventPair>& pairs, const NoteOffEvent &no
 using namespace jdksmidi;
 using namespace std;
 
-void MidiService::save(const QString& fileName, const QList<NoteEventPair>& pairs) {
+void MidiService::save(const QString& fileName, const QList<MidiPair>& pairs) {
     QList<QSharedPointer<NoteEvent>> events;
-    for (NoteEventPair pair : pairs) {
+    for (MidiPair pair : pairs) {
         events.append(pair.noteOn);
         if (pair.noteOff) {
             events.append(pair.noteOff);
@@ -140,8 +140,8 @@ void MidiService::save(const QString& fileName, const QList<NoteEventPair>& pair
     }
 }
 
-QList<NoteEventPair> parseMIDIMultiTrack ( MIDIMultiTrack *mlt ) {
-    QList<NoteEventPair> result;
+QList<MidiPair> parseMIDIMultiTrack ( MIDIMultiTrack *mlt ) {
+    QList<MidiPair> result;
 
     MIDIMultiTrackIterator i ( mlt );
     const MIDITimedBigMessage *msg;
@@ -162,8 +162,8 @@ QList<NoteEventPair> parseMIDIMultiTrack ( MIDIMultiTrack *mlt ) {
     return result;
 }
 
-QList<NoteEventPair> MidiService::load(const QString fileName) {
-    QList<NoteEventPair> result;
+QList<MidiPair> MidiService::load(const QString fileName) {
+    QList<MidiPair> result;
 
     MIDIFileReadStreamFile rs ( fileName.toLatin1() );
     MIDIMultiTrack tracks;

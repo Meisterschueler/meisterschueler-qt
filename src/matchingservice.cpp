@@ -11,17 +11,17 @@ MatchingService::MatchingService()
 {
 }
 
-QByteArray MatchingService::midiEvents2pitchSequence(const QList<NoteEventPair>& events) {
+QByteArray MatchingService::midiPairs2pitchSequence(const QList<MidiPair>& pairs) {
     QByteArray sequence;
-    for (NoteEventPair midiPair : events) {
+    for (MidiPair midiPair : pairs) {
         sequence.append(midiPair.noteOn->getNote());
     }
     return sequence;
 }
 
-QByteArray MatchingService::midiEvents2intervalSequence(const QList<NoteEventPair>& events) {
+QByteArray MatchingService::midiPairs2intervalSequence(const QList<MidiPair>& pairs) {
     QByteArray sequence;
-    QByteArray pitchSequence = midiEvents2pitchSequence(events);
+    QByteArray pitchSequence = midiPairs2pitchSequence(pairs);
     for (int i=1; i<pitchSequence.length(); i++) {
         char delta = pitchSequence.at(i) - pitchSequence.at(i-1);
         sequence.append(delta);
@@ -29,9 +29,9 @@ QByteArray MatchingService::midiEvents2intervalSequence(const QList<NoteEventPai
     return sequence;
 }
 
-QByteArray MatchingService::midiEvents2pressedSequence(const QList<NoteEventPair>& events) {
+QByteArray MatchingService::midiPairs2pressedSequence(const QList<MidiPair>& pairs) {
     QByteArray sequence;
-    for (NoteEventPair midiPair : events) {
+    for (MidiPair midiPair : pairs) {
         if (midiPair.noteOn != NULL && midiPair.noteOff != NULL) {
             sequence.append(MatchingService::RELEASED);
         } else if (midiPair.noteOn != NULL){
@@ -141,8 +141,8 @@ bool MatchingService::isFinished(const QByteArray& pitchAlignment, const QByteAr
     return result;
 }
 
-QList<NoteEventPair> MatchingService::cutMatchingMidiEvents(QList<NoteEventPair>& events, const QByteArray& pitchAlignment) {
-    QList<NoteEventPair> result;
+QList<MidiPair> MatchingService::cutMatchingMidiPairs(QList<MidiPair>& pairs, const QByteArray& pitchAlignment) {
+    QList<MidiPair> result;
 
     QString alignment(pitchAlignment);
     while (alignment.endsWith("i")) {
@@ -150,13 +150,13 @@ QList<NoteEventPair> MatchingService::cutMatchingMidiEvents(QList<NoteEventPair>
     }
     alignment.remove('d');
 
-    result = events.mid(alignment.size());
-    events = events.mid(0, alignment.size());
+    result = pairs.mid(alignment.size());
+    pairs = pairs.mid(0, alignment.size());
 
     return result;
 }
 
-QList<Score> MatchingService::merge(const QList<Score>& scores, const QList<NoteEventPair>& midiEvents, const QByteArray& pitchAlignment) {
+QList<Score> MatchingService::merge(const QList<Score>& scores, const QList<MidiPair>& midiPairs, const QByteArray& pitchAlignment) {
     QList<Score> result;
     return result;
 }
