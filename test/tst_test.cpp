@@ -762,6 +762,8 @@ void Test::matchingHandler_simple() {
     MatchingItem finishedItem1 = qvariant_cast<MatchingItem>(arguments1.at(0));
 
     QVERIFY( finishedItem1.song == upItem.song );
+    QVERIFY( finishedItem1.pitchAlignment == "mmmm" );
+    QVERIFY( finishedItem1.intervalAlignment == "mmm" );
 
     // Play accurate scores down
     matchingHandler.noteOnEvent(E); matchingHandler.noteOffEvent(e);
@@ -774,6 +776,8 @@ void Test::matchingHandler_simple() {
     MatchingItem finishedItem2 = qvariant_cast<MatchingItem>(arguments2.at(0));
 
     QVERIFY( finishedItem2.song == downItem.song );
+    QVERIFY( finishedItem2.pitchAlignment == "mmmm" );
+    QVERIFY( finishedItem2.intervalAlignment == "mmm" );
 
     // And now we play not so accurate:
     // Play scores up, but lets start with the second song before we really finished the first one
@@ -823,7 +827,10 @@ void Test::matchingHandler_simple() {
     QList<QVariant> arguments5 = songFinishedSpy.takeFirst();
     MatchingItem finishedItem5 = qvariant_cast<MatchingItem>(arguments5.at(0));
 
+    QVERIFY( finishedItem1.song == upItem.song );
     QCOMPARE( (int)finishedItem5.transposition, -12 );
+    QVERIFY( finishedItem1.pitchAlignment == "mmmm" );
+    QVERIFY( finishedItem1.intervalAlignment == "mmm" );
 }
 
 void Test::matchingHandler_hanonNo1Left() {
@@ -855,6 +862,7 @@ void Test::matchingHandler_hanonNo1Left() {
         if (e.type() == QEvent::User + STATUS_NOTEON) {
             //matchingHandler.noteOnEvent(static_cast<NoteOnEvent>(e));
             matchingHandler.noteOnEvent(NoteOnEvent(e.getTime(), 0, e.getNote(), e.getVelocity()));
+
         } else if (e.type() == QEvent::User + STATUS_NOTEOFF) {
             //matchingHandler.noteOffEvent(static_cast<NoteOffEvent>(e));
             matchingHandler.noteOffEvent(NoteOffEvent(e.getTime(), 0, e.getNote(), e.getVelocity()));
@@ -866,7 +874,9 @@ void Test::matchingHandler_hanonNo1Left() {
     QList<QVariant> arguments = songFinishedSpy.takeFirst();
     MatchingItem finishedItem = qvariant_cast<MatchingItem>(arguments.at(0));
 
-    QVERIFY( finishedItem.song.name == "1" );
+    QVERIFY( finishedItem.song.name == "No. 1" );
+    QVERIFY( finishedItem.pitchAlignment == QString("m").repeated(232) );
+    QVERIFY( finishedItem.intervalAlignment.startsWith("mmmmmmmmmm") );
 }
 
 // MIDIWRAPPER
