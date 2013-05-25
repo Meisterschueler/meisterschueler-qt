@@ -1,6 +1,7 @@
 #include "midiwrapper.h"
 
-#include "math.h"
+#include <cmath>
+#include <ctime>
 
 #include <QApplication>
 #include <QSettings>
@@ -49,6 +50,13 @@ MidiWrapper::MidiWrapper(QObject *parent) :
     try {
         midiIn = new RtMidiIn();
         midiOut = new RtMidiOut();
+
+        QSettings settings;
+        QString inputPortName = settings.value("midi/input").toString();
+        QString outputPortName = settings.value("midi/output").toString();
+
+        openInputPort(inputPortName);
+        openOutputPort(outputPortName);
     } catch (...) {
         qDebug("WTF! Initialization of the sound failed!");
         midiIn = 0;
@@ -141,14 +149,14 @@ void MidiWrapper::openInputPort(QString portName) {
         midiIn->closePort();
     }
 
-    int port = getInputPorts().indexOf(portName);
-    if (port != 0) {
+    int port = getInputPorts().indexOf(portName) - 1;
+    if (port >= 0) {
         midiIn->openPort(port);
         midiIn->setCallback(&midiCallback, this);
         midiIn->ignoreTypes(false, false, false); // Don't ignore sysex, timing, or active sensing messages.
-        QSettings settings;
-        settings.setValue("midi/input", portName);
     }
+    QSettings settings;
+    settings.setValue("midi/input", portName);
     openedInputPort = portName;
 }
 
@@ -157,11 +165,11 @@ void MidiWrapper::openOutputPort(QString portName) {
         midiOut->closePort();
     }
 
-    int port = getOutputPorts().indexOf(portName);
-    if (port != 0) {
+    int port = getOutputPorts().indexOf(portName) - 1;
+    if (port >= 0) {
         midiOut->openPort(port);
-        QSettings settings;
-        settings.setValue("midi/output", portName);
     }
+    QSettings settings;
+    settings.setValue("midi/output", portName);
     openedOutputPort = portName;
 }
