@@ -32,7 +32,7 @@ QList<Score> ScoreService::transposeStep(const QList<Score>& scores, const int& 
     return result;
 }
 
-QList<Score> ScoreService::transposeSteps(QList<Score> scores, const QVector<int>& steps) {
+QList<Score> ScoreService::transposeSteps(const QList<Score>& scores, const QVector<int>& steps) {
     QList<Score> result;
     for (int step : steps) {
         result = concat(result, transposeStep(scores, step));
@@ -72,7 +72,7 @@ QList<Score> ScoreService::merge(const QList<Score>& scores1, const QList<Score>
     return result;
 }
 
-QByteArray ScoreService::scoresToPitchSequence(const QList<Score> scores) {
+QByteArray ScoreService::scoresToPitchSequence(const QList<Score>& scores) {
     QByteArray result;
 
     for (Score score : scores) {
@@ -82,7 +82,7 @@ QByteArray ScoreService::scoresToPitchSequence(const QList<Score> scores) {
     return result;
 }
 
-QByteArray ScoreService::scoresToIntervalSequence(const QList<Score> scores) {
+QByteArray ScoreService::scoresToIntervalSequence(const QList<Score>& scores) {
     QByteArray result;
 
     QByteArray pitchSequence = scoresToPitchSequence(scores);
@@ -90,5 +90,15 @@ QByteArray ScoreService::scoresToIntervalSequence(const QList<Score> scores) {
         result.append(pitchSequence.at(i) - pitchSequence.at(i-1));
     }
 
+    return result;
+}
+
+QList<Score> ScoreService::filterFingers(const QList<Score>& scores, const int& fingers) {
+    QList<Score> result;
+    return result;
+}
+
+QList<Score> ScoreService::filterStatus(const QList<Score>& scores, const int& status) {
+    QList<Score> result;
     return result;
 }

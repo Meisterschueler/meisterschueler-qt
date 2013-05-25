@@ -57,6 +57,8 @@ private Q_SLOTS:
     void scoreService_concat();
     void scoreService_merge();
     void scoreService_scoresToXYSequence();
+    void scoreService_filterFinger();
+    void scoreService_filterStatus();
 
     void songFactories_hanon();
 
@@ -501,6 +503,49 @@ void Test::scoreService_scoresToXYSequence() {
     QVERIFY( intervalSequence.at(2) == 2 );
 }
 
+void Test::scoreService_filterFinger() {
+    QString gmn = "[c0 d e f g a b c1]";
+    QList<Score> scores = GuidoService::gmnToScores(gmn);
+
+    QVector<int> fingers {5, 4, 3, 2, 1, 3, 2 };
+    QList<Score> fingeredScores = ScoreService::addFingers(scores, fingers);
+
+    QList<Score> filteredScores = ScoreService::filterFingers(fingeredScores, THUMB);
+    QCOMPARE( filteredScores.size(), 1 );
+    QCOMPARE( filteredScores.at(0).pitch, '\55' );
+
+    filteredScores = ScoreService::filterFingers(fingeredScores, RING || MIDDLE);
+    QCOMPARE( filteredScores.size(), 3 );
+    QCOMPARE( filteredScores.at(0).pitch, '\50' );
+    QCOMPARE( filteredScores.at(1).pitch, '\52' );
+    QCOMPARE( filteredScores.at(2).pitch, '\57' );
+}
+
+void Test::scoreService_filterStatus() {
+    QString gmn = "[c0 d e f g a b c1]";
+    QList<Score> scores = GuidoService::gmnToScores(gmn);
+
+    scores[0].status = MISSED;
+    scores[1].status = PLAYED;
+    scores[2].status = PLAYED;
+    scores[3].status = EXTRA;
+    scores[4].status = EXTRA;
+    scores[5].status = OPEN;
+    scores[6].status = OPEN;
+    scores[7].status = OPEN;
+
+    QList<Score> filteredScores = ScoreService::filterStatus(scores, PLAYED);
+    QCOMPARE( filteredScores.size(), 2 );
+    QCOMPARE( filteredScores.at(0).pitch, '\50' );
+    QCOMPARE( filteredScores.at(1).pitch, '\52' );
+
+    filteredScores = ScoreService::filterStatus(scores, EXTRA || MISSED);
+    QCOMPARE( filteredScores.size(), 3 );
+    QCOMPARE( filteredScores.at(0).pitch, '\50' );
+    QCOMPARE( filteredScores.at(1).pitch, '\53' );
+    QCOMPARE( filteredScores.at(2).pitch, '\55' );
+}
+
 // SONGFACTORIES
 
 void Test::songFactories_hanon() {
@@ -927,10 +972,13 @@ void Test::statisticsService_statisticItem() {
     QCOMPARE( item.max, 3.0 );
     QCOMPARE( item.mean, 1.5 );
     QCOMPARE( item.variance, 1.25 );
-    QVERIFY( abs(item.standarddeviation - 1.11803) < 0.01 );
+    QCOMPARE( item.standarddeviation, sqrt(1.25) );
 
     QCOMPARE( item.spectrum.size(), 4 );
-    QCOMPARE( item.spectrum.at(0)/4, item.mean );
+    QCOMPARE( item.spectrum.at(0), sqrt(36) );
+    QCOMPARE( item.spectrum.at(1), sqrt(8) );
+    QCOMPARE( item.spectrum.at(2), sqrt(4) );
+    //QCOMPARE( item.spectrum.at(3), sqrt(8) );
 }
 
 void Test::statisticsService_statisticCluster() {
