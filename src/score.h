@@ -9,9 +9,9 @@
 
 class MidiPair;
 
-enum Finger { UNKNOWN_FINGER = 0, THUMB, POINTER, MIDDLE, RING, LITTLE };
-enum Hand { UNKNOWN_HAND, LEFT, RIGHT, BOTH };
-enum Status { UNKNOWN_STATUS, PLAYED, MISSED, EXTRA, FAILED, OPEN };
+enum Finger { UNKNOWN_FINGER = 0x01, THUMB = 0x02, POINTER = 0x04, MIDDLE = 0x08, RING = 0x10, LITTLE = 0x20 };
+enum Hand { UNKNOWN_HAND = 0x01, LEFT = 0x02, RIGHT = 0x04, BOTH = 0x08 };
+enum Status { UNKNOWN_STATUS = 0x01, PLAYED = 0x02, MISSED = 0x04, EXTRA = 0x08, FAILED = 0x10, OPEN = 0x20 };
 
 class Score
 {

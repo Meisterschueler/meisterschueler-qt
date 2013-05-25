@@ -44,7 +44,23 @@ QList<Score> ScoreService::addFingers(const QList<Score>& scores, const QVector<
     QList<Score> result(scores);
     for (int i=0; i < result.size(); i++) {
         int idx = i % fingers.size();
-        result[i].finger = (Finger)fingers[idx];
+        switch (fingers[idx]) {
+        case 5:
+            result[i].finger = LITTLE;
+            break;
+        case 4:
+            result[i].finger = RING;
+            break;
+        case 3:
+            result[i].finger = MIDDLE;
+            break;
+        case 2:
+            result[i].finger = POINTER;
+            break;
+        case 1:
+            result[i].finger = THUMB;
+            break;
+        }
     }
     return result;
 }
@@ -95,10 +111,20 @@ QByteArray ScoreService::scoresToIntervalSequence(const QList<Score>& scores) {
 
 QList<Score> ScoreService::filterFingers(const QList<Score>& scores, const int& fingers) {
     QList<Score> result;
+    for (Score score : scores) {
+        if (score.finger & fingers) {
+            result.append(score);
+        }
+    }
     return result;
 }
 
 QList<Score> ScoreService::filterStatus(const QList<Score>& scores, const int& status) {
     QList<Score> result;
+    for (Score score : scores) {
+        if (score.status & status) {
+            result.append(score);
+        }
+    }
     return result;
 }

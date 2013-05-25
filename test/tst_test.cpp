@@ -435,11 +435,11 @@ void Test::scoreService_addFingers() {
     QList<Score> fingeredScores = ScoreService::addFingers(scores, fingers);
 
     QCOMPARE( fingeredScores.size(), 5 );
-    QVERIFY( fingeredScores.at(0).finger == 1 );
-    QVERIFY( fingeredScores.at(1).finger == 2 );
-    QVERIFY( fingeredScores.at(2).finger == 3 );
-    QVERIFY( fingeredScores.at(3).finger == 1 );
-    QVERIFY( fingeredScores.at(4).finger == 2 );
+    QVERIFY( fingeredScores.at(0).finger == THUMB );
+    QVERIFY( fingeredScores.at(1).finger == POINTER );
+    QVERIFY( fingeredScores.at(2).finger == MIDDLE );
+    QVERIFY( fingeredScores.at(3).finger == THUMB );
+    QVERIFY( fingeredScores.at(4).finger == POINTER );
 }
 
 void Test::scoreService_concat() {
@@ -512,13 +512,13 @@ void Test::scoreService_filterFinger() {
 
     QList<Score> filteredScores = ScoreService::filterFingers(fingeredScores, THUMB);
     QCOMPARE( filteredScores.size(), 1 );
-    QCOMPARE( filteredScores.at(0).pitch, '\55' );
+    QVERIFY( filteredScores.at(0).pitch == 55 );
 
-    filteredScores = ScoreService::filterFingers(fingeredScores, RING || MIDDLE);
+    filteredScores = ScoreService::filterFingers(fingeredScores, RING | MIDDLE);
     QCOMPARE( filteredScores.size(), 3 );
-    QCOMPARE( filteredScores.at(0).pitch, '\50' );
-    QCOMPARE( filteredScores.at(1).pitch, '\52' );
-    QCOMPARE( filteredScores.at(2).pitch, '\57' );
+    QVERIFY( filteredScores.at(0).pitch == 50 );
+    QVERIFY( filteredScores.at(1).pitch == 52 );
+    QVERIFY( filteredScores.at(2).pitch == 57 );
 }
 
 void Test::scoreService_filterStatus() {
@@ -536,14 +536,14 @@ void Test::scoreService_filterStatus() {
 
     QList<Score> filteredScores = ScoreService::filterStatus(scores, PLAYED);
     QCOMPARE( filteredScores.size(), 2 );
-    QCOMPARE( filteredScores.at(0).pitch, '\50' );
-    QCOMPARE( filteredScores.at(1).pitch, '\52' );
+    QVERIFY( filteredScores.at(0).pitch == 50 );
+    QVERIFY( filteredScores.at(1).pitch == 52 );
 
-    filteredScores = ScoreService::filterStatus(scores, EXTRA || MISSED);
+    filteredScores = ScoreService::filterStatus(scores, EXTRA | MISSED);
     QCOMPARE( filteredScores.size(), 3 );
-    QCOMPARE( filteredScores.at(0).pitch, '\50' );
-    QCOMPARE( filteredScores.at(1).pitch, '\53' );
-    QCOMPARE( filteredScores.at(2).pitch, '\55' );
+    QVERIFY( filteredScores.at(0).pitch == 48 );
+    QVERIFY( filteredScores.at(1).pitch == 53 );
+    QVERIFY( filteredScores.at(2).pitch == 55 );
 }
 
 // SONGFACTORIES
