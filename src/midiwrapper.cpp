@@ -62,8 +62,6 @@ MidiWrapper::MidiWrapper(QObject *parent) :
         midiIn = 0;
         midiOut = 0;
     }
-
-    QObject::connect(this, SIGNAL(gotNoteOnEvent(NoteOnEvent)), SLOT(dummySlot(NoteOnEvent)));
 }
 
 MidiWrapper::~MidiWrapper() {
@@ -115,11 +113,10 @@ QString MidiWrapper::getOpenedOutputPort() {
 void MidiWrapper::customEvent(QEvent *event) {
     if (event->type() == NoteOnEventType) {
         NoteOnEvent *ev = static_cast<NoteOnEvent*> (event);
-        emit playNoteOn(*ev);
-        emit dummySignal(ev->getNote(), ev->getVelocity());
+        emit gotNoteOnEvent(*ev);
     } else if (event->type() == NoteOffEventType) {
         NoteOffEvent *ev = static_cast<NoteOffEvent*> (event);
-        emit playNoteOff(*ev);
+        emit gotNoteOffEvent(*ev);
     } else if (event->type() == ControlChangeEventType) {
         ControlChangeEvent *ev = static_cast<ControlChangeEvent*> (event);
         emit gotControlChangeEvent(*ev);
@@ -145,10 +142,6 @@ void MidiWrapper::playNoteOff(NoteOffEvent event) {
         message.push_back(event.getVelocity());
         midiOut->sendMessage(&message);
     }
-}
-
-void MidiWrapper::dummySlot(NoteOnEvent event) {
-    qDebug("dummySlot called");
 }
 
 void MidiWrapper::openInputPort(QString portName) {

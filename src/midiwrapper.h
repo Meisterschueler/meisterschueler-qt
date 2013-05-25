@@ -32,7 +32,6 @@ private:
 signals:
     void gotNoteOnEvent(NoteOnEvent event);
     void gotNoteOffEvent(NoteOffEvent event);
-    void dummySignal(int note, int velocity);
     void gotControlChangeEvent(ControlChangeEvent event);
 
 protected:
@@ -41,7 +40,6 @@ protected:
 public slots:
     void playNoteOn(NoteOnEvent event);
     void playNoteOff(NoteOffEvent event);
-    void dummySlot(NoteOnEvent event);
 
     void openInputPort(QString portName);
     void openOutputPort(QString portName);

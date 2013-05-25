@@ -64,12 +64,6 @@ void BubbleView::showNoteOnEvent(NoteOnEvent event) {
     makeBubble(pos);
 }
 
-void BubbleView::dummySlot(int note, int velocity) {
-    QPoint itemCoords(note, 127-velocity);
-    QPoint pos = mapFromScene(itemCoords);
-    makeBubble(pos);
-}
-
 QPixmap BubbleView::getBackgroundPixmap() {
     QImage image(128, 128, QImage::Format_ARGB32);
 

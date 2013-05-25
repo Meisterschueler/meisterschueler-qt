@@ -29,7 +29,6 @@ private:
 
 public slots:
     void showNoteOnEvent(NoteOnEvent event);
-    void dummySlot(int gotNoteOnEvent, int velocity);
 
 signals:
     void gotNoteOnEvent(int pitch, int keystroke);
