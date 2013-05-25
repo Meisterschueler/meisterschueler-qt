@@ -2,6 +2,7 @@
 GUIDOLIB = ../../guidolib-code
 RTMIDI = ../../rtmidi-2.0.1
 JDKSMIDI = ../../jdksmidi
+KISSFFT = ../../kiss_fft130
 
 QMAKE_CXXFLAGS += -std=c++0x
 
@@ -51,3 +52,8 @@ INCLUDEPATH += $$JDKSMIDI/include
 
 LIBS += -L$$JDKSMIDI \
         -ljdksmidi
+
+#kissfft
+INCLUDEPATH += $$KISSFFT
+SOURCES += $$KISSFFT/kiss_fft.c \
+           $$KISSFFT/tools/kiss_fftr.c
