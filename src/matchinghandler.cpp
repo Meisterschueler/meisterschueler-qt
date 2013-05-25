@@ -15,12 +15,12 @@ void MatchingHandler::reset() {
     }
 }
 
-void MatchingHandler::noteOnEvent(NoteOnEvent noteOn) {
+void MatchingHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
     MidiService::addNoteOn(*midiPairs, noteOn);
     match();
 }
 
-void MatchingHandler::noteOffEvent(NoteOffEvent noteOff) {
+void MatchingHandler::matchNoteOffEvent(NoteOffEvent noteOff) {
     MidiService::addNoteOff(*midiPairs, noteOff);
     match();
 }

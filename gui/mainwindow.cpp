@@ -22,6 +22,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     bubbleView = new BubbleView();
+
+    QObject::connect(midiWrapper, SIGNAL(gotNoteOnEvent(NoteOnEvent)), bubbleView, SLOT(showNoteOnEvent(NoteOnEvent)));
+    QObject::connect(midiWrapper, SIGNAL(dummySignal(int,int)), bubbleView, SLOT(dummySlot(int,int)));
+
     setCentralWidget(bubbleView);
 }
 

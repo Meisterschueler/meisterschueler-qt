@@ -3,6 +3,10 @@
 #include <QSettings>
 #include <QTranslator>
 
+#include "events.h"
+
+Q_DECLARE_METATYPE(NoteOnEvent)
+
 #define VER "0.1"
 
 int main(int argc, char *argv[])
@@ -28,6 +32,8 @@ int main(int argc, char *argv[])
 
     // Application Icon
     //app.setWindowIcon(QIcon(":/icons/Media3.png"));
+
+    qRegisterMetaType<NoteOnEvent>("NoteOnEvent");
 
     MainWindow w;
     w.show();

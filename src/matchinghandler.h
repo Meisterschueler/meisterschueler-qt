@@ -18,8 +18,8 @@ public:
 
 public slots:
     void reset();
-    void noteOnEvent(NoteOnEvent noteOn);
-    void noteOffEvent(NoteOffEvent noteOff);
+    void matchNoteOnEvent(NoteOnEvent noteOn);
+    void matchNoteOffEvent(NoteOffEvent noteOff);
 
 signals:
     void positionChanged(Fraction position);

@@ -30,16 +30,18 @@ private:
     QString openedOutputPort;
     
 signals:
-    void noteOnEvent(NoteOnEvent event);
-    void noteOffEvent(NoteOffEvent event);
-    void controlChangeEvent(ControlChangeEvent event);
+    void gotNoteOnEvent(NoteOnEvent event);
+    void gotNoteOffEvent(NoteOffEvent event);
+    void dummySignal(int note, int velocity);
+    void gotControlChangeEvent(ControlChangeEvent event);
 
 protected:
     void customEvent(QEvent *event);
 
 public slots:
-    void noteOn(NoteOnEvent event);
-    void noteOff(NoteOffEvent event);
+    void playNoteOn(NoteOnEvent event);
+    void playNoteOff(NoteOffEvent event);
+    void dummySlot(NoteOnEvent event);
 
     void openInputPort(QString portName);
     void openOutputPort(QString portName);

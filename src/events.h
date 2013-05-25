@@ -91,6 +91,7 @@ public:
 class NoteOnEvent : public ChannelEvent
 {
 public:
+    NoteOnEvent() : ChannelEvent(0, 0, 0, 0, NoteOnEventType) {}
     NoteOnEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel)
         : ChannelEvent(time, chan, note, vel, NoteOnEventType) { }
 

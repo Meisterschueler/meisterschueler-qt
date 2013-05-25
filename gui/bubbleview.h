@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 #include <QMouseEvent>
 
+#include "events.h"
 #include "bubblegraphicsitem.h"
 
 class BubbleView : public QGraphicsView
@@ -26,8 +27,12 @@ private:
     int pitch;
     int keystroke;
 
+public slots:
+    void showNoteOnEvent(NoteOnEvent event);
+    void dummySlot(int gotNoteOnEvent, int velocity);
+
 signals:
-    void note(int pitch, int keystroke);
+    void gotNoteOnEvent(int pitch, int keystroke);
 
 protected:
     void resizeEvent(QResizeEvent *event);

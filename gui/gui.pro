@@ -16,15 +16,22 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     settingsdialog.cpp \
-    ../src/midiwrapper.cpp \
     bubblegraphicsitem.cpp \
     bubbleview.cpp
 
 HEADERS  += mainwindow.h \
     settingsdialog.h \
-    ../src/midiwrapper.h \
     bubblegraphicsitem.h \
     bubbleview.h
+
+# Get Classes
+INCLUDEPATH += ../src
+VPATH += ../src
+
+SOURCES += midiwrapper.cpp
+
+HEADERS += midiwrapper.h \
+           events.h
 
 FORMS    += mainwindow.ui \
     settingsdialog.ui

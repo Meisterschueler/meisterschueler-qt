@@ -62,6 +62,8 @@ MidiWrapper::MidiWrapper(QObject *parent) :
         midiIn = 0;
         midiOut = 0;
     }
+
+    QObject::connect(this, SIGNAL(gotNoteOnEvent(NoteOnEvent)), SLOT(dummySlot(NoteOnEvent)));
 }
 
 MidiWrapper::~MidiWrapper() {
@@ -113,18 +115,19 @@ QString MidiWrapper::getOpenedOutputPort() {
 void MidiWrapper::customEvent(QEvent *event) {
     if (event->type() == NoteOnEventType) {
         NoteOnEvent *ev = static_cast<NoteOnEvent*> (event);
-        emit noteOn(*ev);
+        emit playNoteOn(*ev);
+        emit dummySignal(ev->getNote(), ev->getVelocity());
     } else if (event->type() == NoteOffEventType) {
         NoteOffEvent *ev = static_cast<NoteOffEvent*> (event);
-        emit noteOff(*ev);
+        emit playNoteOff(*ev);
     } else if (event->type() == ControlChangeEventType) {
         ControlChangeEvent *ev = static_cast<ControlChangeEvent*> (event);
-        emit controlChangeEvent(*ev);
+        emit gotControlChangeEvent(*ev);
     }
     event->accept();
 }
 
-void MidiWrapper::noteOn(NoteOnEvent event) {
+void MidiWrapper::playNoteOn(NoteOnEvent event) {
     if (!openedOutputPort.isEmpty()) {
         std::vector<unsigned char> message;
         message.push_back(STATUS_NOTEON);
@@ -134,7 +137,7 @@ void MidiWrapper::noteOn(NoteOnEvent event) {
     }
 }
 
-void MidiWrapper::noteOff(NoteOffEvent event) {
+void MidiWrapper::playNoteOff(NoteOffEvent event) {
     if (!openedOutputPort.isEmpty()) {
         std::vector<unsigned char> message;
         message.push_back(STATUS_NOTEOFF);
@@ -142,6 +145,10 @@ void MidiWrapper::noteOff(NoteOffEvent event) {
         message.push_back(event.getVelocity());
         midiOut->sendMessage(&message);
     }
+}
+
+void MidiWrapper::dummySlot(NoteOnEvent event) {
+    qDebug("dummySlot called");
 }
 
 void MidiWrapper::openInputPort(QString portName) {

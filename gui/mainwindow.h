@@ -4,8 +4,7 @@
 #include <QMainWindow>
 
 #include "bubbleview.h"
-
-#include "../src/midiwrapper.h"
+#include "midiwrapper.h"
 
 namespace Ui {
 class MainWindow;

@@ -27,7 +27,7 @@ void BubbleView::makeBubble( const QPoint& pos ) {
     if (coordinatesChanged) {
         pitch = pitch_temp;
         keystroke = keystroke_temp;
-        emit note(pitch, keystroke);
+        emit gotNoteOnEvent(pitch, keystroke);
     } else {
         return;
     }
@@ -56,6 +56,18 @@ void BubbleView::makeBubble( const QPoint& pos ) {
     animPenColor->setEndValue(1.0);
     animPenColor->setDuration(2000);
     animPenColor->start();
+}
+
+void BubbleView::showNoteOnEvent(NoteOnEvent event) {
+    QPoint itemCoords(event.getNote(), 127-event.getVelocity());
+    QPoint pos = mapFromScene(itemCoords);
+    makeBubble(pos);
+}
+
+void BubbleView::dummySlot(int note, int velocity) {
+    QPoint itemCoords(note, 127-velocity);
+    QPoint pos = mapFromScene(itemCoords);
+    makeBubble(pos);
 }
 
 QPixmap BubbleView::getBackgroundPixmap() {

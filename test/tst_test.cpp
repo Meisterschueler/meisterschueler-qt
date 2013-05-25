@@ -835,10 +835,10 @@ void Test::matchingHandler_simple() {
     NoteOnEvent H(700, 0, 50, 10); NoteOffEvent h(710, 0, 50, 0);
 
     // Play accurate scores up
-    matchingHandler.noteOnEvent(A); matchingHandler.noteOffEvent(a);
-    matchingHandler.noteOnEvent(B); matchingHandler.noteOffEvent(b);
-    matchingHandler.noteOnEvent(C); matchingHandler.noteOffEvent(c);
-    matchingHandler.noteOnEvent(D); matchingHandler.noteOffEvent(d);
+    matchingHandler.matchNoteOnEvent(A); matchingHandler.matchNoteOffEvent(a);
+    matchingHandler.matchNoteOnEvent(B); matchingHandler.matchNoteOffEvent(b);
+    matchingHandler.matchNoteOnEvent(C); matchingHandler.matchNoteOffEvent(c);
+    matchingHandler.matchNoteOnEvent(D); matchingHandler.matchNoteOffEvent(d);
 
     QCOMPARE( songFinishedSpy.count(), 1 );
 
@@ -850,10 +850,10 @@ void Test::matchingHandler_simple() {
     QVERIFY( finishedItem1.intervalAlignment == "mmm" );
 
     // Play accurate scores down
-    matchingHandler.noteOnEvent(E); matchingHandler.noteOffEvent(e);
-    matchingHandler.noteOnEvent(F); matchingHandler.noteOffEvent(f);
-    matchingHandler.noteOnEvent(G); matchingHandler.noteOffEvent(g);
-    matchingHandler.noteOnEvent(H); matchingHandler.noteOffEvent(h);
+    matchingHandler.matchNoteOnEvent(E); matchingHandler.matchNoteOffEvent(e);
+    matchingHandler.matchNoteOnEvent(F); matchingHandler.matchNoteOffEvent(f);
+    matchingHandler.matchNoteOnEvent(G); matchingHandler.matchNoteOffEvent(g);
+    matchingHandler.matchNoteOnEvent(H); matchingHandler.matchNoteOffEvent(h);
 
     QCOMPARE( songFinishedSpy.count(), 1 );
     QList<QVariant> arguments2 = songFinishedSpy.takeFirst();
@@ -865,19 +865,19 @@ void Test::matchingHandler_simple() {
 
     // And now we play not so accurate:
     // Play scores up, but lets start with the second song before we really finished the first one
-    matchingHandler.noteOnEvent(A); matchingHandler.noteOffEvent(a);
-    matchingHandler.noteOnEvent(B); matchingHandler.noteOffEvent(b);
-    matchingHandler.noteOnEvent(C); matchingHandler.noteOffEvent(c);
-    matchingHandler.noteOnEvent(D); // ... wait with releasing ...
+    matchingHandler.matchNoteOnEvent(A); matchingHandler.matchNoteOffEvent(a);
+    matchingHandler.matchNoteOnEvent(B); matchingHandler.matchNoteOffEvent(b);
+    matchingHandler.matchNoteOnEvent(C); matchingHandler.matchNoteOffEvent(c);
+    matchingHandler.matchNoteOnEvent(D); // ... wait with releasing ...
 
-    matchingHandler.noteOnEvent(E); // ... and start with the second song
+    matchingHandler.matchNoteOnEvent(E); // ... and start with the second song
     QCOMPARE( songFinishedSpy.count(), 0 );
-    /* here comes the release    */ matchingHandler.noteOffEvent(d);
+    /* here comes the release    */ matchingHandler.matchNoteOffEvent(d);
     QCOMPARE( songFinishedSpy.count(), 1 );
-    /* ... and here we continue  */ matchingHandler.noteOffEvent(e);
-    matchingHandler.noteOnEvent(F); matchingHandler.noteOffEvent(f);
-    matchingHandler.noteOnEvent(G); matchingHandler.noteOffEvent(g);
-    matchingHandler.noteOnEvent(H); matchingHandler.noteOffEvent(h);
+    /* ... and here we continue  */ matchingHandler.matchNoteOffEvent(e);
+    matchingHandler.matchNoteOnEvent(F); matchingHandler.matchNoteOffEvent(f);
+    matchingHandler.matchNoteOnEvent(G); matchingHandler.matchNoteOffEvent(g);
+    matchingHandler.matchNoteOnEvent(H); matchingHandler.matchNoteOffEvent(h);
     QCOMPARE( songFinishedSpy.count(), 2 );
 
     QList<QVariant> arguments3 = songFinishedSpy.takeFirst();
@@ -901,10 +901,10 @@ void Test::matchingHandler_simple() {
     NoteOnEvent lC(200, 0, 40, 10); NoteOffEvent lc(210, 0, 40, 0);
     NoteOnEvent lD(300, 0, 41, 10); NoteOffEvent ld(310, 0, 41, 0);
 
-    matchingHandler.noteOnEvent(lA); matchingHandler.noteOffEvent(la);
-    matchingHandler.noteOnEvent(lB); matchingHandler.noteOffEvent(lb);
-    matchingHandler.noteOnEvent(lC); matchingHandler.noteOffEvent(lc);
-    matchingHandler.noteOnEvent(lD); matchingHandler.noteOffEvent(ld);
+    matchingHandler.matchNoteOnEvent(lA); matchingHandler.matchNoteOffEvent(la);
+    matchingHandler.matchNoteOnEvent(lB); matchingHandler.matchNoteOffEvent(lb);
+    matchingHandler.matchNoteOnEvent(lC); matchingHandler.matchNoteOffEvent(lc);
+    matchingHandler.matchNoteOnEvent(lD); matchingHandler.matchNoteOffEvent(ld);
 
     QCOMPARE( songFinishedSpy.count(), 1 );
 
@@ -945,11 +945,11 @@ void Test::matchingHandler_hanonNo1Left() {
     for (NoteEvent e : events) {
         if (e.type() == QEvent::User + STATUS_NOTEON) {
             //matchingHandler.noteOnEvent(static_cast<NoteOnEvent>(e));
-            matchingHandler.noteOnEvent(NoteOnEvent(e.getTime(), 0, e.getNote(), e.getVelocity()));
+            matchingHandler.matchNoteOnEvent(NoteOnEvent(e.getTime(), 0, e.getNote(), e.getVelocity()));
 
         } else if (e.type() == QEvent::User + STATUS_NOTEOFF) {
             //matchingHandler.noteOffEvent(static_cast<NoteOffEvent>(e));
-            matchingHandler.noteOffEvent(NoteOffEvent(e.getTime(), 0, e.getNote(), e.getVelocity()));
+            matchingHandler.matchNoteOffEvent(NoteOffEvent(e.getTime(), 0, e.getNote(), e.getVelocity()));
         }
     }
 
