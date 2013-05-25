@@ -10,6 +10,7 @@ struct StatisticItem {
     double max;
     double mean;
     double variance;
+    double standarddeviation;
     QVector<double> spectrum;
 };
 

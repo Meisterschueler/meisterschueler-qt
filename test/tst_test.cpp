@@ -927,9 +927,10 @@ void Test::statisticsService_statisticItem() {
     QCOMPARE( item.max, 3.0 );
     QCOMPARE( item.mean, 1.5 );
     QCOMPARE( item.variance, 1.25 );
+    QVERIFY( abs(item.standarddeviation - 1.11803) < 0.01 );
 
     QCOMPARE( item.spectrum.size(), 4 );
-    QCOMPARE( item.spectrum.at(0), item.mean );
+    QCOMPARE( item.spectrum.at(0)/4, item.mean );
 }
 
 void Test::statisticsService_statisticCluster() {
