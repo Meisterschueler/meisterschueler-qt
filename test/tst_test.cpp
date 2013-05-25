@@ -988,7 +988,7 @@ void Test::statisticsService_statisticCluster() {
 // MIDIWRAPPER
 
 void Test::midiWrapper_simple() {
-    QSKIP( "kills my sound system" );
+    QSKIP( "Ensure jack is running: jackd -d alsa -X raw" );
     MidiWrapper midiWrapper;
     QStringList inputPorts = midiWrapper.getInputPorts();
     for (QString inputPort : inputPorts) {
