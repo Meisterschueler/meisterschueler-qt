@@ -11,6 +11,7 @@
 #include "midiservice.h"
 #include "midiwrapper.h"
 #include "needlemanwunsch.h"
+#include "playbackhandler.h"
 #include "score.h"
 #include "songservice.h"
 #include "statisticsservice.h"
@@ -81,6 +82,8 @@ private Q_SLOTS:
     void statisticsService_statisticItem();
     void statisticsService_statisticCluster();
 
+    void playbackHandler_simple();
+
     void midiWrapper_simple();
 
 private:
@@ -93,6 +96,8 @@ Test::Test()
 {
     qRegisterMetaType<Fraction>("Fraction");
     qRegisterMetaType<MatchingItem>("MatchingItem");
+    qRegisterMetaType<NoteOnEvent>("NoteOnEvent");
+    qRegisterMetaType<NoteOffEvent>("NoteOffEvent");
 }
 
 // BASIC TYPES
@@ -983,6 +988,23 @@ void Test::statisticsService_statisticItem() {
 
 void Test::statisticsService_statisticCluster() {
     QSKIP( "not yet implemented" );
+}
+
+// PLAYBACKHANDLER
+
+void Test::playbackHandler_simple() {
+    QList<MidiPair> pairs;
+    pairs.append(MidiPair(NoteOnEvent(0, 0, 48, 10), NoteOffEvent(100, 0, 48, 0)));
+
+    PlaybackHandler playbackHandler;
+    QSignalSpy noteOnEventSpy(&playbackHandler, SIGNAL(gotNoteOnEvent(NoteOnEvent)));
+    QSignalSpy noteOffEventSpy(&playbackHandler, SIGNAL(gotNoteOffEvent(NoteOffEvent)));
+
+    playbackHandler.playMidiPairs(pairs);
+    QCOMPARE( noteOnEventSpy.count(), 1 );
+    QCOMPARE( noteOffEventSpy.count(), 0 );
+    QTest::qSleep(105);
+    QCOMPARE( noteOffEventSpy.count(), 1 );
 }
 
 // MIDIWRAPPER

@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     score.cpp \
     midiservice.cpp \
     songservice.cpp \
-    statisticsservice.cpp
+    statisticsservice.cpp \
+    playbackhandler.cpp
 
 HEADERS  += \
     guidoservice.h \
@@ -46,7 +47,8 @@ HEADERS  += \
     midiservice.h \
     util.h \
     songservice.h \
-    statisticsservice.h
+    statisticsservice.h \
+    playbackhandler.h
 
 FORMS    +=
 

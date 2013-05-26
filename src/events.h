@@ -80,6 +80,7 @@ protected:
 class NoteOffEvent : public ChannelEvent
 {
 public:
+    NoteOffEvent() : ChannelEvent(0, 0, 0, 0, NoteOffEventType) {}
     NoteOffEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel)
         : ChannelEvent(time, chan, note, vel, NoteOffEventType) { }
 

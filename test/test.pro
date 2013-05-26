@@ -33,6 +33,7 @@ SOURCES += guidoservice.cpp \
     matchingitem.cpp \
     midiservice.cpp \
     midiwrapper.cpp \
+    playbackhandler.cpp \
     score.cpp \
     songservice.cpp \
     notemapper.cpp \
@@ -50,6 +51,7 @@ HEADERS  += guidoservice.h \
     midiwrapper.h \
     events.h \
     mididefs.h \
+    playbackhandler.h \
     score.h \
     songservice.h \
     notemapper.h \
