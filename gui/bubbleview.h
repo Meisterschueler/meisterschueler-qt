@@ -21,17 +21,20 @@ private:
 
     QMap<int, BubbleGraphicsItem> bubbles;
 
-    void makeBubble( const QPoint& pos );
+    QPoint toSoundCoords(const QPoint& pos);
+    bool makeSound(const QPoint& soundCoords);
+    void makeBubble(const QPoint& soundCoords);
+
     QPixmap getBackgroundPixmap();
 
-    int pitch;
-    int keystroke;
+    QPoint soundCoords;
 
 public slots:
     void showNoteOnEvent(NoteOnEvent event);
 
 signals:
-    void gotNoteOnEvent(int pitch, int keystroke);
+    void gotNoteOnEvent(NoteOnEvent event);
+    void gotNoteOffEvent(NoteOffEvent event);
 
 protected:
     void resizeEvent(QResizeEvent *event);

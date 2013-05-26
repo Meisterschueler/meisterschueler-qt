@@ -3,7 +3,7 @@
 #include <QPropertyAnimation>
 
 BubbleView::BubbleView(QGraphicsView *parent) :
-    QGraphicsView(parent), pitch(-1), keystroke(-1)
+    QGraphicsView(parent), soundCoords(-1, -1)
 {
     graphicsScene = new QGraphicsScene(this);
     setScene(graphicsScene);
@@ -19,19 +19,35 @@ BubbleView::~BubbleView()
 {
 }
 
-void BubbleView::makeBubble( const QPoint& pos ) {
+QPoint BubbleView::toSoundCoords(const QPoint& pos) {
     QPointF itemCoords = mapToScene(pos);
-    int pitch_temp = static_cast<int>(itemCoords.x());
-    int keystroke_temp = 127-static_cast<int>(itemCoords.y());
-    bool coordinatesChanged = (pitch != pitch_temp || keystroke != keystroke_temp);
+    int pitch = static_cast<int>(itemCoords.x());
+    int keystroke = 127-static_cast<int>(itemCoords.y());
+
+    return QPoint(pitch, keystroke);
+}
+
+bool BubbleView::makeSound(const QPoint& soundCoords) {
+    bool coordinatesChanged = this->soundCoords != soundCoords;
     if (coordinatesChanged) {
-        pitch = pitch_temp;
-        keystroke = keystroke_temp;
-        emit gotNoteOnEvent(pitch, keystroke);
-    } else {
-        return;
+
+        if (this->soundCoords != QPoint(-1, -1)) {
+            NoteOffEvent noteOffEvent(0, 0, this->soundCoords.x(), this->soundCoords.y());
+            emit gotNoteOffEvent(noteOffEvent);
+        }
+
+        this->soundCoords = soundCoords;
+
+        if (this->soundCoords != QPoint(-1, -1)) {
+            NoteOnEvent noteOnEvent(0, 0, this->soundCoords.x(), this->soundCoords.y());
+            emit gotNoteOnEvent(noteOnEvent);
+        }
     }
 
+    return coordinatesChanged;
+}
+
+void BubbleView::makeBubble(const QPoint& soundCoords ) {
     BubbleGraphicsItem *bubble = new BubbleGraphicsItem();
     bubble->pen().setWidth( 10 );
     bubble->setFlag( QGraphicsItem::ItemIgnoresTransformations );
@@ -39,8 +55,8 @@ void BubbleView::makeBubble( const QPoint& pos ) {
     graphicsScene->addItem( bubble );
 
     QPropertyAnimation *animRect = new QPropertyAnimation(bubble, "rect", this);
-    animRect->setStartValue( QRectF(pos.x()-10, pos.y()-10, 20, 20) );
-    animRect->setEndValue( QRectF(pos.x()-80, pos.y()-80, 160, 160) );
+    animRect->setStartValue( QRectF(soundCoords.x()-10, soundCoords.y()-10, 20, 20) );
+    animRect->setEndValue( QRectF(soundCoords.x()-80, soundCoords.y()-80, 160, 160) );
     animRect->setDuration(2000);
     animRect->start();
 
@@ -59,9 +75,8 @@ void BubbleView::makeBubble( const QPoint& pos ) {
 }
 
 void BubbleView::showNoteOnEvent(NoteOnEvent event) {
-    QPoint itemCoords(event.getNote(), 127-event.getVelocity());
-    QPoint pos = mapFromScene(itemCoords);
-    makeBubble(pos);
+    QPoint soundCoords(event.getNote(), event.getVelocity());
+    makeBubble(soundCoords);
 }
 
 QPixmap BubbleView::getBackgroundPixmap() {
@@ -99,18 +114,23 @@ void BubbleView::resizeEvent(QResizeEvent *event) {
 
 void BubbleView::mousePressEvent( QMouseEvent *event ) {
     QGraphicsView::mousePressEvent(event);
-    QPoint pos = event->pos();
-    makeBubble(pos);
+
+    QPoint soundCoords = toSoundCoords(event->pos());
+    if (makeSound(soundCoords)) {
+        makeBubble(event->pos());
+    }
 }
 
 void BubbleView::mouseMoveEvent( QMouseEvent *event ) {    
     QGraphicsView::mouseMoveEvent(event);
-    QPoint pos = event->pos();
-    makeBubble(pos);
+
+    QPoint soundCoords = toSoundCoords(event->pos());
+    if (makeSound(soundCoords)) {
+        makeBubble(event->pos());
+    }
 }
 
 void BubbleView::mouseReleaseEvent(QMouseEvent *event) {
     QGraphicsView::mouseReleaseEvent(event);
-    pitch = -1;
-    keystroke = -1;
+    makeSound(QPoint(-1, -1));
 }
