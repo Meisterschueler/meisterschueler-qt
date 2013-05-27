@@ -32,9 +32,9 @@ private:
 public slots:
     void showNoteOnEvent(NoteOnEvent event);
 
-signals:
-    void gotNoteOnEvent(NoteOnEvent event);
-    void gotNoteOffEvent(NoteOffEvent event);
+//signals:
+//    void gotNoteOnEvent(NoteOnEvent event);
+//    void gotNoteOffEvent(NoteOffEvent event);
 
 protected:
     void resizeEvent(QResizeEvent *event);
