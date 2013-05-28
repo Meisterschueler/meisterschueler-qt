@@ -26,7 +26,7 @@ QPoint BubbleView::toSoundCoords(const QPoint& pos) {
 
 bool BubbleView::makeSound(const QPoint& soundCoords) {
     bool coordinatesChanged = this->soundCoords != soundCoords;
-    /*if (coordinatesChanged) {
+    if (coordinatesChanged) {
 
         if (this->soundCoords != QPoint(-1, -1)) {
             NoteOffEvent noteOffEvent(0, 0, this->soundCoords.x(), this->soundCoords.y());
@@ -39,7 +39,7 @@ bool BubbleView::makeSound(const QPoint& soundCoords) {
             NoteOnEvent noteOnEvent(0, 0, this->soundCoords.x(), this->soundCoords.y());
             emit gotNoteOnEvent(noteOnEvent);
         }
-    }*/
+    }
 
     return coordinatesChanged;
 }
