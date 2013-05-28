@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "bubbleview.h"
+#include "guidoview.h"
 #include "midiwrapper.h"
 
 namespace Ui {
@@ -27,11 +28,16 @@ private:
 
     MidiWrapper *midiWrapper;
     BubbleView *bubbleView;
+    GuidoView *guidoView;
 
 public slots:
     void toggleFullscreen();
 
     void showSettingsDialog();
+
+private slots:
+    void on_actionBubbleView_triggered();
+    void on_actionGuidoView_triggered();
 };
 
 #endif // MAINWINDOW_H

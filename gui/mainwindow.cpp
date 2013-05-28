@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     bubbleView = new BubbleView();
+    guidoView = new GuidoView();
 
     QObject::connect(midiWrapper, SIGNAL(gotNoteOnEvent(NoteOnEvent)), bubbleView, SLOT(showNoteOnEvent(NoteOnEvent)));
 
@@ -34,6 +35,7 @@ MainWindow::~MainWindow()
 
     delete midiWrapper;
     delete bubbleView;
+    delete guidoView;
 }
 
 void MainWindow::changeEvent(QEvent *event)
@@ -75,4 +77,12 @@ void MainWindow::showSettingsDialog() {
     SettingsDialog* settingsDialog = new SettingsDialog(this);
     settingsDialog->init(midiWrapper);
     settingsDialog->exec();
+}
+
+void MainWindow::on_actionBubbleView_triggered() {
+    setCentralWidget(bubbleView);
+}
+
+void MainWindow::on_actionGuidoView_triggered() {
+    setCentralWidget(guidoView);
 }

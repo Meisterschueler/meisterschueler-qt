@@ -17,12 +17,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     settingsdialog.cpp \
     bubblegraphicsitem.cpp \
-    bubbleview.cpp
+    bubbleview.cpp \
+    guidoview.cpp
 
 HEADERS  += mainwindow.h \
     settingsdialog.h \
     bubblegraphicsitem.h \
-    bubbleview.h
+    bubbleview.h \
+    guidoview.h
 
 # Get Classes
 INCLUDEPATH += ../src
@@ -34,6 +36,7 @@ HEADERS += midiwrapper.h \
            events.h
 
 FORMS    += mainwindow.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    guidoview.ui
 
 TRANSLATIONS += translations/meisterschueler_de.ts
