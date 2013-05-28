@@ -994,17 +994,28 @@ void Test::statisticsService_statisticCluster() {
 
 void Test::playbackHandler_simple() {
     QList<MidiPair> pairs;
-    pairs.append(MidiPair(NoteOnEvent(0, 0, 48, 10), NoteOffEvent(100, 0, 48, 0)));
+    pairs.append(MidiPair(NoteOnEvent(  0, 0, 48, 10), NoteOffEvent(100, 0, 48, 0)));
+    pairs.append(MidiPair(NoteOnEvent(200, 0, 50, 10), NoteOffEvent(300, 0, 50, 0)));
 
     PlaybackHandler playbackHandler;
     QSignalSpy noteOnEventSpy(&playbackHandler, SIGNAL(gotNoteOnEvent(NoteOnEvent)));
     QSignalSpy noteOffEventSpy(&playbackHandler, SIGNAL(gotNoteOffEvent(NoteOffEvent)));
 
-    playbackHandler.playMidiPairs(pairs);
+    playbackHandler.setMidiPairs(pairs);
+    playbackHandler.play();
+    QTest::qSleep(10);
     QCOMPARE( noteOnEventSpy.count(), 1 );
     QCOMPARE( noteOffEventSpy.count(), 0 );
     QTest::qSleep(105);
     QCOMPARE( noteOffEventSpy.count(), 1 );
+    playbackHandler.stop();
+    QTest::qSleep(1000);
+    QCOMPARE( noteOnEventSpy.count(), 1 );
+    QCOMPARE( noteOffEventSpy.count(), 1 );
+    playbackHandler.play();
+    QTest::qSleep(300);
+    QCOMPARE( noteOnEventSpy.count(), 2 );
+    QCOMPARE( noteOffEventSpy.count(), 2 );
 }
 
 // MIDIWRAPPER
@@ -1030,6 +1041,7 @@ MatchingItem Test::gmnToMatchingItem(const QString& gmn) {
     return MatchingItem(song, pitchSequence, intervalSequence);
 }
 
-QTEST_APPLESS_MAIN(Test)
+//QTEST_APPLESS_MAIN(Test)
+QTEST_MAIN(Test)
 
 #include "tst_test.moc"

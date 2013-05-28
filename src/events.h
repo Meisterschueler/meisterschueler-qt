@@ -72,31 +72,32 @@ public:
         return this->m_time<rhs.getTime();
     }
 
-
 protected:
     unsigned char m_channel;
-};
-
-class NoteOffEvent : public ChannelEvent
-{
-public:
-    NoteOffEvent() : ChannelEvent(0, 0, 0, 0, NoteOffEventType) {}
-    NoteOffEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel)
-        : ChannelEvent(time, chan, note, vel, NoteOffEventType) { }
-
-    bool operator<(NoteOffEvent const& rhs) const {
-        return this->m_note<rhs.getNote();
-    }
 };
 
 class NoteOnEvent : public ChannelEvent
 {
 public:
     NoteOnEvent() : ChannelEvent(0, 0, 0, 0, NoteOnEventType) {}
+    NoteOnEvent(ChannelEvent e) : ChannelEvent(e.getChannel(), e.getTime(), e.getNote(), e.getVelocity(), NoteOnEventType) {}
     NoteOnEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel)
         : ChannelEvent(time, chan, note, vel, NoteOnEventType) { }
 
     bool operator<(NoteOnEvent const& rhs) const {
+        return this->m_note<rhs.getNote();
+    }
+};
+
+class NoteOffEvent : public ChannelEvent
+{
+public:
+    NoteOffEvent() : ChannelEvent(0, 0, 0, 0, NoteOffEventType) {}
+    NoteOffEvent(ChannelEvent e) : ChannelEvent(e.getChannel(), e.getTime(), e.getNote(), e.getVelocity(), NoteOffEventType) {}
+    NoteOffEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel)
+        : ChannelEvent(time, chan, note, vel, NoteOffEventType) { }
+
+    bool operator<(NoteOffEvent const& rhs) const {
         return this->m_note<rhs.getNote();
     }
 };
