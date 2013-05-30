@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     midiWrapper = new MidiWrapper();
+    bubbleView = new BubbleView();
+    guidoView = new GuidoView();
 
     QSettings settings;
     restoreGeometry(settings.value("geometry").toByteArray());
@@ -21,11 +23,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionFull_Screen, SIGNAL(triggered()), this, SLOT(toggleFullscreen()));
     QObject::connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-    bubbleView = new BubbleView();
-    guidoView = new GuidoView();
-
     QObject::connect(this, SIGNAL(gotNoteOnEvent(NoteOnEvent)), bubbleView, SLOT(showNoteOnEvent(NoteOnEvent)));
+
+    QObject::connect(this, SIGNAL(gotNoteOnEvent(NoteOnEvent)), midiWrapper, SLOT(playNoteOn(NoteOnEvent)));
+    QObject::connect(this, SIGNAL(gotNoteOffEvent(NoteOffEvent)), midiWrapper, SLOT(playNoteOff(NoteOffEvent)));
+
     QObject::connect(midiWrapper, SIGNAL(gotNoteOnEvent(NoteOnEvent)), bubbleView, SLOT(showNoteOnEvent(NoteOnEvent)));
+
+    QObject::connect(bubbleView, SIGNAL(gotNoteOnEvent(NoteOnEvent)), midiWrapper, SLOT(playNoteOn(NoteOnEvent)));
+    QObject::connect(bubbleView, SIGNAL(gotNoteOffEvent(NoteOffEvent)), midiWrapper, SLOT(playNoteOff(NoteOffEvent)));
 
     setCentralWidget(bubbleView);
 }
@@ -67,7 +73,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         offset = 60;
     }
 
-    if ( idx != -1 ) {
+    if ( idx != -1 && !event->isAutoRepeat() ) {
         emit gotNoteOnEvent(NoteOnEvent(0, 0, offset+idx, 50));
     } else {
         QMainWindow::keyPressEvent(event);
@@ -83,7 +89,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
         offset = 60;
     }
 
-    if ( idx != -1 ) {
+    if ( idx != -1 && !event->isAutoRepeat() ) {
         emit gotNoteOffEvent(NoteOffEvent(0, 0, offset+idx, 0));
     } else {
         QMainWindow::keyReleaseEvent(event);
