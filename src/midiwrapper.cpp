@@ -111,13 +111,13 @@ QString MidiWrapper::getOpenedOutputPort() {
 }
 
 void MidiWrapper::customEvent(QEvent *event) {
-    if (event->type() == NoteOnEventType) {
+    if (event->type() == Event::NoteOnEventType) {
         NoteOnEvent *ev = static_cast<NoteOnEvent*> (event);
         emit gotNoteOnEvent(*ev);
-    } else if (event->type() == NoteOffEventType) {
+    } else if (event->type() == Event::NoteOffEventType) {
         NoteOffEvent *ev = static_cast<NoteOffEvent*> (event);
         emit gotNoteOffEvent(*ev);
-    } else if (event->type() == ControlChangeEventType) {
+    } else if (event->type() == Event::ControlChangeEventType) {
         ControlChangeEvent *ev = static_cast<ControlChangeEvent*> (event);
         emit gotControlChangeEvent(*ev);
     }

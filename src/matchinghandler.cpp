@@ -27,9 +27,9 @@ void MatchingHandler::matchNoteOffEvent(NoteOffEvent noteOff) {
 
 void MatchingHandler::matchChannelEvents(QList<ChannelEvent> channelEvents) {
     for (ChannelEvent channelEvent : channelEvents) {
-        if (channelEvent.type() == QEvent::User + STATUS_NOTEON) {
+        if (channelEvent.type() == Event::NoteOnEventType) {
             MidiService::addNoteOn(*midiPairs, channelEvent);
-        } else if (channelEvent.type() == QEvent::User + STATUS_NOTEOFF) {
+        } else if (channelEvent.type() == Event::NoteOffEventType) {
             MidiService::addNoteOff(*midiPairs, channelEvent);
         }
     }

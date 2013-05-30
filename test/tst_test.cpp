@@ -107,9 +107,9 @@ Test::Test()
 // BASIC TYPES
 
 void Test::channelEvent_comparisons() {
-    ChannelEvent event(100, 0, 0, 0, NoteOnEventType);
-    ChannelEvent earlier(50, 0, 0, 0, NoteOnEventType);
-    ChannelEvent later(150, 0, 0, 0, NoteOnEventType);
+    ChannelEvent event(100, 0, 0, 0, Event::NoteOnEventType);
+    ChannelEvent earlier(50, 0, 0, 0, Event::NoteOnEventType);
+    ChannelEvent later(150, 0, 0, 0, Event::NoteOnEventType);
 
     QVERIFY( earlier < event );
     QVERIFY( event < later );
@@ -951,14 +951,11 @@ void Test::matchingHandler_hanonNo1Left() {
     QSignalSpy songRecognizedSpy(&matchingHandler, SIGNAL(songRecognized(MatchingItem)));
     QSignalSpy songFinishedSpy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
 
-    for (NoteEvent e : events) {
-        if (e.type() == QEvent::User + STATUS_NOTEON) {
-            //matchingHandler.noteOnEvent(static_cast<NoteOnEvent>(e));
-            matchingHandler.matchNoteOnEvent(NoteOnEvent(e.getTime(), 0, e.getNote(), e.getVelocity()));
-
-        } else if (e.type() == QEvent::User + STATUS_NOTEOFF) {
-            //matchingHandler.noteOffEvent(static_cast<NoteOffEvent>(e));
-            matchingHandler.matchNoteOffEvent(NoteOffEvent(e.getTime(), 0, e.getNote(), e.getVelocity()));
+    for (ChannelEvent e : events) {
+        if (e.type() == Event::NoteOnEventType) {
+            matchingHandler.matchNoteOnEvent(static_cast<NoteOnEvent>(e));
+        } else if (e.type() == Event::NoteOffEventType) {
+            matchingHandler.matchNoteOffEvent(static_cast<NoteOffEvent>(e));
         }
     }
 

@@ -111,10 +111,10 @@ void MidiService::save(const QString& fileName, const QList<MidiPair>& pairs) {
 
     for (QSharedPointer<NoteEvent> event : events) {
         m.SetTime( (*event).getTime() );
-        if ((*event).type() == QEvent::User + STATUS_NOTEON) {
+        if ((*event).type() == Event::NoteOnEventType) {
             m.SetNoteOn( chan = 0, note = (*event).getNote(), velocity = (*event).getVelocity() );
             tracks.GetTrack( trk )->PutEvent( m );
-        } else if ((*event).type() == QEvent::User + STATUS_NOTEOFF) {
+        } else if ((*event).type() == Event::NoteOffEventType) {
             m.SetNoteOff( chan = 0, note = (*event).getNote(), velocity = (*event).getVelocity() );
             tracks.GetTrack( trk )->PutEvent( m );
         }

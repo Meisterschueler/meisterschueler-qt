@@ -33,9 +33,9 @@ void PlaybackHandler::jumpTo(Fraction position) {
 }
 
 void PlaybackHandler::playNextEvent() {
-    if (events.at(idx).type() == QEvent::User + STATUS_NOTEON) {
+    if (events.at(idx).type() == Event::NoteOnEventType) {
         emit gotNoteOnEvent(NoteOnEvent(events.at(idx)));
-    } else if (events.at(idx).type() == QEvent::User + STATUS_NOTEOFF) {
+    } else if (events.at(idx).type() == Event::NoteOffEventType) {
         emit gotNoteOffEvent(NoteOffEvent(events.at(idx)));
     }
 

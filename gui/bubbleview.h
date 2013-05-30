@@ -33,7 +33,7 @@ public slots:
     void showNoteOnEvent(NoteOnEvent event);
 
 signals:
-//    void gotNoteOnEvent(NoteOnEvent event);
+    void gotNoteOnEvent(NoteOnEvent event);
     void gotNoteOffEvent(NoteOffEvent event);
 
 protected:

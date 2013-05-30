@@ -35,10 +35,10 @@ bool BubbleView::makeSound(const QPoint& soundCoords) {
 
         this->soundCoords = soundCoords;
 
-        /*if (this->soundCoords != QPoint(-1, -1)) {
+        if (this->soundCoords != QPoint(-1, -1)) {
             NoteOnEvent noteOnEvent(0, 0, this->soundCoords.x(), this->soundCoords.y());
             emit gotNoteOnEvent(noteOnEvent);
-        }*/
+        }
     }
 
     return coordinatesChanged;

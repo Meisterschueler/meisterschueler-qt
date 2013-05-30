@@ -30,7 +30,8 @@ HEADERS  += mainwindow.h \
 INCLUDEPATH += ../src
 VPATH += ../src
 
-SOURCES += midiwrapper.cpp
+SOURCES += midiwrapper.cpp \
+           events.cpp
 
 HEADERS += midiwrapper.h \
            events.h

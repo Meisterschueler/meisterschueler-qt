@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     songservice.cpp \
     statisticsservice.cpp \
     playbackhandler.cpp \
-    clusterhandler.cpp
+    clusterhandler.cpp \
+    events.cpp
 
 HEADERS  += \
     guidoservice.h \

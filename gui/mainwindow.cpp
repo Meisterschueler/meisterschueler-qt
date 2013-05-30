@@ -68,7 +68,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     }
 
     if ( idx != -1 ) {
-        //emit gotNoteOnEvent(NoteOnEvent(0, 0, offset+idx, 50));
+        emit gotNoteOnEvent(NoteOnEvent(0, 0, offset+idx, 50));
     } else {
         QMainWindow::keyPressEvent(event);
     }

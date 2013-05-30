@@ -28,7 +28,7 @@ protected:
     void keyReleaseEvent(QKeyEvent *event);
 
 signals:
-//    void gotNoteOnEvent(NoteOnEvent);
+    void gotNoteOnEvent(NoteOnEvent);
     void gotNoteOffEvent(NoteOffEvent);
     
 private:
