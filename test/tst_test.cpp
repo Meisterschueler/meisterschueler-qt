@@ -9,6 +9,7 @@
 #include "scoreservice.h"
 #include "matchingservice.h"
 #include "matchinghandler.h"
+#include "merginghandler.h"
 #include "midiservice.h"
 #include "midiwrapper.h"
 #include "needlemanwunsch.h"
@@ -83,6 +84,8 @@ private Q_SLOTS:
     void statisticsService_statisticItem();
     void statisticsService_statisticCluster();
 
+    void mergingHandler_simple();
+
     void clusterHandler_simple();
 
     void playbackHandler_simple();
@@ -93,7 +96,9 @@ private:
     MatchingItem gmnToMatchingItem(const QString &gmn);
 };
 
+Q_DECLARE_METATYPE(Fraction)
 Q_DECLARE_METATYPE(MatchingItem)
+Q_DECLARE_METATYPE(Score)
 
 Test::Test()
 {
@@ -989,6 +994,47 @@ void Test::statisticsService_statisticItem() {
 
 void Test::statisticsService_statisticCluster() {
     QSKIP( "not yet implemented" );
+}
+
+// MERGINGHANDLER
+
+void Test::mergingHandler_simple() {
+    MergingHandler mergingHandler;
+    QSignalSpy scoreChangedSpy(&mergingHandler, SIGNAL(scoreChanged(int,Score,Score)));
+    QSignalSpy positionChangedSpy(&mergingHandler, SIGNAL(positionChanged(Fraction)));
+
+    MatchingItem itemBefore;
+    itemBefore.pitchAlignment = "mmddd";
+
+    MatchingItem itemAfter;
+    itemAfter.pitchAlignment = "mmmdd";
+
+    mergingHandler.eatMatchingItem(itemBefore);
+
+    QCOMPARE( scoreChangedSpy.count(), 1 );
+    QList<QVariant> arguments = scoreChangedSpy.takeFirst();
+
+    QCOMPARE( positionChangedSpy.count(), 1 );
+    arguments = positionChangedSpy.takeFirst();
+    Fraction positionBefore = qvariant_cast<Fraction>(arguments.at(0));
+    QVERIFY( positionBefore == Fraction(2,4) );
+
+    mergingHandler.eatMatchingItem(itemAfter);
+
+    QCOMPARE( scoreChangedSpy.count(), 1 );
+    arguments = scoreChangedSpy.takeFirst();
+    int idx = qvariant_cast<int>(arguments.at(0));
+    Score scoreBefore = qvariant_cast<Score>(arguments.at(1));
+    Score scoreAfter = qvariant_cast<Score>(arguments.at(2));
+
+    QCOMPARE( idx, 2 );
+    QCOMPARE( scoreBefore.status, OPEN );
+    QCOMPARE( scoreAfter.status, PLAYED );
+
+    QCOMPARE( positionChangedSpy.count(), 1 );
+    arguments = positionChangedSpy.takeFirst();
+    Fraction positionAfter = qvariant_cast<Fraction>(arguments.at(0));
+    QVERIFY( positionAfter == Fraction(3,4) );
 }
 
 // CLUSTERHANDLER

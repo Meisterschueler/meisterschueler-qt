@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     statisticsservice.cpp \
     playbackhandler.cpp \
     clusterhandler.cpp \
-    events.cpp
+    events.cpp \
+    merginghandler.cpp
 
 HEADERS  += \
     guidoservice.h \
@@ -51,7 +52,8 @@ HEADERS  += \
     songservice.h \
     statisticsservice.h \
     playbackhandler.h \
-    clusterhandler.h
+    clusterhandler.h \
+    merginghandler.h
 
 FORMS    +=
 

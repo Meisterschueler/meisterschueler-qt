@@ -33,6 +33,7 @@ SOURCES += events.cpp \
     matchinghandler.cpp \
     matchingservice.cpp \
     matchingitem.cpp \
+    merginghandler.cpp \
     midiservice.cpp \
     midiwrapper.cpp \
     playbackhandler.cpp \
@@ -51,6 +52,7 @@ HEADERS  += events.h \
     matchinghandler.h \
     matchingservice.h \
     matchingitem.h \
+    merginghandler.h \
     midiservice.h \
     midiwrapper.h \
     mididefs.h \

@@ -16,7 +16,7 @@ enum Status { UNKNOWN_STATUS = 0x01, PLAYED = 0x02, MISSED = 0x04, EXTRA = 0x08,
 class Score
 {
 public:
-    Score(char pitch);
+    Score(char pitch=0);
 
     char pitch;
     Fraction duration;

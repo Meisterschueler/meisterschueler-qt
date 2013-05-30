@@ -5,8 +5,6 @@
 #include <QList>
 #include <QObject>
 
-#include "Fraction.h"
-
 #include "events.h"
 #include "matchingitem.h"
 
@@ -23,7 +21,6 @@ public slots:
     void matchChannelEvents(QList<ChannelEvent> channelEvents);
 
 signals:
-    void positionChanged(Fraction position);
     void songRecognized(MatchingItem item);
     void songFinished(MatchingItem item);
 
