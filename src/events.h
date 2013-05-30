@@ -26,6 +26,8 @@
 class Event : public QEvent
 {
 public:
+    Event(const QEvent::Type& type) : QEvent(type) {}
+
     static const QEvent::Type NoteOffEventType;
     static const QEvent::Type NoteOnEventType;
     static const QEvent::Type PolyKeyPressEventType;
@@ -35,11 +37,11 @@ public:
     static const QEvent::Type PitchWheelEventType;
 };
 
-class NoteEvent : public QEvent
+class NoteEvent : public Event
 {
 public:
-    NoteEvent(time_t time, unsigned char note, unsigned char vel, QEvent::Type type)
-        : QEvent(type), m_time(time), m_note(note), m_velocity(vel) { }
+    NoteEvent(time_t time, unsigned char note, unsigned char vel, Event::Type type)
+        : Event(type), m_time(time), m_note(note), m_velocity(vel) { }
     time_t getTime() const { return m_time; }
     unsigned char getNote() const { return m_note; }
     unsigned char getVelocity() const { return m_velocity; }
@@ -53,8 +55,8 @@ protected:
 class ChannelEvent : public NoteEvent
 {
 public:
-    ChannelEvent() : NoteEvent(0, 0, 0, QEvent::User) {}
-    ChannelEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel, QEvent::Type type)
+    ChannelEvent() : NoteEvent(0, 0, 0, Event::User) {}
+    ChannelEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel, Event::Type type)
         : NoteEvent(time, note, vel, type), m_channel(chan) { }
     unsigned char getChannel() const { return m_channel; }
 
@@ -77,10 +79,10 @@ protected:
 class NoteOnEvent : public ChannelEvent
 {
 public:
-    NoteOnEvent() : ChannelEvent(0, 0, 0, 0, Event::NoteOnEventType) {}
-    NoteOnEvent(ChannelEvent e) : ChannelEvent(e.getChannel(), e.getTime(), e.getNote(), e.getVelocity(), Event::NoteOnEventType) {}
+    NoteOnEvent() : ChannelEvent(0, 0, 0, 0, NoteOnEventType) {}
+    NoteOnEvent(ChannelEvent e) : ChannelEvent(e.getChannel(), e.getTime(), e.getNote(), e.getVelocity(), NoteOnEventType) {}
     NoteOnEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel)
-        : ChannelEvent(time, chan, note, vel, Event::NoteOnEventType) { }
+        : ChannelEvent(time, chan, note, vel, NoteOnEventType) { }
 
     bool operator<(NoteOnEvent const& rhs) const {
         return this->m_note<rhs.getNote();
@@ -90,10 +92,10 @@ public:
 class NoteOffEvent : public ChannelEvent
 {
 public:
-    NoteOffEvent() : ChannelEvent(0, 0, 0, 0, Event::NoteOffEventType) {}
-    NoteOffEvent(ChannelEvent e) : ChannelEvent(e.getChannel(), e.getTime(), e.getNote(), e.getVelocity(), Event::NoteOffEventType) {}
+    NoteOffEvent() : ChannelEvent(0, 0, 0, 0, NoteOffEventType) {}
+    NoteOffEvent(ChannelEvent e) : ChannelEvent(e.getChannel(), e.getTime(), e.getNote(), e.getVelocity(), NoteOffEventType) {}
     NoteOffEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel)
-        : ChannelEvent(time, chan, note, vel, Event::NoteOffEventType) { }
+        : ChannelEvent(time, chan, note, vel, NoteOffEventType) { }
 
     bool operator<(NoteOffEvent const& rhs) const {
         return this->m_note<rhs.getNote();
@@ -104,14 +106,14 @@ class PolyKeyPressEvent : public NoteEvent
 {
 public:
     PolyKeyPressEvent(time_t time, unsigned char note, unsigned char value)
-        : NoteEvent(time, note, value, Event::PolyKeyPressEventType) { }
+        : NoteEvent(time, note, value, PolyKeyPressEventType) { }
 };
 
-class ControlChangeEvent : public QEvent
+class ControlChangeEvent : public Event
 {
 public:
     ControlChangeEvent(time_t time, unsigned char ctl, unsigned char value)
-        : QEvent(Event::ControlChangeEventType), m_time(time), m_ctl(ctl), m_value(value) { }
+        : Event(ControlChangeEventType), m_time(time), m_ctl(ctl), m_value(value) { }
     time_t getTime() const { return m_time; }
     unsigned char getController() const { return m_ctl; }
     unsigned char getValue() const { return m_value; }
@@ -121,11 +123,11 @@ private:
     unsigned char m_value;
 };
 
-class ValueEvent : public QEvent
+class ValueEvent : public Event
 {
 public:
-    ValueEvent(int value, QEvent::Type type)
-        : QEvent(type), m_value(value) { }
+    ValueEvent(int value, Event::Type type)
+        : Event(type), m_value(value) { }
     int getValue() const { return m_value; }
 private:
     int m_value;
@@ -135,21 +137,21 @@ class ProgramChangeEvent : public ValueEvent
 {
 public:
     ProgramChangeEvent(unsigned char value)
-        : ValueEvent(value, Event::ProgramChangeEventType) { }
+        : ValueEvent(value, ProgramChangeEventType) { }
 };
 
 class ChannelKeyPressEvent : public ValueEvent
 {
 public:
     ChannelKeyPressEvent(unsigned char value)
-        : ValueEvent(value, Event::ChannelKeyPressEventType) { }
+        : ValueEvent(value, ChannelKeyPressEventType) { }
 };
 
 class PitchWheelEvent : public ValueEvent
 {
 public:
     PitchWheelEvent(int value)
-        : ValueEvent(value, Event::PitchWheelEventType) { }
+        : ValueEvent(value, PitchWheelEventType) { }
 };
 
 class MidiPair {
