@@ -158,5 +158,37 @@ QList<MidiPair> MatchingService::cutMatchingMidiPairs(QList<MidiPair>& pairs, co
 
 QList<Score> MatchingService::merge(const QList<Score>& scores, const QList<MidiPair>& midiPairs, const QByteArray& pitchAlignment) {
     QList<Score> result;
+    int idx_scores = 0, idx_midiPairs = 0, idx_alignment = 0;
+    while (idx_alignment < pitchAlignment.size()) {
+        switch (pitchAlignment.at(idx_alignment)) {
+        case 'm': {
+            Score s = scores.at(idx_scores);
+            s.midiPair = midiPairs.at(idx_midiPairs);
+            s.status = PLAYED;
+            result.append(s);
+            idx_scores++;
+            idx_midiPairs++;
+            idx_alignment++;
+            break;
+        }
+        case 'i': {
+            Score s((*midiPairs.at(idx_midiPairs).noteOn).getNote());
+            s.midiPair = midiPairs.at(idx_midiPairs);
+            s.status = EXTRA;
+            result.append(s);
+            idx_midiPairs++;
+            idx_alignment++;
+            break;
+        }
+        case 'd': {
+            Score s = scores.at(idx_scores);
+            s.status = MISSED;
+            result.append(s);
+            idx_scores++;
+            idx_alignment++;
+            break;
+        }
+        }
+    }
     return result;
 }
