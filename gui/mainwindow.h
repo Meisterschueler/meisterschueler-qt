@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "events.h"
+
 #include "bubbleview.h"
 #include "guidoview.h"
 #include "midiwrapper.h"
@@ -22,6 +24,12 @@ public:
 protected:
     void changeEvent(QEvent *event);
     void closeEvent(QCloseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+
+signals:
+//    void gotNoteOnEvent(NoteOnEvent);
+    void gotNoteOffEvent(NoteOffEvent);
     
 private:
     Ui::MainWindow *ui;
@@ -29,6 +37,8 @@ private:
     MidiWrapper *midiWrapper;
     BubbleView *bubbleView;
     GuidoView *guidoView;
+
+    QList<Qt::Key> keys { Qt::Key_A, Qt::Key_W, Qt::Key_S, Qt::Key_E, Qt::Key_D, Qt::Key_F, Qt::Key_T, Qt::Key_G, Qt::Key_Z, Qt::Key_H, Qt::Key_U, Qt::Key_J, Qt::Key_K };
 
 public slots:
     void toggleFullscreen();
