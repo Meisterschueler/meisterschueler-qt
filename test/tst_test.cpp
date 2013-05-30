@@ -3,6 +3,7 @@
 
 #include <QDebug>
 
+#include "clusterhandler.h"
 #include "guidoservice.h"
 #include "hanonsongfactory.h"
 #include "scoreservice.h"
@@ -82,6 +83,8 @@ private Q_SLOTS:
     void statisticsService_statisticItem();
     void statisticsService_statisticCluster();
 
+    void clusterHandler_simple();
+
     void playbackHandler_simple();
 
     void midiWrapper_simple();
@@ -96,6 +99,7 @@ Test::Test()
 {
     qRegisterMetaType<Fraction>("Fraction");
     qRegisterMetaType<MatchingItem>("MatchingItem");
+    qRegisterMetaType<QList<ChannelEvent>>("QList<ChannelEvent>");
     qRegisterMetaType<NoteOnEvent>("NoteOnEvent");
     qRegisterMetaType<NoteOffEvent>("NoteOffEvent");
 }
@@ -988,6 +992,19 @@ void Test::statisticsService_statisticItem() {
 
 void Test::statisticsService_statisticCluster() {
     QSKIP( "not yet implemented" );
+}
+
+// CLUSTERHANDLER
+
+void Test::clusterHandler_simple() {
+    ClusterHandler clusterHandler;
+    QSignalSpy channelEventsSpy(&clusterHandler, SIGNAL(gotChannelEvents(QList<ChannelEvent>)));
+
+    clusterHandler.matchNoteOnEvent(NoteOnEvent(  0, 0, 48, 10));
+    clusterHandler.matchNoteOffEvent(NoteOffEvent(100, 0, 48, 0));
+    QCOMPARE( channelEventsSpy.count(), 0 );
+    QTest::qSleep(50);
+    QCOMPARE( channelEventsSpy.count(), 1 );
 }
 
 // PLAYBACKHANDLER

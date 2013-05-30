@@ -20,6 +20,7 @@ public slots:
     void reset();
     void matchNoteOnEvent(NoteOnEvent noteOn);
     void matchNoteOffEvent(NoteOffEvent noteOff);
+    void matchChannelEvents(QList<ChannelEvent> channelEvents);
 
 signals:
     void positionChanged(Fraction position);

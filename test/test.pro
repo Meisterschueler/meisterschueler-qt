@@ -25,7 +25,8 @@ DEFINES += SRCDIR=\\\"$$PWD/\\\"
 INCLUDEPATH += ../src
 VPATH += ../src
 
-SOURCES += guidoservice.cpp \
+SOURCES += clusterhandler.cpp \
+    guidoservice.cpp \
     scoreservice.cpp \
     hanonsongfactory.cpp \
     matchinghandler.cpp \
@@ -41,7 +42,8 @@ SOURCES += guidoservice.cpp \
     song.cpp \
     statisticsservice.cpp
 
-HEADERS  += guidoservice.h \
+HEADERS  += clusterhandler.h \
+    guidoservice.h \
     scoreservice.h \
     hanonsongfactory.h \
     matchinghandler.h \

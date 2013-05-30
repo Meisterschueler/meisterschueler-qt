@@ -25,6 +25,17 @@ void MatchingHandler::matchNoteOffEvent(NoteOffEvent noteOff) {
     match();
 }
 
+void MatchingHandler::matchChannelEvents(QList<ChannelEvent> channelEvents) {
+    for (ChannelEvent channelEvent : channelEvents) {
+        if (channelEvent.type() == QEvent::User + STATUS_NOTEON) {
+            MidiService::addNoteOn(*midiPairs, channelEvent);
+        } else if (channelEvent.type() == QEvent::User + STATUS_NOTEOFF) {
+            MidiService::addNoteOff(*midiPairs, channelEvent);
+        }
+    }
+    match();
+}
+
 void MatchingHandler::match() {
     static QSharedPointer<QByteArray> oldPitchSequence;
 

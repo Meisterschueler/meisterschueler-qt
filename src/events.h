@@ -56,6 +56,7 @@ protected:
 class ChannelEvent : public NoteEvent
 {
 public:
+    ChannelEvent() : NoteEvent(0, 0, 0, QEvent::User) {}
     ChannelEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel, QEvent::Type type)
         : NoteEvent(time, note, vel, type), m_channel(chan) { }
     unsigned char getChannel() const { return m_channel; }

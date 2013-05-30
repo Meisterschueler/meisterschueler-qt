@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     midiservice.cpp \
     songservice.cpp \
     statisticsservice.cpp \
-    playbackhandler.cpp
+    playbackhandler.cpp \
+    clusterhandler.cpp
 
 HEADERS  += \
     guidoservice.h \
@@ -48,7 +49,8 @@ HEADERS  += \
     util.h \
     songservice.h \
     statisticsservice.h \
-    playbackhandler.h
+    playbackhandler.h \
+    clusterhandler.h
 
 FORMS    +=
 
