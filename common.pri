@@ -1,10 +1,15 @@
+#Use pre-compiled headers
+PRECOMPILED_HEADER = ../stable.h
+OTHER_FILES += ../stable.h
+
+#Use C++11
+QMAKE_CXXFLAGS += -std=c++0x
+
 #Path definitions
 GUIDOLIB = ../../guidolib-code
 RTMIDI = ../../rtmidi-2.0.1
 JDKSMIDI = ../../jdksmidi
 KISSFFT = ../../kiss_fft130
-
-QMAKE_CXXFLAGS += -std=c++0x
 
 #Guido
 INCLUDEPATH += $$GUIDOLIB/Qt/GuidoQt/include \
