@@ -96,7 +96,15 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     }
 }
 
-void MainWindow::toggleFullscreen() {
+void MainWindow::on_actionBubbleView_triggered() {
+    setCentralWidget(bubbleView);
+}
+
+void MainWindow::on_actionGuidoView_triggered() {
+    setCentralWidget(guidoView);
+}
+
+void MainWindow::on_actionFull_Screen_triggered() {
     static int state;
     if (isFullScreen()) {
         if (state & Qt::WindowMaximized) {
@@ -112,16 +120,8 @@ void MainWindow::toggleFullscreen() {
     }
 }
 
-void MainWindow::showSettingsDialog() {
+void MainWindow::on_actionSettings_triggered() {
     SettingsDialog* settingsDialog = new SettingsDialog(this);
     settingsDialog->init(midiWrapper);
     settingsDialog->exec();
-}
-
-void MainWindow::on_actionBubbleView_triggered() {
-    setCentralWidget(bubbleView);
-}
-
-void MainWindow::on_actionGuidoView_triggered() {
-    setCentralWidget(guidoView);
 }

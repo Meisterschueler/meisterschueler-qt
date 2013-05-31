@@ -30,6 +30,8 @@ public:
     QByteArray pitchAlignment;
     QByteArray intervalAlignment;
 
+    QList<Score> mergedScores;
+
     bool operator<(const MatchingItem& rhs) const {
         if (this->quality > rhs.quality) {
             return true;

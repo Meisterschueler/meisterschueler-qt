@@ -12,12 +12,18 @@ class MergingHandler : public QObject
     Q_OBJECT
 public:
     explicit MergingHandler(QObject *parent = 0);
+
+private:
+    MatchingItem matchingItem;
     
 signals:
     void reset();
-    void scoreChanged(int idx, Score before, Score after);
+    void scoreChanged(Score before, Score after);
+    void scoreInserted(Score score);
+    void scoreDeleted(Score score);
+
     void positionChanged(Fraction position);
-    
+
 public slots:
     void eatMatchingItem(MatchingItem matchingItem);
 };

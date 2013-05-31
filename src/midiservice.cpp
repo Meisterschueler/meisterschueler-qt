@@ -39,14 +39,7 @@ void MidiService::addNoteOff(QList<MidiPair>& pairs, const NoteOffEvent &noteOff
 using namespace jdksmidi;
 using namespace std;
 
-void MidiService::save(const QString& fileName, const QList<MidiPair>& pairs) {
-    QList<QSharedPointer<NoteEvent>> events;
-    for (MidiPair pair : pairs) {
-        events.append(pair.noteOn);
-        if (pair.noteOff) {
-            events.append(pair.noteOff);
-        }
-    }
+void MidiService::save(const QString& fileName, const QList<ChannelEvent>& events) {
 
     MIDITimedBigMessage m; // the object for individual midi events
     unsigned char chan, note, velocity;
@@ -109,13 +102,13 @@ void MidiService::save(const QString& fileName, const QList<MidiPair>& pairs) {
 
     t = 0;
 
-    for (QSharedPointer<NoteEvent> event : events) {
-        m.SetTime( (*event).getTime() );
-        if ((*event).type() == Event::NoteOnEventType) {
-            m.SetNoteOn( chan = 0, note = (*event).getNote(), velocity = (*event).getVelocity() );
+    for (ChannelEvent event : events) {
+        m.SetTime( event.getTime() );
+        if (event.type() == Event::NoteOnEventType) {
+            m.SetNoteOn( chan = event.getChannel(), note = event.getNote(), velocity = event.getVelocity() );
             tracks.GetTrack( trk )->PutEvent( m );
-        } else if ((*event).type() == Event::NoteOffEventType) {
-            m.SetNoteOff( chan = 0, note = (*event).getNote(), velocity = (*event).getVelocity() );
+        } else if (event.type() == Event::NoteOffEventType) {
+            m.SetNoteOff( chan = event.getChannel(), note = event.getNote(), velocity = event.getVelocity() );
             tracks.GetTrack( trk )->PutEvent( m );
         }
     }
@@ -140,8 +133,8 @@ void MidiService::save(const QString& fileName, const QList<MidiPair>& pairs) {
     }
 }
 
-QList<MidiPair> parseMIDIMultiTrack ( MIDIMultiTrack *mlt ) {
-    QList<MidiPair> result;
+QList<ChannelEvent> parseMIDIMultiTrack ( MIDIMultiTrack *mlt ) {
+    QList<ChannelEvent> result;
 
     MIDIMultiTrackIterator i ( mlt );
     const MIDITimedBigMessage *msg;
@@ -152,9 +145,9 @@ QList<MidiPair> parseMIDIMultiTrack ( MIDIMultiTrack *mlt ) {
 
         if ( i.GetCurEvent ( &trk_num, &msg ) ) {
             if (msg->IsNoteOn()) {
-                MidiService::addNoteOn(result, NoteOnEvent(msg->GetTime(), msg->GetChannel(), msg->GetNote(), msg->GetVelocity()));
+                result.append(NoteOnEvent(msg->GetTime(), msg->GetChannel(), msg->GetNote(), msg->GetVelocity()));
             } else if (msg->IsNoteOff()) {
-                MidiService::addNoteOff(result, NoteOffEvent(msg->GetTime(), msg->GetChannel(), msg->GetNote(), msg->GetVelocity()));
+                result.append(NoteOffEvent(msg->GetTime(), msg->GetChannel(), msg->GetNote(), msg->GetVelocity()));
             }
         }
     } while ( i.GoToNextEvent() );
@@ -162,8 +155,8 @@ QList<MidiPair> parseMIDIMultiTrack ( MIDIMultiTrack *mlt ) {
     return result;
 }
 
-QList<MidiPair> MidiService::load(const QString fileName) {
-    QList<MidiPair> result;
+QList<ChannelEvent> MidiService::load(const QString fileName) {
+    QList<ChannelEvent> result;
 
     MIDIFileReadStreamFile rs ( fileName.toLatin1() );
     MIDIMultiTrack tracks;

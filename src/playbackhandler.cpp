@@ -18,6 +18,10 @@ void PlaybackHandler::setMidiPairs(QList<MidiPair> midiPairs) {
     qSort(events);
 }
 
+void PlaybackHandler::setChannelEvents(QList<ChannelEvent> channelEvents) {
+    events = channelEvents;
+}
+
 void PlaybackHandler::play() {
     if (idx<events.size()) {
         timer->start(0);

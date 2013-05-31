@@ -16,6 +16,7 @@ public:
     explicit PlaybackHandler(QObject *parent = 0);
     
     void setMidiPairs(QList<MidiPair> midiPairs);
+    void setChannelEvents(QList<ChannelEvent> channelEvents);
 
 private:
     int idx;

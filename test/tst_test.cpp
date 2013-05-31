@@ -22,10 +22,10 @@
 class Test : public QObject
 {
     Q_OBJECT
-    
+
 public:
     Test();
-    
+
 private Q_SLOTS:
     void channelEvent_comparisons();
     void noteOnEvent_comparisons();
@@ -646,14 +646,14 @@ void Test::midiService_saveLoad() {
     NoteOnEvent B(100, 0, 52, 0); NoteOffEvent b(150, 0, 52, 0);
     NoteOnEvent C(200, 0, 55, 0); NoteOffEvent c(250, 0, 55, 0);
 
-    QList<MidiPair> saveit;
+    QList<ChannelEvent> saveit;
 
-    MidiService::addNoteOn(saveit, A);
-    MidiService::addNoteOff(saveit, a);
-    MidiService::addNoteOn(saveit, B);
-    MidiService::addNoteOff(saveit, b);
-    MidiService::addNoteOn(saveit, C);
-    MidiService::addNoteOff(saveit, c);
+    saveit.append(A);
+    saveit.append(a);
+    saveit.append(B);
+    saveit.append(b);
+    saveit.append(C);
+    saveit.append(c);
 
     QTemporaryFile tempFile("midiService");
     tempFile.open();
@@ -661,7 +661,7 @@ void Test::midiService_saveLoad() {
 
     MidiService::save(tempFile.fileName(), saveit);
 
-    QList<MidiPair> loadit = MidiService::load(tempFile.fileName());
+    QList<ChannelEvent> loadit = MidiService::load(tempFile.fileName());
 
     QCOMPARE( loadit.size(), saveit.size() );
     for (int i = 0; i < loadit.size(); ++i) {
@@ -670,19 +670,19 @@ void Test::midiService_saveLoad() {
 }
 
 void Test::midiService_loadHanon() {
-    QString fileName1("../../meisterschueler/test/midifiles/hanonNo1Left.mid");
-    QString fileName2("../../meisterschueler/test/midifiles/hanonNo1Both.mid");
+    QString fileName1("../../meisterschueler-qt/test/midifiles/hanonNo1Left.mid");
+    QString fileName2("../../meisterschueler-qt/test/midifiles/hanonNo1Both.mid");
     QFile hanonFile1(fileName1);
     QFile hanonFile2(fileName2);
     QVERIFY( hanonFile1.exists() );
     QVERIFY( hanonFile2.exists() );
 
-    QList<MidiPair> loadit;
+    QList<ChannelEvent> loadit;
     loadit = MidiService::load(fileName1);
-    QCOMPARE( loadit.size(), 29*8 );
+    QCOMPARE( loadit.size(), 2*29*8 );
 
     loadit = MidiService::load(fileName2);
-    QCOMPARE( loadit.size(), 29*8*2 );
+    QCOMPARE( loadit.size(), 2*29*8*2 );
 }
 
 // MATCHINGSERVICE
@@ -940,21 +940,13 @@ void Test::matchingHandler_simple() {
 }
 
 void Test::matchingHandler_hanonNo1Left() {
-    QString fileName1("../../meisterschueler/test/midifiles/hanonNo1Left.mid");
+    QString fileName1("../../meisterschueler-qt/test/midifiles/hanonNo1Left.mid");
     QFile hanonFile1(fileName1);
     QVERIFY( hanonFile1.exists() );
 
-    QList<MidiPair> loadit;
+    QList<ChannelEvent> loadit;
     loadit = MidiService::load(fileName1);
-    QCOMPARE( loadit.size(), 29*8 );
-
-    QList<ChannelEvent> events;
-    for (MidiPair p : loadit) {
-        events.append(*p.noteOn);
-        events.append(*p.noteOff);
-    }
-
-    qSort(events);
+    QCOMPARE( loadit.size(), 2*29*8 );
 
     SongService songService;
 
@@ -963,7 +955,7 @@ void Test::matchingHandler_hanonNo1Left() {
     QSignalSpy songRecognizedSpy(&matchingHandler, SIGNAL(songRecognized(MatchingItem)));
     QSignalSpy songFinishedSpy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
 
-    for (ChannelEvent e : events) {
+    for (ChannelEvent e : loadit) {
         if (e.type() == Event::NoteOnEventType) {
             matchingHandler.matchNoteOnEvent(static_cast<NoteOnEvent>(e));
         } else if (e.type() == Event::NoteOffEventType) {
@@ -1007,7 +999,7 @@ void Test::statisticsService_statisticCluster() {
 
 void Test::mergingHandler_simple() {
     MergingHandler mergingHandler;
-    QSignalSpy scoreChangedSpy(&mergingHandler, SIGNAL(scoreChanged(int,Score,Score)));
+    QSignalSpy scoreChangedSpy(&mergingHandler, SIGNAL(scoreChanged(Score,Score)));
     QSignalSpy positionChangedSpy(&mergingHandler, SIGNAL(positionChanged(Fraction)));
 
     MatchingItem itemBefore;
