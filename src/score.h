@@ -37,6 +37,16 @@ public:
             return false;
         }
     }
+
+    bool operator==(const Score& rhs) const {
+        return (this->pitch==rhs.pitch
+                && this->duration==rhs.duration
+                && this->position==rhs.position
+                && this->midiPair==rhs.midiPair
+                && this->finger==rhs.finger
+                && this->hand==rhs.hand
+                && this->status==rhs.status);
+    }
 };
 
 

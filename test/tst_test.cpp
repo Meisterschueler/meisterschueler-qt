@@ -32,6 +32,7 @@ private Q_SLOTS:
     void midiPair_constructors();
     void midiPair_comparisons_single();
     void midiPair_comparisons_chord();
+    void score_comparisons();
     void song_comparisons();
     void matchingItem_comparisons();
 
@@ -227,6 +228,13 @@ void Test::midiPair_comparisons_chord() {
     QVERIFY( chord1note3 < chord2note2 );
 
     QVERIFY( chord2note1 < chord2note2 );
+}
+
+void Test::score_comparisons() {
+    Score a;
+    Score b(0);
+
+    QCOMPARE( a, b );
 }
 
 void Test::song_comparisons() {
