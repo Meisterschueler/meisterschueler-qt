@@ -107,6 +107,7 @@ Test::Test()
     qRegisterMetaType<QList<ChannelEvent>>("QList<ChannelEvent>");
     qRegisterMetaType<NoteOnEvent>("NoteOnEvent");
     qRegisterMetaType<NoteOffEvent>("NoteOffEvent");
+    qRegisterMetaType<Score>("Score");
 }
 
 // BASIC TYPES
