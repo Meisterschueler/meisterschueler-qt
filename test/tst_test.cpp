@@ -844,7 +844,6 @@ void Test::matchingHandler_simple() {
 
     MatchingHandler matchingHandler(matchingItems);
 
-    QSignalSpy positionSpy(&matchingHandler, SIGNAL(positionChanged(Fraction)));
     QSignalSpy songRecognizedSpy(&matchingHandler, SIGNAL(songRecognized(MatchingItem)));
     QSignalSpy songFinishedSpy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
 
@@ -961,7 +960,6 @@ void Test::matchingHandler_hanonNo1Left() {
 
     MatchingHandler matchingHandler(songService.getMatchingItems());
 
-    QSignalSpy positionSpy(&matchingHandler, SIGNAL(positionChanged(Fraction)));
     QSignalSpy songRecognizedSpy(&matchingHandler, SIGNAL(songRecognized(MatchingItem)));
     QSignalSpy songFinishedSpy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
 
