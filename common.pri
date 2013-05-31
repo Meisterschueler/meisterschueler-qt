@@ -1,4 +1,5 @@
 #Use pre-compiled headers
+CONFIG += precompile_header
 PRECOMPILED_HEADER = ../stable.h
 OTHER_FILES += ../stable.h
 
