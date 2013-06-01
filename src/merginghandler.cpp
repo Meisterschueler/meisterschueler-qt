@@ -18,7 +18,7 @@ void MergingHandler::eatMatchingItem(MatchingItem matchingItem) {
     QList<Score> scoresBefore = this->matchingItem.mergedScores;
     for (Score score : scoresBefore) {
         if (score.status != OPEN) {
-            if (scores.indexOf(score) == -1 && score.status != OPEN) {
+            if (scores.indexOf(score) == -1) {
                 scores.append(score);
             }
             beforePattern.append(scores.indexOf(score)*FAIL_DIFFERENCE);

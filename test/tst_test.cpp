@@ -1008,14 +1008,20 @@ void Test::mergingHandler_simple() {
     Score C(52, PLAYED);
     Score c(52, OPEN);
     Score d(53, OPEN);
+    Score dx(53, MISSED);
+    Score E(55, PLAYED);
     Score e(55, OPEN);
 
     MatchingItem itemBefore;
     itemBefore.mergedScores = QList<Score>() << A << B << c << d << e;
 
-    MatchingItem itemAfter;
-    itemAfter.mergedScores = QList<Score>() << A << B << C << d << e;
+    MatchingItem itemMiddle;
+    itemMiddle.mergedScores = QList<Score>() << A << B << C << d << e;
 
+    MatchingItem itemLast;
+    itemLast.mergedScores = QList<Score>() << A << B << C << dx << E;
+
+    // itemBefore
     mergingHandler.eatMatchingItem(itemBefore);
 
     QCOMPARE( scoreInsertedSpy.count(), 2 );
@@ -1026,22 +1032,41 @@ void Test::mergingHandler_simple() {
     Score insertedScore2 = qvariant_cast<Score>(arguments.at(0));
     QCOMPARE( insertedScore2, B );
 
-    //QCOMPARE( positionChangedSpy.count(), 1 );
-    //arguments = positionChangedSpy.takeFirst();
-    //Fraction positionBefore = qvariant_cast<Fraction>(arguments.at(0));
-    //QVERIFY( positionBefore == Fraction(2,4) );
+    QCOMPARE( positionChangedSpy.count(), 1 );
+    arguments = positionChangedSpy.takeFirst();
+    Fraction positionBefore = qvariant_cast<Fraction>(arguments.at(0));
+    QVERIFY( positionBefore == Fraction(2,4) );
 
-    mergingHandler.eatMatchingItem(itemAfter);
+    // itemMiddle
+    mergingHandler.eatMatchingItem(itemMiddle);
 
     QCOMPARE( scoreInsertedSpy.count(), 1 );
     arguments = scoreInsertedSpy.takeFirst();
     Score insertedScore3 = qvariant_cast<Score>(arguments.at(0));
     QCOMPARE( insertedScore3, C );
 
-    //QCOMPARE( positionChangedSpy.count(), 1 );
-    //arguments = positionChangedSpy.takeFirst();
-    //Fraction positionAfter = qvariant_cast<Fraction>(arguments.at(0));
-    //QVERIFY( positionAfter == Fraction(3,4) );
+    QCOMPARE( positionChangedSpy.count(), 1 );
+    arguments = positionChangedSpy.takeFirst();
+    Fraction positionAfter = qvariant_cast<Fraction>(arguments.at(0));
+    QVERIFY( positionAfter == Fraction(3,4) );
+
+    // itemLast
+    mergingHandler.eatMatchingItem(itemLast);
+
+    QCOMPARE( scoreDeletedSpy.count(), 1 );
+    arguments = scoreDeletedSpy.takeFirst();
+    Score deletedScore1 = qvariant_cast<Score>(arguments.at(0));
+    QCOMPARE( deletedScore1, dx );
+
+    QCOMPARE( scoreInsertedSpy.count(), 1 );
+    arguments = scoreInsertedSpy.takeFirst();
+    Score insertedScore4 = qvariant_cast<Score>(arguments.at(0));
+    QCOMPARE( insertedScore4, E );
+
+    QCOMPARE( positionChangedSpy.count(), 1 );
+    arguments = positionChangedSpy.takeFirst();
+    Fraction positionAfter = qvariant_cast<Fraction>(arguments.at(0));
+    QVERIFY( positionAfter == Fraction(5,4) );
 }
 
 // CLUSTERHANDLER
