@@ -10,7 +10,7 @@ class SongService
 public:
     SongService();
 
-    QList<MatchingItem> getMatchingItems();
+    static QList<MatchingItem> getMatchingItems();
 };
 
 #endif // SONGSERVICE_H

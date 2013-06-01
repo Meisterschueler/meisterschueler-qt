@@ -5,6 +5,11 @@
 
 #include "settingsdialog.h"
 
+#include "matchinghandler.h"
+#include "merginghandler.h"
+#include "midiwrapper.h"
+#include "songservice.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -12,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     midiWrapper = new MidiWrapper();
+    matchingHandler = new MatchingHandler(SongService::getMatchingItems());
+    mergingHandler = new MergingHandler();
     bubbleView = new BubbleView();
     guidoView = new GuidoView();
 
@@ -19,8 +26,10 @@ MainWindow::MainWindow(QWidget *parent) :
     restoreGeometry(settings.value("geometry").toByteArray());
     restoreState(settings.value("state").toByteArray());
 
+    // Pure GUI connections
     QObject::connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
+    // GUI/Core connections
     QObject::connect(this, &MainWindow::gotNoteOnEvent, bubbleView, &BubbleView::showNoteOnEvent);
 
     QObject::connect(this, &MainWindow::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
@@ -31,6 +40,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(bubbleView, &BubbleView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
     QObject::connect(bubbleView, &BubbleView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
 
+    // Core connections
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, matchingHandler, &MatchingHandler::matchNoteOnEvent);
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, matchingHandler, &MatchingHandler::matchNoteOffEvent);
+
+    QObject::connect(matchingHandler, &MatchingHandler::songRecognized, mergingHandler, &MergingHandler::eatMatchingItem);
+
     setCentralWidget(bubbleView);
 }
 
@@ -39,6 +54,8 @@ MainWindow::~MainWindow()
     delete ui;
 
     delete midiWrapper;
+    delete matchingHandler;
+    delete mergingHandler;
     delete bubbleView;
     delete guidoView;
 }

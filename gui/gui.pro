@@ -30,10 +30,36 @@ HEADERS  += mainwindow.h \
 INCLUDEPATH += ../src
 VPATH += ../src
 
-SOURCES += midiwrapper.cpp \
+SOURCES += guidoservice.cpp \
+           hanonsongfactory.cpp \
+           matchinghandler.cpp \
+           matchingitem.cpp \
+           matchingservice.cpp \
+           merginghandler.cpp \
+           midiservice.cpp \
+           midiwrapper.cpp \
+           needlemanwunsch.cpp \
+           notemapper.cpp \
+           score.cpp \
+           scoreservice.cpp \
+           song.cpp \
+           songservice.cpp \
            events.cpp
 
-HEADERS += midiwrapper.h \
+HEADERS += guidoservice.h \
+           hanonsongfactory.h \
+           matchinghandler.h \
+           matchingitem.h \
+           matchingservice.h \
+           merginghandler.h \
+           midiservice.h \
+           midiwrapper.h \
+           needlemanwunsch.h \
+           notemapper.h \
+           score.h \
+           scoreservice.h \
+           song.h \
+           songservice.h \
            events.h
 
 FORMS    += mainwindow.ui \
