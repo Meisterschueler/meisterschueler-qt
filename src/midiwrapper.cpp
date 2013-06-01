@@ -52,8 +52,8 @@ MidiWrapper::MidiWrapper(QObject *parent) :
         midiOut = new RtMidiOut();
 
         QSettings settings;
-        QString inputPortName = settings.value("midi/input").toString();
-        QString outputPortName = settings.value("midi/output").toString();
+        QString inputPortName = settings.value("midi/input", tr("(none)")).toString();
+        QString outputPortName = settings.value("midi/output", tr("(none)")).toString();
 
         openInputPort(inputPortName);
         openOutputPort(outputPortName);
@@ -125,7 +125,7 @@ void MidiWrapper::customEvent(QEvent *event) {
 }
 
 void MidiWrapper::playNoteOn(NoteOnEvent event) {
-    if (!openedOutputPort.isEmpty()) {
+    if (!openedOutputPort.isEmpty() && openedOutputPort != tr("(none)")) {
         std::vector<unsigned char> message;
         message.push_back(STATUS_NOTEON);
         message.push_back(event.getNote());
@@ -135,7 +135,7 @@ void MidiWrapper::playNoteOn(NoteOnEvent event) {
 }
 
 void MidiWrapper::playNoteOff(NoteOffEvent event) {
-    if (!openedOutputPort.isEmpty()) {
+    if (!openedOutputPort.isEmpty() && openedOutputPort != tr("(none)")) {
         std::vector<unsigned char> message;
         message.push_back(STATUS_NOTEOFF);
         message.push_back(event.getNote());
@@ -145,7 +145,7 @@ void MidiWrapper::playNoteOff(NoteOffEvent event) {
 }
 
 void MidiWrapper::openInputPort(QString portName) {
-    if (!openedInputPort.isEmpty()) {
+    if (!openedInputPort.isEmpty() && openedInputPort != tr("(none)")) {
         midiIn->closePort();
     }
 
@@ -161,7 +161,7 @@ void MidiWrapper::openInputPort(QString portName) {
 }
 
 void MidiWrapper::openOutputPort(QString portName) {
-    if (!openedOutputPort.isEmpty()) {
+    if (!openedOutputPort.isEmpty() && openedOutputPort != tr("(none)")) {
         midiOut->closePort();
     }
 
