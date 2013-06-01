@@ -4,7 +4,7 @@ PlaybackHandler::PlaybackHandler(QObject *parent) :
     QObject(parent)
 {
     timer = new QTimer(this);
-    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(playNextEvent()));
+    QObject::connect(timer, &QTimer::timeout, this, &PlaybackHandler::playNextEvent);
 }
 
 void PlaybackHandler::setMidiPairs(QList<MidiPair> midiPairs) {

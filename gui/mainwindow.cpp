@@ -19,19 +19,17 @@ MainWindow::MainWindow(QWidget *parent) :
     restoreGeometry(settings.value("geometry").toByteArray());
     restoreState(settings.value("state").toByteArray());
 
-    QObject::connect(ui->actionSettings, SIGNAL(triggered()), this, SLOT(showSettingsDialog()));
-    QObject::connect(ui->actionFull_Screen, SIGNAL(triggered()), this, SLOT(toggleFullscreen()));
     QObject::connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-    QObject::connect(this, SIGNAL(gotNoteOnEvent(NoteOnEvent)), bubbleView, SLOT(showNoteOnEvent(NoteOnEvent)));
+    QObject::connect(this, &MainWindow::gotNoteOnEvent, bubbleView, &BubbleView::showNoteOnEvent);
 
-    QObject::connect(this, SIGNAL(gotNoteOnEvent(NoteOnEvent)), midiWrapper, SLOT(playNoteOn(NoteOnEvent)));
-    QObject::connect(this, SIGNAL(gotNoteOffEvent(NoteOffEvent)), midiWrapper, SLOT(playNoteOff(NoteOffEvent)));
+    QObject::connect(this, &MainWindow::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
+    QObject::connect(this, &MainWindow::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
 
-    QObject::connect(midiWrapper, SIGNAL(gotNoteOnEvent(NoteOnEvent)), bubbleView, SLOT(showNoteOnEvent(NoteOnEvent)));
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, bubbleView, &BubbleView::showNoteOnEvent);
 
-    QObject::connect(bubbleView, SIGNAL(gotNoteOnEvent(NoteOnEvent)), midiWrapper, SLOT(playNoteOn(NoteOnEvent)));
-    QObject::connect(bubbleView, SIGNAL(gotNoteOffEvent(NoteOffEvent)), midiWrapper, SLOT(playNoteOff(NoteOffEvent)));
+    QObject::connect(bubbleView, &BubbleView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
+    QObject::connect(bubbleView, &BubbleView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
 
     setCentralWidget(bubbleView);
 }

@@ -3,7 +3,7 @@
 ClusterHandler::ClusterHandler()
 {
     timer = new QTimer(this);
-    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(timeOut()));
+    QObject::connect(timer, &QTimer::timeout, this, &ClusterHandler::timeOut);
 }
 
 void ClusterHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
