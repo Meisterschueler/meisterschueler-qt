@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include "matchingitem.h"
+
 class ResultService : public QObject
 {
     Q_OBJECT
