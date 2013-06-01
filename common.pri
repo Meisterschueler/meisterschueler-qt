@@ -29,7 +29,6 @@ LIBS += -L$$GUIDOLIB/Qt/GuidoQt \
 
 #RtMidi
 INCLUDEPATH += $$RTMIDI
-HEADERS += $$RTMIDI/rtmidi.h
 SOURCES += $$RTMIDI/rtmidi.cpp
 
 unix {
