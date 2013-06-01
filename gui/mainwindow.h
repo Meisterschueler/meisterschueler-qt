@@ -5,9 +5,13 @@
 
 #include "events.h"
 
-#include "bubbleview.h"
-#include "guidoview.h"
-#include "midiwrapper.h"
+class BubbleView;
+class GuidoView;
+
+class MidiWrapper;
+class MatchingHandler;
+class MergingHandler;
+class ResultHandler;
 
 namespace Ui {
 class MainWindow;
@@ -16,11 +20,11 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    
+
 protected:
     void changeEvent(QEvent *event);
     void closeEvent(QCloseEvent *event);
@@ -30,11 +34,14 @@ protected:
 signals:
     void gotNoteOnEvent(NoteOnEvent);
     void gotNoteOffEvent(NoteOffEvent);
-    
+
 private:
     Ui::MainWindow *ui;
 
     MidiWrapper *midiWrapper;
+    MatchingHandler *matchingHandler;
+    MergingHandler *mergingHandler;
+    ResultHandler *resultHandler;
     BubbleView *bubbleView;
     GuidoView *guidoView;
 

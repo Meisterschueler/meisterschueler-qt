@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     clusterhandler.cpp \
     events.cpp \
     merginghandler.cpp \
-    signalservice.cpp
+    signalservice.cpp \
+    resulthandler.cpp
 
 HEADERS  += \
     guidoservice.h \
@@ -55,7 +56,8 @@ HEADERS  += \
     playbackhandler.h \
     clusterhandler.h \
     merginghandler.h \
-    signalservice.h
+    signalservice.h \
+    resulthandler.h
 
 FORMS    +=
 
