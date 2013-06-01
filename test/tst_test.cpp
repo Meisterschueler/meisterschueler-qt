@@ -1065,8 +1065,8 @@ void Test::mergingHandler_simple() {
 
     QCOMPARE( positionChangedSpy.count(), 1 );
     arguments = positionChangedSpy.takeFirst();
-    Fraction positionAfter = qvariant_cast<Fraction>(arguments.at(0));
-    QVERIFY( positionAfter == Fraction(5,4) );
+    Fraction positionLast = qvariant_cast<Fraction>(arguments.at(0));
+    QVERIFY( positionLast == Fraction(5,4) );
 }
 
 // CLUSTERHANDLER
