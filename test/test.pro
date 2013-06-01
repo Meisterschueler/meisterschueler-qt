@@ -10,8 +10,6 @@ QT       += testlib
 
 QT       -= gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
 TARGET = tst_test
 CONFIG   += console
 CONFIG   -= app_bundle

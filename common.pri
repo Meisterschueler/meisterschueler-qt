@@ -13,7 +13,7 @@ JDKSMIDI = ../../jdksmidi
 KISSFFT = ../../kiss_fft130
 
 #Guido
-QT += printsupport
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 INCLUDEPATH += $$GUIDOLIB/Qt/GuidoQt/include \
                $$GUIDOLIB/src/include \
                $$GUIDOLIB/src/misc \
@@ -29,16 +29,8 @@ LIBS += -L$$GUIDOLIB/Qt/GuidoQt \
 
 #RtMidi
 INCLUDEPATH += $$RTMIDI
-
-unix {
-LIBS += -L$$RTMIDI \
-        -lrtmidi
-}
-
-win32 {
 HEADERS += $$RTMIDI/rtmidi.h
 SOURCES += $$RTMIDI/rtmidi.cpp
-}
 
 unix {
     DEFINES += __UNIX_JACK__
