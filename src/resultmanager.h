@@ -5,11 +5,11 @@
 
 #include "matchingitem.h"
 
-class ResultHandler : public QObject
+class ResultManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit ResultHandler(QObject *parent = 0);
+    explicit ResultManager(QObject *parent = 0);
     
 signals:
     

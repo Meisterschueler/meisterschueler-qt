@@ -40,9 +40,10 @@ SOURCES += guidoservice.cpp \
            midiwrapper.cpp \
            needlemanwunsch.cpp \
            notemapper.cpp \
-           resulthandler.cpp \
+           resultmanager.cpp \
            score.cpp \
            scoreservice.cpp \
+           signalmanager.cpp \
            song.cpp \
            songservice.cpp \
            events.cpp
@@ -57,9 +58,10 @@ HEADERS += guidoservice.h \
            midiwrapper.h \
            needlemanwunsch.h \
            notemapper.h \
-           resulthandler.h \
+           resultmanager.h \
            score.h \
            scoreservice.h \
+           signalmanager.h \
            song.h \
            songservice.h \
            events.h

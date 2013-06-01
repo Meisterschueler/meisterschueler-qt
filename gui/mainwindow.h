@@ -11,7 +11,8 @@ class GuidoView;
 class MidiWrapper;
 class MatchingHandler;
 class MergingHandler;
-class ResultHandler;
+class ResultManager;
+class SignalManager;
 
 namespace Ui {
 class MainWindow;
@@ -41,7 +42,8 @@ private:
     MidiWrapper *midiWrapper;
     MatchingHandler *matchingHandler;
     MergingHandler *mergingHandler;
-    ResultHandler *resultHandler;
+    ResultManager *resultManager;
+    SignalManager *signalManager;
     BubbleView *bubbleView;
     GuidoView *guidoView;
 

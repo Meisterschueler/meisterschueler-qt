@@ -10,7 +10,8 @@
 #include "matchinghandler.h"
 #include "merginghandler.h"
 #include "midiwrapper.h"
-#include "resulthandler.h"
+#include "resultmanager.h"
+#include "signalmanager.h"
 #include "songservice.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -22,7 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
     midiWrapper = new MidiWrapper();
     matchingHandler = new MatchingHandler(SongService::getMatchingItems());
     mergingHandler = new MergingHandler();
-    resultHandler = new ResultHandler();
+    resultManager = new ResultManager();
+    signalManager = new SignalManager();
     bubbleView = new BubbleView();
     guidoView = new GuidoView();
 
@@ -50,7 +52,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(matchingHandler, &MatchingHandler::songRecognized, mergingHandler, &MergingHandler::eatMatchingItem);
 
-    QObject::connect(matchingHandler, &MatchingHandler::songFinished, resultHandler, &ResultHandler::analyseFinishedSong);
+    QObject::connect(matchingHandler, &MatchingHandler::songFinished, signalManager, &SignalManager::playFinishedSound);
+    QObject::connect(matchingHandler, &MatchingHandler::songFinished, resultManager, &ResultManager::analyseFinishedSong);
 
     setCentralWidget(bubbleView);
 }
@@ -62,6 +65,8 @@ MainWindow::~MainWindow()
     delete midiWrapper;
     delete matchingHandler;
     delete mergingHandler;
+    delete resultManager;
+    delete signalManager;
     delete bubbleView;
     delete guidoView;
 }
