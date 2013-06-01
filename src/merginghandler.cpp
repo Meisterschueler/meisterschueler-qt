@@ -13,34 +13,31 @@ void MergingHandler::eatMatchingItem(MatchingItem matchingItem) {
     const int FAIL_DIFFERENCE = 2; // Depends on Needleman. 0 is MATCH, 1 is WRONG, >=2 is FAILED
 
     QList<Score> scores;
-    for (Score score : this->matchingItem.mergedScores) {
-        if (scores.indexOf(score) == -1 && score.status != OPEN) {
-            scores.append(score);
-        }
-    }
 
-    for (Score score : matchingItem.mergedScores) {
-        if (scores.indexOf(score) == -1 && score.status != OPEN) {
-            scores.append(score);
-        }
-    }
-
-    QByteArray before;
-    for (Score score : this->matchingItem.mergedScores) {
+    QByteArray beforePattern;
+    QList<Score> scoresBefore = this->matchingItem.mergedScores;
+    for (Score score : scoresBefore) {
         if (score.status != OPEN) {
-            before.append(scores.indexOf(score)*FAIL_DIFFERENCE);
+            if (scores.indexOf(score) == -1 && score.status != OPEN) {
+                scores.append(score);
+            }
+            beforePattern.append(scores.indexOf(score)*FAIL_DIFFERENCE);
         }
     }
 
-    QByteArray after;
-    for (Score score : matchingItem.mergedScores) {
+    QByteArray afterPattern;
+    QList<Score> scoresAfter = matchingItem.mergedScores;
+    for (Score score : scoresAfter) {
         if (score.status != OPEN) {
-            after.append(scores.indexOf(score)*FAIL_DIFFERENCE);
+            if (scores.indexOf(score) == -1) {
+                scores.append(score);
+            }
+            afterPattern.append(scores.indexOf(score)*FAIL_DIFFERENCE);
         }
     }
 
     NeedlemanWunsch needlemanWunsch;
-    QByteArray alignment = needlemanWunsch.getAlignments(before, after);
+    QByteArray alignment = needlemanWunsch.getAlignments(beforePattern, afterPattern);
 
     for (int i = 0; i < alignment.size(); ++i) {
         if (alignment.at(i) == NeedlemanWunsch::DELETED) {

@@ -1003,16 +1003,28 @@ void Test::mergingHandler_simple() {
     QSignalSpy scoreDeletedSpy(&mergingHandler, SIGNAL(scoreDeleted(Score)));
     QSignalSpy positionChangedSpy(&mergingHandler, SIGNAL(positionChanged(Fraction)));
 
+    Score A(48, PLAYED);
+    Score B(50, PLAYED);
+    Score C(52, PLAYED);
+    Score c(52, OPEN);
+    Score d(53, OPEN);
+    Score e(55, OPEN);
+
     MatchingItem itemBefore;
-    itemBefore.mergedScores = QList<Score>() << Score(48, PLAYED) << Score(50, PLAYED) << Score(52, OPEN) << Score(53, OPEN) << Score(55, OPEN);
+    itemBefore.mergedScores = QList<Score>() << A << B << c << d << e;
 
     MatchingItem itemAfter;
-    itemAfter.mergedScores = QList<Score>() << Score(48, PLAYED) << Score(50, PLAYED) << Score(52, PLAYED) << Score(53, OPEN) << Score(55, OPEN);
+    itemAfter.mergedScores = QList<Score>() << A << B << C << d << e;
 
     mergingHandler.eatMatchingItem(itemBefore);
 
     QCOMPARE( scoreInsertedSpy.count(), 2 );
-    scoreInsertedSpy.clear();
+    QList<QVariant> arguments = scoreInsertedSpy.takeFirst();
+    Score insertedScore1 = qvariant_cast<Score>(arguments.at(0));
+    QCOMPARE( insertedScore1, A );
+    arguments = scoreInsertedSpy.takeFirst();
+    Score insertedScore2 = qvariant_cast<Score>(arguments.at(0));
+    QCOMPARE( insertedScore2, B );
 
     //QCOMPARE( positionChangedSpy.count(), 1 );
     //arguments = positionChangedSpy.takeFirst();
@@ -1022,9 +1034,9 @@ void Test::mergingHandler_simple() {
     mergingHandler.eatMatchingItem(itemAfter);
 
     QCOMPARE( scoreInsertedSpy.count(), 1 );
-    QList<QVariant> arguments = scoreInsertedSpy.takeFirst();
-    Score insertedScore = qvariant_cast<Score>(arguments.at(0));
-    QVERIFY( insertedScore.pitch == 52 );
+    arguments = scoreInsertedSpy.takeFirst();
+    Score insertedScore3 = qvariant_cast<Score>(arguments.at(0));
+    QCOMPARE( insertedScore3, C );
 
     //QCOMPARE( positionChangedSpy.count(), 1 );
     //arguments = positionChangedSpy.takeFirst();
