@@ -999,41 +999,37 @@ void Test::statisticsService_statisticCluster() {
 
 void Test::mergingHandler_simple() {
     MergingHandler mergingHandler;
-    QSignalSpy scoreChangedSpy(&mergingHandler, SIGNAL(scoreChanged(Score,Score)));
+    QSignalSpy scoreInsertedSpy(&mergingHandler, SIGNAL(scoreInserted(Score)));
+    QSignalSpy scoreDeletedSpy(&mergingHandler, SIGNAL(scoreDeleted(Score)));
     QSignalSpy positionChangedSpy(&mergingHandler, SIGNAL(positionChanged(Fraction)));
 
     MatchingItem itemBefore;
-    itemBefore.pitchAlignment = "mmddd";
+    itemBefore.mergedScores = QList<Score>() << Score(48, PLAYED) << Score(50, PLAYED) << Score(52, OPEN) << Score(53, OPEN) << Score(55, OPEN);
 
     MatchingItem itemAfter;
-    itemAfter.pitchAlignment = "mmmdd";
+    itemAfter.mergedScores = QList<Score>() << Score(48, PLAYED) << Score(50, PLAYED) << Score(52, PLAYED) << Score(53, OPEN) << Score(55, OPEN);
 
     mergingHandler.eatMatchingItem(itemBefore);
 
-    QCOMPARE( scoreChangedSpy.count(), 1 );
-    QList<QVariant> arguments = scoreChangedSpy.takeFirst();
+    QCOMPARE( scoreInsertedSpy.count(), 2 );
+    scoreInsertedSpy.clear();
 
-    QCOMPARE( positionChangedSpy.count(), 1 );
-    arguments = positionChangedSpy.takeFirst();
-    Fraction positionBefore = qvariant_cast<Fraction>(arguments.at(0));
-    QVERIFY( positionBefore == Fraction(2,4) );
+    //QCOMPARE( positionChangedSpy.count(), 1 );
+    //arguments = positionChangedSpy.takeFirst();
+    //Fraction positionBefore = qvariant_cast<Fraction>(arguments.at(0));
+    //QVERIFY( positionBefore == Fraction(2,4) );
 
     mergingHandler.eatMatchingItem(itemAfter);
 
-    QCOMPARE( scoreChangedSpy.count(), 1 );
-    arguments = scoreChangedSpy.takeFirst();
-    int idx = qvariant_cast<int>(arguments.at(0));
-    Score scoreBefore = qvariant_cast<Score>(arguments.at(1));
-    Score scoreAfter = qvariant_cast<Score>(arguments.at(2));
+    QCOMPARE( scoreInsertedSpy.count(), 1 );
+    QList<QVariant> arguments = scoreInsertedSpy.takeFirst();
+    Score insertedScore = qvariant_cast<Score>(arguments.at(0));
+    QVERIFY( insertedScore.pitch == 52 );
 
-    QCOMPARE( idx, 2 );
-    QCOMPARE( scoreBefore.status, OPEN );
-    QCOMPARE( scoreAfter.status, PLAYED );
-
-    QCOMPARE( positionChangedSpy.count(), 1 );
-    arguments = positionChangedSpy.takeFirst();
-    Fraction positionAfter = qvariant_cast<Fraction>(arguments.at(0));
-    QVERIFY( positionAfter == Fraction(3,4) );
+    //QCOMPARE( positionChangedSpy.count(), 1 );
+    //arguments = positionChangedSpy.takeFirst();
+    //Fraction positionAfter = qvariant_cast<Fraction>(arguments.at(0));
+    //QVERIFY( positionAfter == Fraction(3,4) );
 }
 
 // CLUSTERHANDLER

@@ -14,25 +14,29 @@ void MergingHandler::eatMatchingItem(MatchingItem matchingItem) {
 
     QList<Score> scores;
     for (Score score : this->matchingItem.mergedScores) {
-        if (scores.indexOf(score) == -1) {
+        if (scores.indexOf(score) == -1 && score.status != OPEN) {
             scores.append(score);
         }
     }
 
     for (Score score : matchingItem.mergedScores) {
-        if (scores.indexOf(score) == -1) {
+        if (scores.indexOf(score) == -1 && score.status != OPEN) {
             scores.append(score);
         }
     }
 
     QByteArray before;
     for (Score score : this->matchingItem.mergedScores) {
-        before.append(scores.indexOf(score)*FAIL_DIFFERENCE);
+        if (score.status != OPEN) {
+            before.append(scores.indexOf(score)*FAIL_DIFFERENCE);
+        }
     }
 
     QByteArray after;
-    for (Score score : this->matchingItem.mergedScores) {
-        after.append(scores.indexOf(score)*FAIL_DIFFERENCE);
+    for (Score score : matchingItem.mergedScores) {
+        if (score.status != OPEN) {
+            after.append(scores.indexOf(score)*FAIL_DIFFERENCE);
+        }
     }
 
     NeedlemanWunsch needlemanWunsch;
