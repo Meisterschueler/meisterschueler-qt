@@ -1,16 +1,16 @@
-#include "resultservice.h"
+#include "resulthandler.h"
 
 #include <QDate>
 #include <QTime>
 
 #include "midiservice.h"
 
-ResultService::ResultService(QObject *parent) :
+ResultHandler::ResultHandler(QObject *parent) :
     QObject(parent)
 {
 }
 
-void ResultService::analyseFinishedSong(MatchingItem item) {
+void ResultHandler::analyseFinishedSong(MatchingItem item) {
     QList<ChannelEvent> channelEvents;
 
     for (Score score : item.mergedScores) {

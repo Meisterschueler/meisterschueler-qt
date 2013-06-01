@@ -3,11 +3,14 @@
 
 #include <QSettings>
 
+#include "bubbleview.h"
+#include "guidoview.h"
 #include "settingsdialog.h"
 
 #include "matchinghandler.h"
 #include "merginghandler.h"
 #include "midiwrapper.h"
+#include "resulthandler.h"
 #include "songservice.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -19,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     midiWrapper = new MidiWrapper();
     matchingHandler = new MatchingHandler(SongService::getMatchingItems());
     mergingHandler = new MergingHandler();
+    resultHandler = new ResultHandler();
     bubbleView = new BubbleView();
     guidoView = new GuidoView();
 
@@ -45,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, matchingHandler, &MatchingHandler::matchNoteOffEvent);
 
     QObject::connect(matchingHandler, &MatchingHandler::songRecognized, mergingHandler, &MergingHandler::eatMatchingItem);
+
+    QObject::connect(matchingHandler, &MatchingHandler::songFinished, resultHandler, &ResultHandler::analyseFinishedSong);
 
     setCentralWidget(bubbleView);
 }

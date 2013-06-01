@@ -5,12 +5,13 @@
 
 #include "events.h"
 
-#include "bubbleview.h"
-#include "guidoview.h"
+class BubbleView;
+class GuidoView;
 
 class MidiWrapper;
 class MatchingHandler;
 class MergingHandler;
+class ResultHandler;
 
 namespace Ui {
 class MainWindow;
@@ -40,6 +41,7 @@ private:
     MidiWrapper *midiWrapper;
     MatchingHandler *matchingHandler;
     MergingHandler *mergingHandler;
+    ResultHandler *resultHandler;
     BubbleView *bubbleView;
     GuidoView *guidoView;
 

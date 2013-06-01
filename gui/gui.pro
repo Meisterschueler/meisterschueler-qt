@@ -40,6 +40,7 @@ SOURCES += guidoservice.cpp \
            midiwrapper.cpp \
            needlemanwunsch.cpp \
            notemapper.cpp \
+           resulthandler.cpp \
            score.cpp \
            scoreservice.cpp \
            song.cpp \
@@ -56,6 +57,7 @@ HEADERS += guidoservice.h \
            midiwrapper.h \
            needlemanwunsch.h \
            notemapper.h \
+           resulthandler.h \
            score.h \
            scoreservice.h \
            song.h \
