@@ -3,6 +3,8 @@
 #include <QSettings>
 #include <QTranslator>
 
+#include "QGuidoPainter.h"
+
 #include "events.h"
 
 #define VER "0.1"
@@ -10,6 +12,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QGuidoPainter::startGuidoEngine();
 
     // Embedd the note font
     //QFontDatabase::addApplicationFont(":/font/guido2.ttf");
@@ -33,6 +37,10 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
+
+    int result = a.exec();
+
+    QGuidoPainter::stopGuidoEngine();
     
-    return a.exec();
+    return result;
 }

@@ -13,8 +13,6 @@ class ScoreService
 public:
     ScoreService();
 
-    //const QString whiteKeys = QString("x.x.xx.x.x.x").repeated(11).left(128);
-
     static QList<Score> transposeStep(const QList<Score>& scores, const int& step);
     static QList<Score> transposeSteps(const QList<Score>& scores, const QVector<int>& steps);
     static QList<Score> addFingers(const QList<Score>& scores, const QVector<int>& fingers);

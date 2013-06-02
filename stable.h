@@ -28,6 +28,7 @@
 #include <QTime>
 #include <QTimer>
 #include <QVector>
+#include <QWidget>
 
 // Guidolib stuff
 #include "Fraction.h"

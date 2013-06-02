@@ -1,7 +1,13 @@
 #ifndef GUIDOVIEW_H
 #define GUIDOVIEW_H
 
+#include <QList>
 #include <QWidget>
+
+class QGraphicsScene;
+class QGuidoGraphicsItem;
+
+class Song;
 
 namespace Ui {
 class GuidoView;
@@ -18,8 +24,16 @@ public:
 protected:
     void changeEvent(QEvent *e);
     
+private slots:
+    void on_comboBox_currentIndexChanged(int index);
+
 private:
     Ui::GuidoView *ui;
+
+    QGraphicsScene *graphicsScene;
+    QGuidoGraphicsItem *guidoGraphicsItem;
+
+    QList<Song> songs;
 };
 
 #endif // GUIDOVIEW_H

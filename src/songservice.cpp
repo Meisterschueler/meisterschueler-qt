@@ -35,6 +35,7 @@ QList<Song> SongService::getSongsFromDirectory(const QString& directory) {
 
         Song song;
         song.gmn = gmn;
+        song.name = gmnFile.fileName();
 
         result.append(song);
     }

@@ -27,8 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
     mergingHandler = new MergingHandler();
     resultManager = new ResultManager();
     signalManager = new SignalManager();
-    bubbleView = new BubbleView();
-    guidoView = new GuidoView();
 
     QSettings settings;
     restoreGeometry(settings.value("geometry").toByteArray());
@@ -38,15 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     // GUI/Core connections
-    QObject::connect(this, &MainWindow::gotNoteOnEvent, bubbleView, &BubbleView::showNoteOnEvent);
-
     QObject::connect(this, &MainWindow::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
     QObject::connect(this, &MainWindow::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
-
-    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, bubbleView, &BubbleView::showNoteOnEvent);
-
-    QObject::connect(bubbleView, &BubbleView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
-    QObject::connect(bubbleView, &BubbleView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
 
     // Core connections
     QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, matchingHandler, &MatchingHandler::matchNoteOnEvent);
@@ -57,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(matchingHandler, &MatchingHandler::songFinished, signalManager, &SignalManager::playFinishedSound);
     QObject::connect(matchingHandler, &MatchingHandler::songFinished, resultManager, &ResultManager::analyseFinishedSong);
 
-    setCentralWidget(bubbleView);
+    on_actionBubbleView_triggered();
 }
 
 MainWindow::~MainWindow()
@@ -69,8 +60,6 @@ MainWindow::~MainWindow()
     delete mergingHandler;
     delete resultManager;
     delete signalManager;
-    delete bubbleView;
-    delete guidoView;
 }
 
 void MainWindow::changeEvent(QEvent *event)
@@ -125,10 +114,19 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
 }
 
 void MainWindow::on_actionBubbleView_triggered() {
+    bubbleView = new BubbleView();
+
+    QObject::connect(this, &MainWindow::gotNoteOnEvent, bubbleView, &BubbleView::showNoteOnEvent);
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, bubbleView, &BubbleView::showNoteOnEvent);
+    QObject::connect(bubbleView, &BubbleView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
+    QObject::connect(bubbleView, &BubbleView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
+
     setCentralWidget(bubbleView);
 }
 
 void MainWindow::on_actionGuidoView_triggered() {
+    guidoView = new GuidoView();
+
     setCentralWidget(guidoView);
 }
 
