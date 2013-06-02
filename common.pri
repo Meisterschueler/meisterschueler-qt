@@ -62,5 +62,3 @@ LIBS += -L$$JDKSMIDI \
 INCLUDEPATH += $$KISSFFT
 SOURCES += $$KISSFFT/kiss_fft.c \
            $$KISSFFT/tools/kiss_fftr.c
-
-HEADERS +=

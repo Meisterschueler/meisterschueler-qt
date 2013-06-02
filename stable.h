@@ -16,6 +16,7 @@
 
 #include <QByteArray>
 #include <QDate>
+#include <QDir>
 #include <QEvent>
 #include <QFile>
 #include <QObject>
@@ -23,6 +24,7 @@
 #include <QMap>
 #include <QSharedPointer>
 #include <QString>
+#include <QStringList>
 #include <QTime>
 #include <QTimer>
 #include <QVector>

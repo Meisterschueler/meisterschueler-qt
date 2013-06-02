@@ -64,7 +64,9 @@ private Q_SLOTS:
     void scoreService_filterFinger();
     void scoreService_filterStatus();
 
-    void songFactories_hanon();
+    void hanonSongFactory_simple();
+
+    void songService_simple();
 
     void midiService_addNote();
     void midiService_saveLoad();
@@ -569,9 +571,9 @@ void Test::scoreService_filterStatus() {
     QVERIFY( filteredScores.at(2).pitch == 55 );
 }
 
-// SONGFACTORIES
+// HANONSONGFACTORY
 
-void Test::songFactories_hanon() {
+void Test::hanonSongFactory_simple() {
     HanonSongFactory hanonSongFactory;
 
     QList<Song> songs = hanonSongFactory.getSongs();
@@ -585,6 +587,13 @@ void Test::songFactories_hanon() {
             }
         }
     }
+}
+
+// SONGSERVICE
+
+void Test::songService_simple() {
+    QList<Song> songs = SongService::getSongsFromDirectory("/home/fritz/meisterschueler-misc");
+    QVERIFY( songs.count() > 10 );
 }
 
 // MIDISERVICE
@@ -948,9 +957,9 @@ void Test::matchingHandler_hanonNo1Left() {
     loadit = MidiService::load(fileName1);
     QCOMPARE( loadit.size(), 2*29*8 );
 
-    SongService songService;
-
-    MatchingHandler matchingHandler(songService.getMatchingItems());
+    QList<Song> songs = SongService::getSongsBuiltIn();
+    QList<MatchingItem> matchingItems = SongService::createMatchingItems(songs);
+    MatchingHandler matchingHandler(matchingItems);
 
     QSignalSpy songRecognizedSpy(&matchingHandler, SIGNAL(songRecognized(MatchingItem)));
     QSignalSpy songFinishedSpy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));

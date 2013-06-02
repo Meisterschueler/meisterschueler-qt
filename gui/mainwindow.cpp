@@ -21,7 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     midiWrapper = new MidiWrapper();
-    matchingHandler = new MatchingHandler(SongService::getMatchingItems());
+    QList<Song> songs = SongService::getSongsBuiltIn();
+    QList<MatchingItem> matchingItems = SongService::createMatchingItems(songs);
+    matchingHandler = new MatchingHandler(matchingItems);
     mergingHandler = new MergingHandler();
     resultManager = new ResultManager();
     signalManager = new SignalManager();
