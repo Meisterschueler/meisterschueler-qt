@@ -23,6 +23,7 @@ public:
     
 protected:
     void changeEvent(QEvent *e);
+    void resizeEvent(QResizeEvent *e);
     
 private slots:
     void on_comboBox_currentIndexChanged(int index);

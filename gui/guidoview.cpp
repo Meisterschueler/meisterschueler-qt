@@ -49,6 +49,33 @@ void GuidoView::changeEvent(QEvent *e)
     }
 }
 
+void GuidoView::resizeEvent(QResizeEvent *e) {
+    QWidget::resizeEvent(e);
+    GuidoDrawBoundingBoxes(0xFF);
+
+    double ratio = ui->graphicsView->width()/ui->graphicsView->height();
+    double dinA4_width = 29.7;
+
+    GuidoPageFormat pageFormat;
+    GuidoGetDefaultPageFormat(&pageFormat);
+    pageFormat.width = GuidoCM2Unit(dinA4_width);
+    pageFormat.height = GuidoCM2Unit(dinA4_width/ratio);
+    guidoGraphicsItem->setGuidoPageFormat(pageFormat);
+
+    QRectF gb = guidoGraphicsItem->boundingRect();
+    qDebug("Abmessungen gGI: %f x %f", gb.width(), gb.height());
+    qDebug("Abmessungen View: %f x %f", ui->graphicsView->width(), ui->graphicsView->height());
+
+    if (gb.width() == 0 || gb.height() == 0) {
+        // We have still a QGuidoGraphicsItem bug
+
+        ui->graphicsView->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+        guidoGraphicsItem->setScale(4.0);
+    } else {
+        ui->graphicsView->fitInView(guidoGraphicsItem);
+    }
+}
+
 void GuidoView::on_comboBox_currentIndexChanged(int index)
 {
     Song song = songs.at(index);
