@@ -1,5 +1,7 @@
 #include "playbackhandler.h"
 
+#include <QTimer>
+
 PlaybackHandler::PlaybackHandler(QObject *parent) :
     QObject(parent)
 {

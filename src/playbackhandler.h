@@ -3,11 +3,12 @@
 
 #include <QObject>
 #include <QList>
-#include <QTimer>
 
 #include "Fraction.h"
 
 #include "events.h"
+
+class QTimer;
 
 class PlaybackHandler : public QObject
 {
