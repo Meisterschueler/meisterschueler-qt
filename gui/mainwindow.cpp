@@ -59,7 +59,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(signalManager, &SignalManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
 
     on_actionBubbleView_triggered();
-    signalManager->playStartupSound();
+
+    // JackAudioDriver::ProcessGraphAsyncMaster: Process error
+    // JackEngine::XRun: client = RtMidi Input Client was not finished, state = Triggered
+    // JackEngine::XRun: client = RtMidi Output Client was not finished, state = Triggered
+    //signalManager->playStartupSound();
 }
 
 MainWindow::~MainWindow()
