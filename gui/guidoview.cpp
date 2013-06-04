@@ -22,8 +22,10 @@ GuidoView::GuidoView(QWidget *parent) :
     gv->setRenderHint( QPainter::Antialiasing );
     gv->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     gv->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    gv->setAlignment(Qt::AlignTop);
 
     guidoGraphicsItem = new QGuidoGraphicsItem();
+    guidoGraphicsItem->setGMNCode("[\\title<\"Inventio No. 1\"> \\composer<\"J. S. Bach\"> \\meter<\"4/4\"> " + QString("c d e f g").repeated(200) + "]");
     graphicsScene->addItem(guidoGraphicsItem);
 
     songs = SongService::getSongsFromDirectory("/home/fritz/meisterschueler-misc/scores");
@@ -50,30 +52,23 @@ void GuidoView::changeEvent(QEvent *e)
 }
 
 void GuidoView::resizeEvent(QResizeEvent *e) {
-    QWidget::resizeEvent(e);
     GuidoDrawBoundingBoxes(0xFF);
 
-    double ratio = ui->graphicsView->width()/ui->graphicsView->height();
-    double dinA4_width = 29.7;
+    QGraphicsView *gv = ui->graphicsView;
 
-    GuidoPageFormat pageFormat;
-    GuidoGetDefaultPageFormat(&pageFormat);
-    pageFormat.width = GuidoCM2Unit(dinA4_width);
-    pageFormat.height = GuidoCM2Unit(dinA4_width/ratio);
-    guidoGraphicsItem->setGuidoPageFormat(pageFormat);
+    double ratio = (double)gv->width()/gv->height();
+    qDebug("width:%i height:%i ratio: %f", gv->width(), gv->height(), ratio);
 
-    QRectF gb = guidoGraphicsItem->boundingRect();
-    qDebug("Abmessungen gGI: %f x %f", gb.width(), gb.height());
-    qDebug("Abmessungen View: %f x %f", ui->graphicsView->width(), ui->graphicsView->height());
+    GuidoPageFormat guidoPageFormat;
+    GuidoGetDefaultPageFormat(&guidoPageFormat);
+    guidoPageFormat.width = GuidoCM2Unit(29.7);
+    guidoPageFormat.height = GuidoCM2Unit(29.7/ratio);
+    guidoGraphicsItem->setGuidoPageFormat(guidoPageFormat);
 
-    if (gb.width() == 0 || gb.height() == 0) {
-        // We have still a QGuidoGraphicsItem bug
+    gv->fitInView(guidoGraphicsItem, Qt::KeepAspectRatio);
 
-        ui->graphicsView->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-        guidoGraphicsItem->setScale(4.0);
-    } else {
-        ui->graphicsView->fitInView(guidoGraphicsItem);
-    }
+    // WHY???
+    guidoGraphicsItem->setScale(10.0);
 }
 
 void GuidoView::on_comboBox_currentIndexChanged(int index)
