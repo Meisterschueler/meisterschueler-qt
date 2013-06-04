@@ -45,6 +45,7 @@ void PlaybackHandler::playNextEvent() {
 
     if (idx+1 < events.size()) {
         int delta = events.at(idx+1).getTime() - events.at(idx).getTime();
+        idx++;
         timer->start(delta);
     }
 }

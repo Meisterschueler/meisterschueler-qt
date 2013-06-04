@@ -19,6 +19,7 @@
 #include <QDir>
 #include <QEvent>
 #include <QFile>
+#include <QFileDialog>
 #include <QObject>
 #include <QList>
 #include <QMap>

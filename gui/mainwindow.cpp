@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QDir>
+#include <QFileDialog>
 #include <QSettings>
 
 #include "bubbleview.h"
@@ -9,7 +11,9 @@
 
 #include "matchinghandler.h"
 #include "merginghandler.h"
+#include "midiservice.h"
 #include "midiwrapper.h"
+#include "playbackhandler.h"
 #include "resultmanager.h"
 #include "signalmanager.h"
 #include "songservice.h"
@@ -25,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QList<MatchingItem> matchingItems = SongService::createMatchingItems(songs);
     matchingHandler = new MatchingHandler(matchingItems);
     mergingHandler = new MergingHandler();
+    playbackHandler = new PlaybackHandler();
     resultManager = new ResultManager();
     signalManager = new SignalManager();
 
@@ -44,11 +49,17 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, matchingHandler, &MatchingHandler::matchNoteOffEvent);
 
     QObject::connect(matchingHandler, &MatchingHandler::songRecognized, mergingHandler, &MergingHandler::eatMatchingItem);
-
     QObject::connect(matchingHandler, &MatchingHandler::songFinished, signalManager, &SignalManager::playFinishedSound);
     QObject::connect(matchingHandler, &MatchingHandler::songFinished, resultManager, &ResultManager::analyseFinishedSong);
 
+    QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
+    QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
+
+    QObject::connect(signalManager, &SignalManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
+    QObject::connect(signalManager, &SignalManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
+
     on_actionBubbleView_triggered();
+    signalManager->playStartupSound();
 }
 
 MainWindow::~MainWindow()
@@ -58,6 +69,7 @@ MainWindow::~MainWindow()
     delete midiWrapper;
     delete matchingHandler;
     delete mergingHandler;
+    delete playbackHandler;
     delete resultManager;
     delete signalManager;
 }
@@ -150,4 +162,15 @@ void MainWindow::on_actionSettings_triggered() {
     SettingsDialog* settingsDialog = new SettingsDialog(this);
     settingsDialog->init(midiWrapper);
     settingsDialog->exec();
+}
+
+void MainWindow::on_actionLoad_File_triggered()
+{
+    QString filename = QFileDialog::getOpenFileName(this, tr("Load MIDI file"), QDir::homePath(), tr("MIDI files (*.mid *.midi)"));
+    if (filename.isEmpty())
+        return;
+
+    QList<ChannelEvent> channelEvents = MidiService::load(filename);
+    playbackHandler->setChannelEvents(channelEvents);
+    playbackHandler->play();
 }

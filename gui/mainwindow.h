@@ -11,6 +11,7 @@ class GuidoView;
 class MidiWrapper;
 class MatchingHandler;
 class MergingHandler;
+class PlaybackHandler;
 class ResultManager;
 class SignalManager;
 
@@ -42,8 +43,10 @@ private:
     MidiWrapper *midiWrapper;
     MatchingHandler *matchingHandler;
     MergingHandler *mergingHandler;
+    PlaybackHandler *playbackHandler;
     ResultManager *resultManager;
     SignalManager *signalManager;
+
     BubbleView *bubbleView;
     GuidoView *guidoView;
 
@@ -54,6 +57,7 @@ private slots:
     void on_actionGuidoView_triggered();
     void on_actionFull_Screen_triggered();
     void on_actionSettings_triggered();
+    void on_actionLoad_File_triggered();
 };
 
 #endif // MAINWINDOW_H
