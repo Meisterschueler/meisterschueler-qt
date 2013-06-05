@@ -22,10 +22,9 @@ GuidoView::GuidoView(QWidget *parent) :
     gv->setRenderHint( QPainter::Antialiasing );
     gv->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     gv->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    gv->setAlignment(Qt::AlignTop);
+    gv->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
     guidoGraphicsItem = new QGuidoGraphicsItem();
-    guidoGraphicsItem->setGMNCode("[\\title<\"Inventio No. 1\"> \\composer<\"J. S. Bach\"> \\meter<\"4/4\"> " + QString("c d e f g").repeated(200) + "]");
     graphicsScene->addItem(guidoGraphicsItem);
 
     songs = SongService::getSongsFromDirectory("/home/fritz/meisterschueler-misc/scores");
@@ -52,23 +51,19 @@ void GuidoView::changeEvent(QEvent *e)
 }
 
 void GuidoView::resizeEvent(QResizeEvent *e) {
-    GuidoDrawBoundingBoxes(0xFF);
+    QWidget::resizeEvent(e);
 
     QGraphicsView *gv = ui->graphicsView;
-
     double ratio = (double)gv->width()/gv->height();
-    qDebug("width:%i height:%i ratio: %f", gv->width(), gv->height(), ratio);
 
     GuidoPageFormat guidoPageFormat;
     GuidoGetDefaultPageFormat(&guidoPageFormat);
     guidoPageFormat.width = GuidoCM2Unit(29.7);
     guidoPageFormat.height = GuidoCM2Unit(29.7/ratio);
+    guidoPageFormat.marginright = 0;
     guidoGraphicsItem->setGuidoPageFormat(guidoPageFormat);
 
     gv->fitInView(guidoGraphicsItem, Qt::KeepAspectRatio);
-
-    // WHY???
-    guidoGraphicsItem->setScale(10.0);
 }
 
 void GuidoView::on_comboBox_currentIndexChanged(int index)

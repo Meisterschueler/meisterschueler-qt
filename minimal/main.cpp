@@ -25,7 +25,7 @@ MyView::MyView(QWidget *parent) : QGraphicsView(parent) {
     setRenderHint( QPainter::Antialiasing );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    setAlignment(Qt::AlignTop);
+    setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
     guidoGraphicsItem = new QGuidoGraphicsItem();
     guidoGraphicsItem->setGMNCode("{"
@@ -37,12 +37,12 @@ MyView::MyView(QWidget *parent) : QGraphicsView(parent) {
 
 void MyView::resizeEvent(QResizeEvent *event) {
     double ratio = (double)width()/height();
-    qDebug("width:%i height:%i ratio: %f", width(), height(), ratio);
 
     GuidoPageFormat guidoPageFormat;
     GuidoGetDefaultPageFormat(&guidoPageFormat);
     guidoPageFormat.width = GuidoCM2Unit(29.7);
     guidoPageFormat.height = GuidoCM2Unit(29.7/ratio);
+    guidoPageFormat.marginright = 0;
     guidoGraphicsItem->setGuidoPageFormat(guidoPageFormat);
 
     fitInView(guidoGraphicsItem, Qt::KeepAspectRatio);
