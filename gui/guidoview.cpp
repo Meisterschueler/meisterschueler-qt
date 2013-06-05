@@ -22,6 +22,7 @@ GuidoView::GuidoView(QWidget *parent) :
     gv->setRenderHint( QPainter::Antialiasing );
     gv->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     gv->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    gv->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
     guidoGraphicsItem = new QGuidoGraphicsItem();
     graphicsScene->addItem(guidoGraphicsItem);
@@ -47,6 +48,22 @@ void GuidoView::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void GuidoView::resizeEvent(QResizeEvent *e) {
+    QWidget::resizeEvent(e);
+
+    QGraphicsView *gv = ui->graphicsView;
+    double ratio = (double)gv->width()/gv->height();
+
+    GuidoPageFormat guidoPageFormat;
+    GuidoGetDefaultPageFormat(&guidoPageFormat);
+    guidoPageFormat.width = GuidoCM2Unit(29.7);
+    guidoPageFormat.height = GuidoCM2Unit(29.7/ratio);
+    guidoPageFormat.marginright = 0;
+    guidoGraphicsItem->setGuidoPageFormat(guidoPageFormat);
+
+    gv->fitInView(guidoGraphicsItem, Qt::KeepAspectRatio);
 }
 
 void GuidoView::on_comboBox_currentIndexChanged(int index)
