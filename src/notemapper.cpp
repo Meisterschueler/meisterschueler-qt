@@ -40,17 +40,20 @@ void NoteMapper::Event(const ARMusicalObject *ev, EventType type) {
 
 void NoteMapper::Note(const ARMusicalObject *ev) {
     const ARNote *arn = dynamic_cast<const ARNote*>(ev);
-    Score note(0); // WTF!!!
-    note.pitch = arn->midiPitch();
-    note.duration = arn->getDuration();
-    note.position = position;
+    Score score;
+    score.pitch = arn->midiPitch();
+    score.duration = arn->getDuration();
+    score.position = position;
 
     position += arn->getDuration();
 
-    notes.append(note);
+    if (score.pitch == 255) {
+        qDebug("Invalid pitch");
+    } else {
+        notes.append(score);
+    }
 
     TimeUnwrap::Note(ev);
-    //qDebug("Note");
 }
 
 void NoteMapper::Rest(const ARMusicalObject *ev) {

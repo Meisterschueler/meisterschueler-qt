@@ -49,8 +49,10 @@ QList<MatchingItem> SongService::createMatchingItems(const QList<Song>& songs) {
     for (Song song : songs) {
         QList<Hand> haende = song.voices.keys();
         QList<Score> scores = song.voices.value(LEFT);
-        scores.at(0);
-        haende.at(0);
+
+        if (scores.size() == 0) {
+            continue;
+        }
 
         QByteArray scorePitchSequence = ScoreService::scoresToPitchSequence(song.voices.value(LEFT));
         QByteArray scoreIntervallSequence = ScoreService::scoresToIntervalSequence(song.voices.value(LEFT));

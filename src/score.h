@@ -18,7 +18,7 @@ class Score
 public:
     Score(char pitch=0, Status status=UNKNOWN_STATUS);
 
-    char pitch;
+    unsigned char pitch;
     Fraction duration;
     Fraction position;
 

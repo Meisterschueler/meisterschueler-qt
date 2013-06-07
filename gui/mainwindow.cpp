@@ -24,6 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    qRegisterMetaType<NoteOnEvent>("NoteOnEvent");
+    qRegisterMetaType<NoteOffEvent>("NoteOffEvent");
+
     midiWrapper = new MidiWrapper();
     QList<Song> songs = SongService::getSongsBuiltIn();
     QList<MatchingItem> matchingItems = SongService::createMatchingItems(songs);
@@ -52,11 +55,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(matchingHandler, &MatchingHandler::songFinished, signalManager, &SignalManager::playFinishedSound);
     QObject::connect(matchingHandler, &MatchingHandler::songFinished, resultManager, &ResultManager::analyseFinishedSong);
 
-    QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn, Qt::QueuedConnection);
-    QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff, Qt::QueuedConnection);
+    //QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
+    //QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
 
-    QObject::connect(signalManager, &SignalManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn, Qt::QueuedConnection);
-    QObject::connect(signalManager, &SignalManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff, Qt::QueuedConnection);
+    //QObject::connect(signalManager, &SignalManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
+    //QObject::connect(signalManager, &SignalManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
 
     on_actionBubbleView_triggered();
 

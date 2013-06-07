@@ -31,12 +31,16 @@ LIBS += -L$$GUIDOLIB/Qt/GuidoQt \
 INCLUDEPATH += $$RTMIDI
 SOURCES += $$RTMIDI/rtmidi.cpp
 
+debug {
+    DEFINES += __RTMIDI_DEBUG__
+}
+
 unix {
 #    DEFINES += __UNIX_JACK__
 #    LIBS += -ljack
     DEFINES += __LINUX_ALSA__
     LIBS += -lasound \
-            -pthread
+            -lpthread
 }
 
 win32 {

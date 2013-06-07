@@ -89,6 +89,9 @@ public:
     }
 };
 
+Q_DECLARE_METATYPE(NoteOnEvent)
+
+
 class NoteOffEvent : public ChannelEvent
 {
 public:
@@ -101,6 +104,9 @@ public:
         return this->m_note<rhs.getNote();
     }
 };
+
+Q_DECLARE_METATYPE(NoteOffEvent)
+
 
 class PolyKeyPressEvent : public NoteEvent
 {
