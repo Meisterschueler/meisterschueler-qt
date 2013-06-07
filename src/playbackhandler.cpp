@@ -6,6 +6,7 @@ PlaybackHandler::PlaybackHandler(QObject *parent) :
     QObject(parent)
 {
     timer = new QTimer(this);
+    timer->setSingleShot(true);
     QObject::connect(timer, &QTimer::timeout, this, &PlaybackHandler::playNextEvent);
 }
 

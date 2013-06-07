@@ -10,6 +10,7 @@ SignalManager::SignalManager(QObject *parent) :
     QObject(parent)
 {
     timer = new QTimer(this);
+    timer->setSingleShot(true);
     QObject::connect(timer, &QTimer::timeout, this, &SignalManager::playNextEvent);
 }
 
