@@ -17,7 +17,7 @@ private:
 
 public:
     NoteMapper(ARMusicalVoice *voice);
-    QList<Score> getNotes();
+    QList<Score> getNotes() const;
 
 protected:
     virtual void Event (const ARMusicalObject * ev, EventType type);

@@ -12,7 +12,7 @@ NoteMapper::NoteMapper(ARMusicalVoice *voice) : TimeUnwrap(voice)
 {
 }
 
-QList<Score> NoteMapper::getNotes() {
+QList<Score> NoteMapper::getNotes() const {
     return notes;
 }
 

@@ -72,7 +72,7 @@ MidiWrapper::~MidiWrapper() {
         delete midiOut;
 }
 
-QStringList MidiWrapper::getInputPorts() {
+QStringList MidiWrapper::getInputPorts() const {
     QStringList result;
     result << tr("(none)");
 
@@ -87,7 +87,7 @@ QStringList MidiWrapper::getInputPorts() {
     return result;
 }
 
-QStringList MidiWrapper::getOutputPorts() {
+QStringList MidiWrapper::getOutputPorts() const {
     QStringList result;
     result << tr("(none)");
 
@@ -102,11 +102,11 @@ QStringList MidiWrapper::getOutputPorts() {
     return result;
 }
 
-QString MidiWrapper::getOpenedInputPort() {
+QString MidiWrapper::getOpenedInputPort() const {
     return openedInputPort;
 }
 
-QString MidiWrapper::getOpenedOutputPort() {
+QString MidiWrapper::getOpenedOutputPort() const {
     return openedOutputPort;
 }
 

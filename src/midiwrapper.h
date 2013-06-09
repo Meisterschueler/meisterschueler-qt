@@ -15,11 +15,11 @@ public:
     explicit MidiWrapper(QObject *parent = 0);
     ~MidiWrapper();
 
-    QStringList getInputPorts();
-    QStringList getOutputPorts();
+    QStringList getInputPorts() const;
+    QStringList getOutputPorts() const;
 
-    QString getOpenedInputPort();
-    QString getOpenedOutputPort();
+    QString getOpenedInputPort() const;
+    QString getOpenedOutputPort() const;
 
 protected:
     RtMidiIn *midiIn;
