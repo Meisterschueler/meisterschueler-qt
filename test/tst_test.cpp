@@ -1001,7 +1001,29 @@ void Test::statisticsService_statisticItem() {
 }
 
 void Test::statisticsService_statisticCluster() {
-    QSKIP( "not yet implemented" );
+    QList<Score> scores;
+    Score a(48, Status::PLAYED);
+    a.duration = Fraction(1, 4);
+    a.midiPair = MidiPair(NoteOnEvent(  0, 0, 48, 0), NoteOffEvent(100, 0, 48, 0));
+    scores.append(a);
+
+    Score b(48, Status::PLAYED);
+    b.duration = Fraction(1, 4);
+    b.midiPair = MidiPair(NoteOnEvent(200, 0, 48, 0), NoteOffEvent(300, 0, 48, 0));
+    scores.append(b);
+
+    Score c(48, Status::PLAYED);
+    c.duration = Fraction(1, 4);
+    c.midiPair = MidiPair(NoteOnEvent(400, 0, 48, 0), NoteOffEvent(500, 0, 48, 0));
+    scores.append(c);
+
+    Score d(48, Status::PLAYED);
+    d.duration = Fraction(1, 4);
+    d.midiPair = MidiPair(NoteOnEvent(600, 0, 48, 0), NoteOffEvent(800, 0, 48, 0));
+    scores.append(d);
+
+    StatisticCluster statisticCluster = StatisticsService::getStatisticCluster(scores);
+    QCOMPARE( statisticCluster.speed.mean, 300.0 );
 }
 
 // MERGINGHANDLER
