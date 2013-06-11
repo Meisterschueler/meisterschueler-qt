@@ -372,7 +372,7 @@ void Test::guidoService_gmnToScores_chord() {
 }
 
 void Test::guidoService_gmnToScores_repeat() {
-    QString gmn = "[c d \\beginRepeat e f g \\endRepeat a]";
+    QString gmn = "[c d \\repeatBegin e f g \\repeatEnd a]";
     QList<Score> notes = GuidoService::gmnToScores(gmn);
     QCOMPARE( notes.size(), 9 );
 }
