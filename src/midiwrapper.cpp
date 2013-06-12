@@ -124,7 +124,7 @@ void MidiWrapper::customEvent(QEvent *event) {
     event->accept();
 }
 
-void MidiWrapper::playNoteOn(NoteOnEvent event) {
+void MidiWrapper::playNoteOnEvent(NoteOnEvent event) {
     if (!openedOutputPort.isEmpty() && openedOutputPort != tr("(none)")) {
         std::vector<unsigned char> message;
         message.push_back(STATUS_NOTEON);
@@ -134,7 +134,7 @@ void MidiWrapper::playNoteOn(NoteOnEvent event) {
     }
 }
 
-void MidiWrapper::playNoteOff(NoteOffEvent event) {
+void MidiWrapper::playNoteOffEvent(NoteOffEvent event) {
     if (!openedOutputPort.isEmpty() && openedOutputPort != tr("(none)")) {
         std::vector<unsigned char> message;
         message.push_back(STATUS_NOTEOFF);

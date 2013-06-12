@@ -46,8 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->actionAbout_Qt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     // GUI/Core connections
-    QObject::connect(this, &MainWindow::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
-    QObject::connect(this, &MainWindow::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
+    QObject::connect(this, &MainWindow::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
+    QObject::connect(this, &MainWindow::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
     // Core connections
     QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, matchingHandler, &MatchingHandler::matchNoteOnEvent);
@@ -57,18 +57,18 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(matchingHandler, &MatchingHandler::songFinished, signalManager, &SignalManager::playFinishedSound);
     QObject::connect(matchingHandler, &MatchingHandler::songFinished, resultManager, &ResultManager::analyseFinishedSong);
 
-    QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
-    QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
+    QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
+    QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
-    QObject::connect(signalManager, &SignalManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
-    QObject::connect(signalManager, &SignalManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
+    QObject::connect(signalManager, &SignalManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
+    QObject::connect(signalManager, &SignalManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
     // EchoManager
-    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, echoManager, &EchoManager::playNoteOn);
-    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, echoManager, &EchoManager::playNoteOff);
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, echoManager, &EchoManager::playNoteOnEvent);
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, echoManager, &EchoManager::playNoteOffEvent);
 
-    QObject::connect(echoManager, &EchoManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
-    QObject::connect(echoManager, &EchoManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
+    QObject::connect(echoManager, &EchoManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
+    QObject::connect(echoManager, &EchoManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
     on_actionBubbleView_triggered();
 
@@ -144,8 +144,8 @@ void MainWindow::on_actionBubbleView_triggered() {
 
     QObject::connect(this, &MainWindow::gotNoteOnEvent, bubbleView, &BubbleView::showNoteOnEvent);
     QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, bubbleView, &BubbleView::showNoteOnEvent);
-    QObject::connect(bubbleView, &BubbleView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
-    QObject::connect(bubbleView, &BubbleView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
+    QObject::connect(bubbleView, &BubbleView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
+    QObject::connect(bubbleView, &BubbleView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
     setCentralWidget(bubbleView);
 }

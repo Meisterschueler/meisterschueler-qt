@@ -38,8 +38,8 @@ protected:
     void customEvent(QEvent *event);
 
 public slots:
-    void playNoteOn(NoteOnEvent event);
-    void playNoteOff(NoteOffEvent event);
+    void playNoteOnEvent(NoteOnEvent event);
+    void playNoteOffEvent(NoteOffEvent event);
 
     void openInputPort(QString portName);
     void openOutputPort(QString portName);
