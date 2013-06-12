@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     events.cpp \
     merginghandler.cpp \
     signalmanager.cpp \
-    resultmanager.cpp
+    resultmanager.cpp \
+    echomanager.cpp
 
 HEADERS  += \
     guidoservice.h \
@@ -55,7 +56,8 @@ HEADERS  += \
     clusterhandler.h \
     merginghandler.h \
     signalmanager.h \
-    resultmanager.h
+    resultmanager.h \
+    echomanager.h
 
 FORMS    +=
 

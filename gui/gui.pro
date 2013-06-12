@@ -28,7 +28,8 @@ HEADERS  += mainwindow.h \
 INCLUDEPATH += ../src
 VPATH += ../src
 
-SOURCES += guidoservice.cpp \
+SOURCES += echomanager.cpp \
+           guidoservice.cpp \
            hanonsongfactory.cpp \
            matchinghandler.cpp \
            matchingitem.cpp \
@@ -47,7 +48,8 @@ SOURCES += guidoservice.cpp \
            songservice.cpp \
            events.cpp
 
-HEADERS += guidoservice.h \
+HEADERS += echomanager.h \
+           guidoservice.h \
            hanonsongfactory.h \
            matchinghandler.h \
            matchingitem.h \

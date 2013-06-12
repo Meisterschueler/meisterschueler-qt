@@ -8,6 +8,7 @@
 class BubbleView;
 class GuidoView;
 
+class EchoManager;
 class MidiWrapper;
 class MatchingHandler;
 class MergingHandler;
@@ -40,6 +41,7 @@ signals:
 private:
     Ui::MainWindow *ui;
 
+    EchoManager *echoManager;
     MidiWrapper *midiWrapper;
     MatchingHandler *matchingHandler;
     MergingHandler *mergingHandler;
@@ -58,6 +60,7 @@ private slots:
     void on_actionFull_Screen_triggered();
     void on_actionSettings_triggered();
     void on_actionLoad_File_triggered();
+    void on_actionEchoes_triggered(bool checked);
 };
 
 #endif // MAINWINDOW_H

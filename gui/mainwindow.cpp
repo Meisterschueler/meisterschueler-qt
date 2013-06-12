@@ -9,6 +9,7 @@
 #include "guidoview.h"
 #include "settingsdialog.h"
 
+#include "echomanager.h"
 #include "matchinghandler.h"
 #include "merginghandler.h"
 #include "midiservice.h"
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     qRegisterMetaType<NoteOnEvent>("NoteOnEvent");
     qRegisterMetaType<NoteOffEvent>("NoteOffEvent");
 
+    echoManager = new EchoManager();
     midiWrapper = new MidiWrapper();
     QList<Song> songs = SongService::getSongsBuiltIn();
     QList<MatchingItem> matchingItems = SongService::createMatchingItems(songs);
@@ -61,6 +63,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(signalManager, &SignalManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
     QObject::connect(signalManager, &SignalManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
 
+    // EchoManager
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, echoManager, &EchoManager::playNoteOn);
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, echoManager, &EchoManager::playNoteOff);
+
+    QObject::connect(echoManager, &EchoManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOn);
+    QObject::connect(echoManager, &EchoManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOff);
+
     on_actionBubbleView_triggered();
 
     signalManager->playStartupSound();
@@ -70,6 +79,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 
+    delete echoManager;
     delete midiWrapper;
     delete matchingHandler;
     delete mergingHandler;
@@ -177,4 +187,9 @@ void MainWindow::on_actionLoad_File_triggered()
     QList<ChannelEvent> channelEvents = MidiService::load(filename);
     playbackHandler->setChannelEvents(channelEvents);
     playbackHandler->play();
+}
+
+void MainWindow::on_actionEchoes_triggered(bool checked)
+{
+    echoManager->enableEchoes(checked);
 }
