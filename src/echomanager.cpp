@@ -16,14 +16,14 @@ void EchoManager::enableEchoes(bool enable) {
     enabled = enable;
 }
 
-void EchoManager::playNoteOn(NoteOnEvent event) {
+void EchoManager::playNoteOnEvent(NoteOnEvent event) {
     events.enqueue(event);
     if (enabled && !timer->isActive()) {
         timer->start(delay);
     }
 }
 
-void EchoManager::playNoteOff(NoteOffEvent event) {
+void EchoManager::playNoteOffEvent(NoteOffEvent event) {
     events.enqueue(event);
     if (enabled && !timer->isActive()) {
         timer->start(delay);

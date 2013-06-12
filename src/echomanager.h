@@ -20,8 +20,8 @@ signals:
     
 public slots:
     void enableEchoes(bool enable);
-    void playNoteOn(NoteOnEvent event);
-    void playNoteOff(NoteOffEvent event);
+    void playNoteOnEvent(NoteOnEvent event);
+    void playNoteOffEvent(NoteOffEvent event);
     
 private:
     bool enabled;
