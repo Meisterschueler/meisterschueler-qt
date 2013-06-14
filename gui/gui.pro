@@ -16,13 +16,15 @@ SOURCES += main.cpp\
     settingsdialog.cpp \
     bubblegraphicsitem.cpp \
     bubbleview.cpp \
-    guidoview.cpp
+    guidoview.cpp \
+    echodialog.cpp
 
 HEADERS  += mainwindow.h \
     settingsdialog.h \
     bubblegraphicsitem.h \
     bubbleview.h \
-    guidoview.h
+    guidoview.h \
+    echodialog.h
 
 # Get Classes
 INCLUDEPATH += ../src
@@ -70,6 +72,7 @@ HEADERS += echomanager.h \
 
 FORMS    += mainwindow.ui \
     settingsdialog.ui \
-    guidoview.ui
+    guidoview.ui \
+    echodialog.ui
 
 TRANSLATIONS += translations/meisterschueler_de.ts

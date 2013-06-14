@@ -6,6 +6,7 @@
 #include <QSettings>
 
 #include "bubbleview.h"
+#include "echodialog.h"
 #include "guidoview.h"
 #include "settingsdialog.h"
 
@@ -189,7 +190,9 @@ void MainWindow::on_actionLoad_File_triggered()
     playbackHandler->play();
 }
 
-void MainWindow::on_actionEchoes_triggered(bool checked)
+void MainWindow::on_actionEcho_triggered()
 {
-    echoManager->enableEchoes(checked);
+    EchoDialog *echoDialog = new EchoDialog(this);
+    echoDialog->init(echoManager);
+    echoDialog->exec();
 }

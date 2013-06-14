@@ -50,17 +50,11 @@
      <string>Edit</string>
     </property>
     <addaction name="actionSettings"/>
-   </widget>
-   <widget class="QMenu" name="menuTools">
-    <property name="title">
-     <string>Tools</string>
-    </property>
     <addaction name="actionEchoes"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuWindow"/>
-   <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -119,9 +113,6 @@
    </property>
   </action>
   <action name="actionEchoes">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
    <property name="text">
     <string>Echoes</string>
    </property>

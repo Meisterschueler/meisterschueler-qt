@@ -60,7 +60,7 @@ private slots:
     void on_actionFull_Screen_triggered();
     void on_actionSettings_triggered();
     void on_actionLoad_File_triggered();
-    void on_actionEchoes_triggered(bool checked);
+    void on_actionEcho_triggered();
 };
 
 #endif // MAINWINDOW_H

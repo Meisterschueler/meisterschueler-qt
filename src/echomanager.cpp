@@ -9,24 +9,74 @@ EchoManager::EchoManager(QObject *parent) :
     timer->setSingleShot(true);
     QObject::connect(timer, &QTimer::timeout, this, &EchoManager::playNextEvent);
 
-    delay = 1000;
+    state = OFF;
+    echoDelay = 1000;
 }
 
-void EchoManager::enableEchoes(bool enable) {
-    enabled = enable;
+EchoManager::State EchoManager::getState() const {
+    return state;
+}
+
+int EchoManager::getEchoDelay() const {
+    return echoDelay;
+}
+
+void EchoManager::toggleOff(bool value) {
+    if (value)
+        state = OFF;
+}
+
+void EchoManager::toggleEcho(bool value) {
+    if (value)
+        state = ECHO;
+}
+
+void EchoManager::toggleReping(bool value) {
+    if (value)
+        state = REPING;
+}
+
+void EchoManager::setEchoDelay(int value) {
+    echoDelay = value;
 }
 
 void EchoManager::playNoteOnEvent(NoteOnEvent event) {
-    events.enqueue(event);
-    if (enabled && !timer->isActive()) {
-        timer->start(delay);
+    switch (state) {
+    case OFF:
+        break;
+    case ECHO:
+        eatChannelEvent(event);
+        break;
+    case REPING:
+        break;
     }
 }
 
 void EchoManager::playNoteOffEvent(NoteOffEvent event) {
+    switch (state) {
+    case OFF:
+        break;
+    case ECHO:
+        eatChannelEvent(event);
+        break;
+    case REPING:
+        emit gotNoteOnEvent(NoteOnEvent(event.getTime(), event.getChannel(), event.getNote(), 128));
+        events.enqueue(event);
+        timer->start(PINGDELAY);
+        break;
+    }
+}
+
+void EchoManager::eatChannelEvent(const ChannelEvent& event) {
     events.enqueue(event);
-    if (enabled && !timer->isActive()) {
-        timer->start(delay);
+    if (!timer->isActive()) {
+        timer->start(echoDelay);
+    } else if (events.size() > 2) {
+        int currentDelay = timer->remainingTime() + (events.last().getTime()-events.first().getTime());
+        if (currentDelay > echoDelay) {
+            timer->stop();
+            timer->start(0);
+        }
     }
 }
 
