@@ -8,7 +8,6 @@
 #include "graphicsscoreitem.h"
 #include "guidoservice.h"
 #include "mymapcollector.h"
-#include "song.h"
 #include "songservice.h"
 
 GuidoView::GuidoView(QWidget *parent) :
@@ -26,9 +25,6 @@ GuidoView::GuidoView(QWidget *parent) :
     gv->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     gv->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     gv->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-
-    guidoGraphicsItem = new QGuidoGraphicsItem();
-    graphicsScene->addItem(guidoGraphicsItem);
 
     songs = SongService::getSongsFromDirectory("/home/fritz/meisterschueler-misc/scores");
     for (Song song : songs) {
@@ -64,12 +60,17 @@ void GuidoView::resizeEvent(QResizeEvent *e) {
     guidoPageFormat.width = GuidoCM2Unit(29.7);
     guidoPageFormat.height = GuidoCM2Unit(29.7/ratio);
     guidoPageFormat.marginright = 0;
+
+    graphicsScene->clear();
+    guidoGraphicsItem = new QGuidoGraphicsItem();
+    guidoGraphicsItem->setGMNCode(currentSong.gmn);
     guidoGraphicsItem->setGuidoPageFormat(guidoPageFormat);
+    graphicsScene->addItem(guidoGraphicsItem);
 
     QList<Score> scores = GuidoService::gmnToScores(guidoGraphicsItem->gmnCode());
-    MyMapCollector myMapCollector;
-    GuidoErrCode guidoErrCode = GuidoGetMap(guidoGraphicsItem->getGRHandler(), 1, 317, 317/ratio, kGuidoEvent, myMapCollector);
-    for (MapElement mapElement : myMapCollector.mapElements) {
+    MyMapCollector eventMapCollector;
+    GuidoErrCode guidoErrCode = GuidoGetMap(guidoGraphicsItem->getGRHandler(), 1, 317, 317/ratio, kGuidoEvent, eventMapCollector);
+    for (MapElement mapElement : eventMapCollector.mapElements) {
         if (mapElement.second.infos().type != kNote)
             continue;
 
@@ -100,6 +101,5 @@ void GuidoView::playNoteOffEvent(NoteOffEvent event) {
 
 void GuidoView::on_comboBox_currentIndexChanged(int index)
 {
-    Song song = songs.at(index);
-    guidoGraphicsItem->setGMNCode(song.gmn);
+    currentSong = songs.at(index);
 }

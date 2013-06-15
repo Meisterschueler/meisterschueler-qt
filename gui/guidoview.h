@@ -5,11 +5,10 @@
 #include <QWidget>
 
 #include "events.h"
+#include "song.h"
 
 class QGraphicsScene;
 class QGuidoGraphicsItem;
-
-class Song;
 
 namespace Ui {
 class GuidoView;
@@ -43,6 +42,7 @@ private:
     QGuidoGraphicsItem *guidoGraphicsItem;
 
     QList<Song> songs;
+    Song currentSong;
 };
 
 #endif // GUIDOVIEW_H
