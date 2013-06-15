@@ -45,6 +45,8 @@ void NoteMapper::Note(const ARMusicalObject *ev) {
     score.duration = arn->getDuration();
     score.position = position;
 
+    score.voice = arn->getVoiceNum();
+
     position += arn->getDuration();
 
     if (score.pitch == 255) {

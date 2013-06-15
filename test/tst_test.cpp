@@ -101,8 +101,6 @@ private:
 };
 
 Q_DECLARE_METATYPE(Fraction)
-Q_DECLARE_METATYPE(MatchingItem)
-Q_DECLARE_METATYPE(Score)
 
 Test::Test()
 {

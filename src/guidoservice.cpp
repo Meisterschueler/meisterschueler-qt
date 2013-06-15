@@ -56,7 +56,7 @@ QList<Score> GuidoService::gmnToScores(const QString &gmn) {
         NoteMapper noteMapper(voice);
         voice->browse(noteMapper);
 
-        result = noteMapper.getNotes();
+        result.append(noteMapper.getNotes());
 
         if (pos)
             voice = arMusic->GetNext(pos);
@@ -72,7 +72,7 @@ Score GuidoService::getScore(const QList<Score>& scores, const MapElement& mapEl
     Fraction position = Fraction(timeSegment.first.num, timeSegment.first.denom);
 
     for (Score score : scores) {
-        if (score.position == position) {
+        if (score.position == position && score.voice == mapElement.second.infos().voiceNum) {
             return score;
         }
     }

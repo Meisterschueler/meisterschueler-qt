@@ -48,5 +48,6 @@ public:
         }
     }
 };
+Q_DECLARE_METATYPE(MatchingItem)
 
 #endif // MATCHINGITEM_H

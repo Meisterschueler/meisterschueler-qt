@@ -27,6 +27,7 @@ public:
     Status status;
     Finger finger;
     Hand hand;
+    int voice;
 
     bool operator<(const Score& rhs) const {
         if (this->position < rhs.position) {
@@ -43,11 +44,12 @@ public:
                 && this->duration==rhs.duration
                 && this->position==rhs.position
                 && this->midiPair==rhs.midiPair
+                && this->status==rhs.status
                 && this->finger==rhs.finger
                 && this->hand==rhs.hand
-                && this->status==rhs.status);
+                && this->voice==rhs.voice);
     }
 };
-
+Q_DECLARE_METATYPE(Score)
 
 #endif // SCORE_H

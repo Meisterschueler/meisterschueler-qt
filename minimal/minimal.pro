@@ -4,35 +4,58 @@
 #
 #-------------------------------------------------
 
-#Use C++11
-QMAKE_CXXFLAGS += -std=c++0x
-
-#Guido
-GUIDOLIB = ../../guidolib-code
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
-INCLUDEPATH += $$GUIDOLIB/Qt/GuidoQt/include \
-               $$GUIDOLIB/src/include \
-               $$GUIDOLIB/src/misc \
-               $$GUIDOLIB/src/lib \
-               $$GUIDOLIB/src/abstract \
-               $$GUIDOLIB/src/parser \
-               $$GUIDOLIB/src/midisharelight
-
-LIBS += -L$$GUIDOLIB/Qt/GuidoQt \
-        -L$$GUIDOLIB/cmake \
-        -lGuidoQt \
-        -lGUIDOEngine
+include(../common.pri)
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
 TARGET = minimal
 TEMPLATE = app
-
 
 SOURCES += main.cpp
 
 HEADERS  +=
 
 FORMS    +=
+
+# Get Classes
+INCLUDEPATH += ../src
+VPATH += ../src
+
+SOURCES += events.cpp \
+    clusterhandler.cpp \
+    guidoservice.cpp \
+    scoreservice.cpp \
+    hanonsongfactory.cpp \
+    matchinghandler.cpp \
+    matchingservice.cpp \
+    matchingitem.cpp \
+    merginghandler.cpp \
+    midiservice.cpp \
+    midiwrapper.cpp \
+    playbackhandler.cpp \
+    score.cpp \
+    songservice.cpp \
+    notemapper.cpp \
+    needlemanwunsch.cpp \
+    song.cpp \
+    statisticsservice.cpp
+
+HEADERS  += events.h \
+    clusterhandler.h \
+    guidoservice.h \
+    scoreservice.h \
+    hanonsongfactory.h \
+    matchinghandler.h \
+    matchingservice.h \
+    matchingitem.h \
+    merginghandler.h \
+    midiservice.h \
+    midiwrapper.h \
+    mididefs.h \
+    playbackhandler.h \
+    score.h \
+    songservice.h \
+    notemapper.h \
+    needlemanwunsch.h \
+    song.h \
+    statisticsservice.h
