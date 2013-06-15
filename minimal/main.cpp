@@ -57,7 +57,7 @@ void MyView::resizeEvent(QResizeEvent *event) {
     guidoPageFormat.marginright = 0;
     guidoGraphicsItem->setGuidoPageFormat(guidoPageFormat);
 
-    QList<Score> scores = GuidoService::gmnToScores(gmn);
+    QList<Score> scores = GuidoService::gmnToScores(guidoGraphicsItem->gmnCode());
     MyMapCollector myMapCollector;
     GuidoErrCode guidoErrCode = GuidoGetMap(guidoGraphicsItem->getGRHandler(), 1, 317, 317/ratio, kGuidoEvent, myMapCollector);
     for (MapElement mapElement : myMapCollector.mapElements) {

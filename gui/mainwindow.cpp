@@ -154,6 +154,9 @@ void MainWindow::on_actionBubbleView_triggered() {
 void MainWindow::on_actionGuidoView_triggered() {
     guidoView = new GuidoView();
 
+    QObject::connect(guidoView, &GuidoView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
+    QObject::connect(guidoView, &GuidoView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
+
     setCentralWidget(guidoView);
 }
 

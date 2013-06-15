@@ -4,6 +4,8 @@
 #include <QList>
 #include <QWidget>
 
+#include "events.h"
+
 class QGraphicsScene;
 class QGuidoGraphicsItem;
 
@@ -24,8 +26,14 @@ public:
 protected:
     void changeEvent(QEvent *e);
     void resizeEvent(QResizeEvent *e);
+
+signals:
+    void gotNoteOnEvent(NoteOnEvent event);
+    void gotNoteOffEvent(NoteOffEvent event);
     
 private slots:
+    void playNoteOnEvent(NoteOnEvent event);
+    void playNoteOffEvent(NoteOffEvent event);
     void on_comboBox_currentIndexChanged(int index);
 
 private:

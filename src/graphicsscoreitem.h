@@ -14,9 +14,11 @@ class GraphicsScoreItem : public QObject, public QGraphicsRectItem
 public:
     explicit GraphicsScoreItem(const QRectF &rect, QGraphicsItem *parent = 0);
     void setScore(const Score& score);
+    Score getScore() const;
     
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 signals:
     void gotNoteOnEvent(NoteOnEvent event);

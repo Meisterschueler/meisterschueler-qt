@@ -31,6 +31,7 @@ INCLUDEPATH += ../src
 VPATH += ../src
 
 SOURCES += echomanager.cpp \
+           graphicsscoreitem.cpp \
            guidoservice.cpp \
            hanonsongfactory.cpp \
            matchinghandler.cpp \
@@ -39,6 +40,7 @@ SOURCES += echomanager.cpp \
            merginghandler.cpp \
            midiservice.cpp \
            midiwrapper.cpp \
+           mymapcollector.cpp \
            needlemanwunsch.cpp \
            notemapper.cpp \
            playbackhandler.cpp \
@@ -51,6 +53,7 @@ SOURCES += echomanager.cpp \
            events.cpp
 
 HEADERS += echomanager.h \
+           graphicsscoreitem.h \
            guidoservice.h \
            hanonsongfactory.h \
            matchinghandler.h \
@@ -59,6 +62,7 @@ HEADERS += echomanager.h \
            merginghandler.h \
            midiservice.h \
            midiwrapper.h \
+           mymapcollector.cpp \
            needlemanwunsch.h \
            notemapper.h \
            playbackhandler.h \

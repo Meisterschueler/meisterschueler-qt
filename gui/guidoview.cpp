@@ -5,6 +5,9 @@
 
 #include "QGuidoGraphicsItem.h"
 
+#include "graphicsscoreitem.h"
+#include "guidoservice.h"
+#include "mymapcollector.h"
 #include "song.h"
 #include "songservice.h"
 
@@ -63,7 +66,36 @@ void GuidoView::resizeEvent(QResizeEvent *e) {
     guidoPageFormat.marginright = 0;
     guidoGraphicsItem->setGuidoPageFormat(guidoPageFormat);
 
+    QList<Score> scores = GuidoService::gmnToScores(guidoGraphicsItem->gmnCode());
+    MyMapCollector myMapCollector;
+    GuidoErrCode guidoErrCode = GuidoGetMap(guidoGraphicsItem->getGRHandler(), 1, 317, 317/ratio, kGuidoEvent, myMapCollector);
+    for (MapElement mapElement : myMapCollector.mapElements) {
+        if (mapElement.second.infos().type != kNote)
+            continue;
+
+        FloatRect floatRect = mapElement.first;
+        QRectF rect;
+        rect.setCoords(floatRect.left, floatRect.top, floatRect.right, floatRect.bottom);
+
+        GraphicsScoreItem *item = new GraphicsScoreItem(rect);
+        QObject::connect(item, &GraphicsScoreItem::gotNoteOnEvent, this, &GuidoView::playNoteOnEvent);
+        QObject::connect(item, &GraphicsScoreItem::gotNoteOffEvent, this, &GuidoView::playNoteOffEvent);
+
+        Score score = GuidoService::getScore(scores, mapElement);
+        item->setScore(score);
+
+        graphicsScene->addItem(item);
+    }
+
     gv->fitInView(guidoGraphicsItem, Qt::KeepAspectRatio);
+}
+
+void GuidoView::playNoteOnEvent(NoteOnEvent event) {
+    emit gotNoteOnEvent(event);
+}
+
+void GuidoView::playNoteOffEvent(NoteOffEvent event) {
+    emit gotNoteOffEvent(event);
 }
 
 void GuidoView::on_comboBox_currentIndexChanged(int index)
