@@ -10,22 +10,8 @@
 
 #include "guidoservice.h"
 #include "graphicsscoreitem.h"
+#include "mymapcollector.h"
 #include "score.h"
-
-class MyMapCollector : public MapCollector
-{
-public:
-    virtual void Graph2TimeMap( const FloatRect& box, const TimeSegment& dates, const GuidoElementInfos& infos );
-    QList<MapElement> mapElements;
-};
-
-void MyMapCollector::Graph2TimeMap(const FloatRect &box, const TimeSegment &dates, const GuidoElementInfos &infos) {
-
-    RectInfos rectInfos(dates, infos);
-    MapElement mapElement = std::pair<FloatRect, RectInfos>(box, rectInfos);
-
-    mapElements.append(mapElement);
-}
 
 class MyView : public QGraphicsView
 {
@@ -56,8 +42,6 @@ void MyView::resizeEvent(QResizeEvent *event) {
             "[\\key<\"0\">\\meter<\"4/4\">_/2 _/16 c0/16 d e f d e c g/8 g-1 _/4 _/16 g0/16 a b c1 a0 b g c1/8 b0 c1 d e g0 a b c1 e0 f# g a b c1*5/16 d0/16 e f# g e f# d g/8 b-1 c0 d e f# g e b-1/8. c0/16 d/8 d-1 _/16 g/16 a b c0 a-1 b g d0/8 g f# g a/16 d e f# g e f# d a/8 d1 c d g0/16 g1 f e d f e g f/8 e f d e/16 a g f e g f a g/8 f g e f/16 b& a g f a g b& a g f e d f e g f e d c b0 d1 c e d c b0 a g# b a c1 b0/8 e d1/8. e/16 c b0 a g f# a g# b a c1 b0 d1 c e d f e/8 a0 e1 e0 a a-1 _/4 _/16 e1/16 d c b0 d1 c# e d*9/16 a0/16 b c1 d b0 c1 a0 b*9/16 d1/16 c b0 a c1 b0 d1 c*9/16 g0/16 a b& c1 a0 b& g a/8 b& a g f d1 c b&0 a f1 e d e/16 d0 e f g e f d e/8 c d e f/16 d e f g/8 g-1 {c/1,c0} ]"
             "}";
 
-    QList<Score> scores = GuidoService::gmnToScores(gmn);
-
     graphicsScene->clear();
 
     guidoGraphicsItem = new QGuidoGraphicsItem();
@@ -73,6 +57,7 @@ void MyView::resizeEvent(QResizeEvent *event) {
     guidoPageFormat.marginright = 0;
     guidoGraphicsItem->setGuidoPageFormat(guidoPageFormat);
 
+    QList<Score> scores = GuidoService::gmnToScores(gmn);
     MyMapCollector myMapCollector;
     GuidoErrCode guidoErrCode = GuidoGetMap(guidoGraphicsItem->getGRHandler(), 1, 317, 317/ratio, kGuidoEvent, myMapCollector);
     for (MapElement mapElement : myMapCollector.mapElements) {

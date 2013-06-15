@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     signalmanager.cpp \
     resultmanager.cpp \
     echomanager.cpp \
-    graphicsscoreitem.cpp
+    graphicsscoreitem.cpp \
+    mymapcollector.cpp
 
 HEADERS  += \
     guidoservice.h \
@@ -59,7 +60,8 @@ HEADERS  += \
     signalmanager.h \
     resultmanager.h \
     echomanager.h \
-    graphicsscoreitem.h
+    graphicsscoreitem.h \
+    mymapcollector.h
 
 FORMS    +=
 

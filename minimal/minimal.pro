@@ -33,6 +33,7 @@ SOURCES += events.cpp \
     merginghandler.cpp \
     midiservice.cpp \
     midiwrapper.cpp \
+    mymapcollector.cpp \
     playbackhandler.cpp \
     score.cpp \
     songservice.cpp \
@@ -54,6 +55,7 @@ HEADERS  += events.h \
     midiservice.h \
     midiwrapper.h \
     mididefs.h \
+    mymapcollector.h \
     playbackhandler.h \
     score.h \
     songservice.h \
