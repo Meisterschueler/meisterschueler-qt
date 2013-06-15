@@ -54,6 +54,7 @@ private Q_SLOTS:
     void guidoService_gmnToScores_finger();
     void guidoService_gmnToScores_voices();
     void guidoService_gmnToScores_duration_position();
+    void guidoService_getScore();
 
     void scoreService_transposeStep();
     void scoreService_transposeSteps();
@@ -407,6 +408,26 @@ void Test::guidoService_gmnToScores_duration_position() {
 
     QVERIFY( notes.at(3).position == Fraction(9, 8) );
     QVERIFY( notes.at(3).duration == Fraction(1, 8) );
+}
+
+void Test::guidoService_getScore() {
+    QString gmn = "[c/8 d e f g]";
+    QList<Score> notes = GuidoService::gmnToScores(gmn);
+
+    FloatRect box;
+
+    GuidoDate a;
+    a.num = 3;
+    a.denom = 8;
+    TimeSegment dates(a, a);
+
+    GuidoElementInfos infos;
+
+    RectInfos rectInfos(dates, infos);
+    MapElement mapElement = std::pair<FloatRect, RectInfos>(box, rectInfos);
+
+    Score score = GuidoService::getScore(notes, mapElement);
+    QVERIFY( score.position == Fraction(3, 8) );
 }
 
 // SCORESERVICE

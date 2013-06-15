@@ -66,3 +66,7 @@ QList<Score> GuidoService::gmnToScores(const QString &gmn) {
 
     return result;
 }
+
+Score GuidoService::getScore(const QList<Score>& scores, const MapElement& mapElement) {
+    return Score();
+}
