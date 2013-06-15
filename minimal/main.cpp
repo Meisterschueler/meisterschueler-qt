@@ -9,25 +9,8 @@
 #include "QGuidoGraphicsItem.h"
 
 #include "guidoservice.h"
+#include "graphicsscoreitem.h"
 #include "score.h"
-
-class MyGraphicsItem : public QGraphicsRectItem
-{
-public:
-    explicit MyGraphicsItem(const QRectF &rect, QGraphicsItem *parent = 0);
-
-protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-};
-
-MyGraphicsItem::MyGraphicsItem(const QRectF &rect, QGraphicsItem *parent) : QGraphicsRectItem(rect, parent)
-{
-}
-
-void MyGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
-    Score score = qvariant_cast<Score>(this->data(0));
-    qDebug("MousePressEvent. Pitch:%i Voice:%i", score.pitch, score.voice);
-}
 
 class MyMapCollector : public MapCollector
 {
@@ -100,14 +83,10 @@ void MyView::resizeEvent(QResizeEvent *event) {
         QRectF rect;
         rect.setCoords(floatRect.left, floatRect.top, floatRect.right, floatRect.bottom);
 
-        QPen pen(QBrush(QColor(255,0,0)), 3);
-        MyGraphicsItem *item = new MyGraphicsItem(rect);
-        item->setPen(pen);
+        GraphicsScoreItem *item = new GraphicsScoreItem(rect);
 
         Score score = GuidoService::getScore(scores, mapElement);
-        QVariant v;
-        v.setValue<Score>(score);
-        item->setData(0, v);
+        item->setScore(score);
 
         graphicsScene->addItem(item);
     }

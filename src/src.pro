@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     merginghandler.cpp \
     signalmanager.cpp \
     resultmanager.cpp \
-    echomanager.cpp
+    echomanager.cpp \
+    graphicsscoreitem.cpp
 
 HEADERS  += \
     guidoservice.h \
@@ -57,7 +58,8 @@ HEADERS  += \
     merginghandler.h \
     signalmanager.h \
     resultmanager.h \
-    echomanager.h
+    echomanager.h \
+    graphicsscoreitem.h
 
 FORMS    +=
 

@@ -23,6 +23,7 @@ VPATH += ../src
 
 SOURCES += events.cpp \
     clusterhandler.cpp \
+    graphicsscoreitem.cpp \
     guidoservice.cpp \
     scoreservice.cpp \
     hanonsongfactory.cpp \
@@ -42,6 +43,7 @@ SOURCES += events.cpp \
 
 HEADERS  += events.h \
     clusterhandler.h \
+    graphicsscoreitem.h \
     guidoservice.h \
     scoreservice.h \
     hanonsongfactory.h \
