@@ -4,6 +4,9 @@
 #
 #-------------------------------------------------
 
+#Use C++11
+QMAKE_CXXFLAGS += -std=c++0x
+
 #Guido
 GUIDOLIB = ../../guidolib-code
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
@@ -19,11 +22,6 @@ LIBS += -L$$GUIDOLIB/Qt/GuidoQt \
         -L$$GUIDOLIB/cmake \
         -lGuidoQt \
         -lGUIDOEngine
-
-
-
-
-
 
 QT       += core gui
 
