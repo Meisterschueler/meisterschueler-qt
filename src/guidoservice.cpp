@@ -68,5 +68,14 @@ QList<Score> GuidoService::gmnToScores(const QString &gmn) {
 }
 
 Score GuidoService::getScore(const QList<Score>& scores, const MapElement& mapElement) {
+    TimeSegment timeSegment = mapElement.second.time();
+    Fraction position = Fraction(timeSegment.first.num, timeSegment.first.denom);
+
+    for (Score score : scores) {
+        if (score.position == position) {
+            return score;
+        }
+    }
+
     return Score();
 }
