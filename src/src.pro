@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     resultmanager.cpp \
     echomanager.cpp \
     graphicsscoreitem.cpp \
-    mymapcollector.cpp
+    mymapcollector.cpp \
+    chordhandler.cpp
 
 HEADERS  += \
     guidoservice.h \
@@ -61,7 +62,8 @@ HEADERS  += \
     resultmanager.h \
     echomanager.h \
     graphicsscoreitem.h \
-    mymapcollector.h
+    mymapcollector.h \
+    chordhandler.h
 
 FORMS    +=
 
