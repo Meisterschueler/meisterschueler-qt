@@ -29,6 +29,10 @@ protected:
 signals:
     void gotNoteOnEvent(NoteOnEvent event);
     void gotNoteOffEvent(NoteOffEvent event);
+
+public slots:
+    void nextPage();
+    void previousPage();
     
 private slots:
     void playNoteOnEvent(NoteOnEvent event);
@@ -43,6 +47,7 @@ private:
 
     QList<Song> songs;
     Song currentSong;
+    int currentPage;
 };
 
 #endif // GUIDOVIEW_H

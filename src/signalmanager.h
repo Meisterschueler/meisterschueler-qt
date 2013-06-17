@@ -17,6 +17,7 @@ private:
     const QString STARTUP_SOUND = "[g1/16 {c/4,e,g,c2}]";
     const QString SHUTDOWN_SOUND = "[c2/16 b1/16 c2/4]";
     const QString FINISHED_SOUND = "[c2]";
+    const QString RESET_SOUND = "[c2/32 e& g& a c3]";
 
     int idx;
     QList<ChannelEvent> events;
@@ -33,6 +34,7 @@ public slots:
     void playShutdownSound();
 
     void playFinishedSound();
+    void playResetSound();
 
 private slots:
     void playNextEvent();

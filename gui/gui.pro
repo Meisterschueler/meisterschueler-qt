@@ -30,7 +30,8 @@ HEADERS  += mainwindow.h \
 INCLUDEPATH += ../src
 VPATH += ../src
 
-SOURCES += echomanager.cpp \
+SOURCES += clusterhandler.cpp \
+           echomanager.cpp \
            graphicsscoreitem.cpp \
            guidoservice.cpp \
            hanonsongfactory.cpp \
@@ -52,7 +53,8 @@ SOURCES += echomanager.cpp \
            songservice.cpp \
            events.cpp
 
-HEADERS += echomanager.h \
+HEADERS += clusterhandler.h \
+           echomanager.h \
            graphicsscoreitem.h \
            guidoservice.h \
            hanonsongfactory.h \
@@ -62,7 +64,7 @@ HEADERS += echomanager.h \
            merginghandler.h \
            midiservice.h \
            midiwrapper.h \
-           mymapcollector.cpp \
+           mymapcollector.h \
            needlemanwunsch.h \
            notemapper.h \
            playbackhandler.h \

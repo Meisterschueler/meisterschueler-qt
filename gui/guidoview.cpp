@@ -2,6 +2,7 @@
 #include "ui_guidoview.h"
 
 #include <QGraphicsScene>
+#include <QKeyEvent>
 
 #include "QGuidoGraphicsItem.h"
 
@@ -67,9 +68,9 @@ void GuidoView::resizeEvent(QResizeEvent *e) {
     guidoGraphicsItem->setGuidoPageFormat(guidoPageFormat);
     graphicsScene->addItem(guidoGraphicsItem);
 
-    QList<Score> scores = GuidoService::gmnToScores(guidoGraphicsItem->gmnCode());
+    QList<Score> scores = GuidoService::gmnToScores(currentSong.gmn);
     MyMapCollector eventMapCollector;
-    GuidoErrCode guidoErrCode = GuidoGetMap(guidoGraphicsItem->getGRHandler(), 1, 317, 317/ratio, kGuidoEvent, eventMapCollector);
+    GuidoErrCode guidoErrCode = GuidoGetMap(guidoGraphicsItem->getGRHandler(), currentPage, 317, 317/ratio, kGuidoEvent, eventMapCollector);
     for (MapElement mapElement : eventMapCollector.mapElements) {
         if (mapElement.second.infos().type != kNote)
             continue;
@@ -91,6 +92,16 @@ void GuidoView::resizeEvent(QResizeEvent *e) {
     gv->fitInView(guidoGraphicsItem, Qt::KeepAspectRatio);
 }
 
+void GuidoView::nextPage() {
+    currentPage = qMax(guidoGraphicsItem->pageCount(), currentPage+1);
+    guidoGraphicsItem->setPage(currentPage);
+}
+
+void GuidoView::previousPage() {
+    currentPage = qMin(1, currentPage-1);
+    guidoGraphicsItem->setPage(currentPage);
+}
+
 void GuidoView::playNoteOnEvent(NoteOnEvent event) {
     emit gotNoteOnEvent(event);
 }
@@ -102,4 +113,5 @@ void GuidoView::playNoteOffEvent(NoteOffEvent event) {
 void GuidoView::on_comboBox_currentIndexChanged(int index)
 {
     currentSong = songs.at(index);
+    currentPage = 1;
 }

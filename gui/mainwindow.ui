@@ -50,7 +50,7 @@
      <string>Edit</string>
     </property>
     <addaction name="actionSettings"/>
-    <addaction name="actionEchoes"/>
+    <addaction name="actionEcho"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -112,9 +112,9 @@
     <string>BubbleView</string>
    </property>
   </action>
-  <action name="actionEchoes">
+  <action name="actionEcho">
    <property name="text">
-    <string>Echoes</string>
+    <string>Echo</string>
    </property>
   </action>
  </widget>

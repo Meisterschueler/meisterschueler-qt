@@ -10,6 +10,7 @@
 #include "guidoview.h"
 #include "settingsdialog.h"
 
+#include "clusterhandler.h"
 #include "echomanager.h"
 #include "matchinghandler.h"
 #include "merginghandler.h"
@@ -29,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     qRegisterMetaType<NoteOnEvent>("NoteOnEvent");
     qRegisterMetaType<NoteOffEvent>("NoteOffEvent");
 
+    clusterHandler = new ClusterHandler();
     echoManager = new EchoManager();
     midiWrapper = new MidiWrapper();
     QList<Song> songs = SongService::getSongsBuiltIn();
@@ -51,8 +53,16 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(this, &MainWindow::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
     // Core connections
-    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, matchingHandler, &MatchingHandler::matchNoteOnEvent);
-    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, matchingHandler, &MatchingHandler::matchNoteOffEvent);
+    if (false) {
+        QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, matchingHandler, &MatchingHandler::matchNoteOnEvent);
+        QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, matchingHandler, &MatchingHandler::matchNoteOffEvent);
+    } else {
+        QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, clusterHandler, &ClusterHandler::matchNoteOnEvent);
+        QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, clusterHandler, &ClusterHandler::matchNoteOffEvent);
+        QObject::connect(clusterHandler, &ClusterHandler::gotChannelEvents, matchingHandler, &MatchingHandler::matchChannelEvents);
+        QObject::connect(clusterHandler, &ClusterHandler::reset, matchingHandler, &MatchingHandler::reset);
+        QObject::connect(clusterHandler, &ClusterHandler::reset, signalManager, &SignalManager::playResetSound);
+    }
 
     QObject::connect(matchingHandler, &MatchingHandler::songRecognized, mergingHandler, &MergingHandler::eatMatchingItem);
     QObject::connect(matchingHandler, &MatchingHandler::songFinished, signalManager, &SignalManager::playFinishedSound);
@@ -125,6 +135,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event) {
+    if (GuidoView *gv = qobject_cast<GuidoView*>(centralWidget())) {
+        if (event->key() == Qt::Key_Left) {
+            gv->previousPage();
+        } else if (event->key() == Qt::Key_Right) {
+            gv->nextPage();
+        }
+    }
+
     int idx = keys.indexOf((Qt::Key)event->key());
     int offset = -1;
     if (event->modifiers() == Qt::NoModifier) {

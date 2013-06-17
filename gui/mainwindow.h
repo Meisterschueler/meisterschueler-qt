@@ -8,6 +8,7 @@
 class BubbleView;
 class GuidoView;
 
+class ClusterHandler;
 class EchoManager;
 class MidiWrapper;
 class MatchingHandler;
@@ -41,6 +42,7 @@ signals:
 private:
     Ui::MainWindow *ui;
 
+    ClusterHandler *clusterHandler;
     EchoManager *echoManager;
     MidiWrapper *midiWrapper;
     MatchingHandler *matchingHandler;

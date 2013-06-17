@@ -19,13 +19,17 @@ public slots:
 
 signals:
     void gotChannelEvents(QList<ChannelEvent>  events);
+    void reset();
 
 private:
-    QTimer *timer;
+    QTimer *delayTimer;
+    QTimer *resetTimer;
     QList<ChannelEvent> channelEvents;
+    bool pressedKeys[128];
 
 private slots:
-    void timeOut();
+    void timeOutDelay();
+    void timeOutReset();
 };
 
 #endif // CLUSTERHANDLER_H

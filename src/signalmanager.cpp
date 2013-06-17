@@ -17,9 +17,13 @@ SignalManager::SignalManager(QObject *parent) :
 void SignalManager::play(const QString& gmn) {
     QList<Score> scores = GuidoService::gmnToScores(gmn);
     events.clear();
+
+    double bpm = 120.0;
+    double fraction2ms = (double)Fraction(1,4) * 60.0 / bpm * 1000.0;
+
     for (Score score : scores) {
-        double position = (double)score.position.getNumerator()/score.position.getDenominator();
-        double duration = (double)score.duration.getNumerator()/score.duration.getDenominator();
+        double position = fraction2ms * (double)score.position;
+        double duration = fraction2ms * (double)score.duration;
 
         events.append(NoteOnEvent(position, 0, score.pitch, 50));
         events.append(NoteOffEvent(position+duration, 0, score.pitch, 0));
@@ -41,6 +45,10 @@ void SignalManager::playShutdownSound() {
 
 void SignalManager::playFinishedSound() {
     play(FINISHED_SOUND);
+}
+
+void SignalManager::playResetSound() {
+    play(RESET_SOUND);
 }
 
 void SignalManager::playNextEvent() {
