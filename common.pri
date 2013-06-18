@@ -36,6 +36,7 @@ debug {
 }
 
 unix {
+# Ensure jack is running: jackd -d alsa -X raw
 #    DEFINES += __UNIX_JACK__
 #    LIBS += -ljack
     DEFINES += __LINUX_ALSA__

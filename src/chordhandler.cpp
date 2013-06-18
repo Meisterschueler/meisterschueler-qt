@@ -167,3 +167,25 @@ ChordHandler::ChordHandler(QObject *parent) :
     // Blues-Skala
     scales.insert("Blues-Skala", "c e& f-(b5) g b&");//-
 }
+
+void ChordHandler::match() {
+
+}
+
+void ChordHandler::reset() {
+    midiPairs.clear();
+}
+
+void ChordHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
+    // insert
+    match();
+}
+
+void ChordHandler::matchNoteOffEvent(NoteOffEvent noteOff) {
+    // insert
+}
+
+void ChordHandler::matchChannelEvents(QList<ChannelEvent> channelEvents) {
+    // insert
+    match();
+}

@@ -4,6 +4,9 @@
 #include <QMap>
 #include <QObject>
 
+#include "events.h"
+#include "matchingitem.h"
+
 class ChordHandler : public QObject
 {
     Q_OBJECT
@@ -13,11 +16,19 @@ public:
 private:
     QMap<QString, QString> chords;
     QMap<QString, QString> scales;
+
+    QList<MidiPair> midiPairs;
+
+    void match();
     
 signals:
+    void chordRecognized(MatchingItem matchingItem);
     
 public slots:
-
+    void reset();
+    void matchNoteOnEvent(NoteOnEvent noteOn);
+    void matchNoteOffEvent(NoteOffEvent noteOff);
+    void matchChannelEvents(QList<ChannelEvent> channelEvents);
 };
 
 #endif // CHORDHANDLER_H
