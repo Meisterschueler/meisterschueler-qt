@@ -17,7 +17,7 @@ private:
 signals:
     
 public slots:
-    
+
 };
 
 #endif // CHORDHANDLER_H

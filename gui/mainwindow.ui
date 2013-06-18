@@ -66,6 +66,7 @@
    </attribute>
    <addaction name="actionBubbleView"/>
    <addaction name="actionGuidoView"/>
+   <addaction name="actionChordWidget"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionFull_Screen">
@@ -115,6 +116,14 @@
   <action name="actionEcho">
    <property name="text">
     <string>Echo</string>
+   </property>
+  </action>
+  <action name="actionChordWidget">
+   <property name="text">
+    <string>ChordWidget</string>
+   </property>
+   <property name="toolTip">
+    <string>ChordWidget</string>
    </property>
   </action>
  </widget>

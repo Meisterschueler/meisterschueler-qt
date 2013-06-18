@@ -165,5 +165,5 @@ ChordHandler::ChordHandler(QObject *parent) :
     scales.insert("Moll Pentatonik",        "c e& f g b&");    // Blues Pentantonik
 
     // Blues-Skala
-    //scales.insert("Blues-Skala", "c e& f-(b5) g b&");//-
+    scales.insert("Blues-Skala", "c e& f-(b5) g b&");//-
 }

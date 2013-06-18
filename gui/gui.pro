@@ -17,14 +17,16 @@ SOURCES += main.cpp\
     bubblegraphicsitem.cpp \
     bubbleview.cpp \
     guidoview.cpp \
-    echodialog.cpp
+    echodialog.cpp \
+    chordview.cpp
 
 HEADERS  += mainwindow.h \
     settingsdialog.h \
     bubblegraphicsitem.h \
     bubbleview.h \
     guidoview.h \
-    echodialog.h
+    echodialog.h \
+    chordwidget.h
 
 # Get Classes
 INCLUDEPATH += ../src
