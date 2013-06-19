@@ -9,7 +9,7 @@ public:
     NeedlemanWunsch();
     ~NeedlemanWunsch();
 
-    QByteArray getAlignments(QByteArray seq1, QByteArray seq2, char offset=0);
+    QByteArray getAlignments(const QByteArray& seq1, const QByteArray& seq2, const char& offset=0) const;
 
     static constexpr char MATCH = 'm';
     static constexpr char DELETED = 'd';
@@ -27,7 +27,7 @@ private:
 
     int *similarity;
 
-    int getSimilarity(const unsigned char i, const unsigned char j);
+    int getSimilarity(const unsigned char i, const unsigned char j) const;
     void calcSimilarityMatrix();
 };
 
