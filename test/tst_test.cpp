@@ -3,6 +3,7 @@
 
 #include <QDebug>
 
+#include "chordhandler.h"
 #include "clusterhandler.h"
 #include "guidoservice.h"
 #include "hanonsongfactory.h"
@@ -84,6 +85,8 @@ private Q_SLOTS:
 
     void matchingHandler_simple();
     void matchingHandler_hanonNo1Left();
+
+    void chordHandler_cminor();
 
     void statisticsService_statisticItem();
     void statisticsService_statisticCluster();
@@ -1001,6 +1004,24 @@ void Test::matchingHandler_hanonNo1Left() {
     QVERIFY( finishedItem.intervalAlignment.startsWith("mmmmmmmmmm") );
 }
 
+// CHORDHANDLER
+
+void Test::chordHandler_cminor() {
+    ChordHandler chordHandler;
+    QSignalSpy chordRecognizedSpy(&chordHandler, SIGNAL(chordRecognized(MatchingItem)));
+
+    chordHandler.matchNoteOnEvent(NoteOnEvent(0, 0, 48, 12));
+    chordHandler.matchNoteOnEvent(NoteOnEvent(0, 0, 51, 12));
+    chordHandler.matchNoteOnEvent(NoteOnEvent(0, 0, 55, 12));
+
+    QCOMPARE( chordRecognizedSpy.count(), 1 );
+
+    QList<QVariant> arguments = chordRecognizedSpy.takeFirst();
+    MatchingItem recognizedItem = qvariant_cast<MatchingItem>(arguments.at(0));
+
+    QVERIFY( recognizedItem.song.name == "Cm" );
+}
+
 // STATISTICSSERVICE
 
 void Test::statisticsService_statisticItem() {
@@ -1163,7 +1184,6 @@ void Test::playbackHandler_simple() {
 // MIDIWRAPPER
 
 void Test::midiWrapper_simple() {
-    QSKIP( "Ensure jack is running: jackd -d alsa -X raw" );
     MidiWrapper midiWrapper;
     QStringList inputPorts = midiWrapper.getInputPorts();
     for (QString inputPort : inputPorts) {

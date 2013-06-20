@@ -13,7 +13,7 @@ NeedlemanWunsch::~NeedlemanWunsch() {
     delete[] similarity;
 }
 
-QByteArray NeedlemanWunsch::getAlignments(QByteArray seq1, QByteArray seq2, char offset) {
+QByteArray NeedlemanWunsch::getAlignments(const QByteArray &seq1, const QByteArray &seq2, const char &offset) const {
     int width = 30;
 
     int big = 10000;
@@ -106,7 +106,7 @@ QByteArray NeedlemanWunsch::getAlignments(QByteArray seq1, QByteArray seq2, char
     return align;
 }
 
-int NeedlemanWunsch::getSimilarity(const unsigned char i, const unsigned char j) {
+int NeedlemanWunsch::getSimilarity(const unsigned char i, const unsigned char j) const {
     return similarity[i*matrix_size + j];
 }
 

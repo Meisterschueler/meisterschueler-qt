@@ -42,8 +42,7 @@ public slots:
     void playNoteOffEvent(NoteOffEvent event);
 
     void openInputPort(QString portName);
-    void openOutputPort(QString portName);
-    
+    void openOutputPort(QString portName);   
 };
 
 #endif // MIDIWRAPPER_H

@@ -14,21 +14,22 @@ class MatchingHandler : public QObject
 public:
     MatchingHandler(const QList<MatchingItem>& matchingItems);
 
+signals:
+    void songRecognized(MatchingItem item);
+    void songFinished(MatchingItem item);
+
 public slots:
     void reset();
     void matchNoteOnEvent(NoteOnEvent noteOn);
     void matchNoteOffEvent(NoteOffEvent noteOff);
     void matchChannelEvents(QList<ChannelEvent> channelEvents);
 
-signals:
-    void songRecognized(MatchingItem item);
-    void songFinished(MatchingItem item);
-
 private:
     QList<MatchingItem> matchingItems;
     QSharedPointer<QList<MidiPair>> midiPairs;
 
     void match();
+    void prepareAndEmitFinishedItem(const MatchingItem &item);
 };
 
 #endif // MATCHINGHANDLER_H

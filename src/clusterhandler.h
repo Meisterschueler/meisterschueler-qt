@@ -3,9 +3,10 @@
 
 #include <QList>
 #include <QObject>
-#include <QTimer>
 
 #include "events.h"
+
+class QTimer;
 
 class ClusterHandler : public QObject
 {

@@ -1,5 +1,7 @@
 #include "clusterhandler.h"
 
+#include <QTimer>
+
 ClusterHandler::ClusterHandler()
 {
     delayTimer = new QTimer(this);

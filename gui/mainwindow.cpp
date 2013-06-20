@@ -6,6 +6,7 @@
 #include <QSettings>
 
 #include "bubbleview.h"
+#include "chordwidget.h"
 #include "echodialog.h"
 #include "guidoview.h"
 #include "settingsdialog.h"
@@ -216,4 +217,11 @@ void MainWindow::on_actionEcho_triggered()
     EchoDialog *echoDialog = new EchoDialog(this);
     echoDialog->init(echoManager);
     echoDialog->exec();
+}
+
+void MainWindow::on_actionChordWidget_triggered()
+{
+    ChordWidget *chordWidget = new ChordWidget();
+
+    setCentralWidget(chordWidget);
 }

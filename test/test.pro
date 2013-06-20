@@ -23,7 +23,8 @@ DEFINES += SRCDIR=\\\"$$PWD/\\\"
 INCLUDEPATH += ../src
 VPATH += ../src
 
-SOURCES += events.cpp \
+SOURCES += chordhandler.cpp \
+    events.cpp \
     clusterhandler.cpp \
     guidoservice.cpp \
     scoreservice.cpp \
@@ -42,7 +43,8 @@ SOURCES += events.cpp \
     song.cpp \
     statisticsservice.cpp
 
-HEADERS  += events.h \
+HEADERS  += chordhandler.h \
+    events.h \
     clusterhandler.h \
     guidoservice.h \
     scoreservice.h \
