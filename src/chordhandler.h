@@ -17,9 +17,7 @@ private:
     QMap<QString, QString> chords;
     QMap<QString, QString> scales;
 
-    QList<MidiPair> midiPairs;
-
-    void match();
+    QList<NoteOnEvent> noteOnEvents;
     
 signals:
     void chordRecognized(MatchingItem matchingItem);
@@ -29,6 +27,9 @@ public slots:
     void matchNoteOnEvent(NoteOnEvent noteOn);
     void matchNoteOffEvent(NoteOffEvent noteOff);
     void matchChannelEvents(QList<ChannelEvent> channelEvents);
+
+private:
+    void match();
 };
 
 #endif // CHORDHANDLER_H

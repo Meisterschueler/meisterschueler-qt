@@ -29,6 +29,7 @@ private:
     QSharedPointer<QList<MidiPair>> midiPairs;
 
     void match();
+    void prepareAndEmitFinishedItem(const MatchingItem &item);
 };
 
 #endif // MATCHINGHANDLER_H

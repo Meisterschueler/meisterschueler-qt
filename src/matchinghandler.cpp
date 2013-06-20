@@ -74,9 +74,9 @@ void MatchingHandler::match() {
     }
 
     qSort(matchingItems);
-    MatchingItem item = matchingItems[0];
+    MatchingItem bestMatchingItem = matchingItems[0];
 
-    double bestQuality = item.quality;
+    double bestQuality = bestMatchingItem.quality;
     double badQuality = bestQuality/5.0;
     for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
         if ((*i).quality < badQuality) {
@@ -84,20 +84,22 @@ void MatchingHandler::match() {
         }
     }
 
-    bool isFinished = MatchingService::isFinished(item.pitchAlignment, *item.pressedSequence);
+    bool isFinished = MatchingService::isFinished(bestMatchingItem.pitchAlignment, *bestMatchingItem.pressedSequence);
     if (isFinished) {
-
         midiPairs = QSharedPointer<QList<MidiPair>>(new QList<MidiPair>());
-
-        (*midiPairs).append(MatchingService::cutMatchingMidiPairs(*item.midiPairs, item.pitchAlignment));
-
-        *item.midiPitchSequence = MatchingService::midiPairs2pitchSequence(*item.midiPairs);
-        *item.midiIntervalSequence = MatchingService::midiPairs2intervalSequence(*item.midiPairs);
-        *item.pressedSequence = MatchingService::midiPairs2pressedSequence(*item.midiPairs);
-        item.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, item.transposition);
-        item.intervalAlignment = MatchingService::getAlingment(item.scoreIntervalSequence, *item.midiIntervalSequence);
-
-        emit songFinished(item);
+        (*midiPairs).append(MatchingService::cutMatchingMidiPairs(*bestMatchingItem.midiPairs, bestMatchingItem.pitchAlignment));
+        prepareAndEmitFinishedItem(bestMatchingItem);
         reset();
     }
+}
+
+void MatchingHandler::prepareAndEmitFinishedItem(const MatchingItem& item) {
+    MatchingItem finishedItem = item;
+    *finishedItem.midiPitchSequence = MatchingService::midiPairs2pitchSequence(*item.midiPairs);
+    *finishedItem.midiIntervalSequence = MatchingService::midiPairs2intervalSequence(*item.midiPairs);
+    *finishedItem.pressedSequence = MatchingService::midiPairs2pressedSequence(*item.midiPairs);
+    finishedItem.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, finishedItem.transposition);
+    finishedItem.intervalAlignment = MatchingService::getAlingment(item.scoreIntervalSequence, *item.midiIntervalSequence);
+
+    emit songFinished(finishedItem);
 }
