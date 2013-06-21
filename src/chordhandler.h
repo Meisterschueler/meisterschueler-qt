@@ -18,6 +18,9 @@ private:
     QMap<QString, QString> scales;
 
     QList<NoteOnEvent> noteOnEvents;
+
+    QList<MatchingItem> matchingItems;
+    QSharedPointer<QList<MidiPair>> midiPairs;
     
 signals:
     void chordRecognized(MatchingItem matchingItem);
