@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/translations">
+        <file alias="meisterschueler_de.qm">translations/meisterschueler_de.qm</file>
+        <file alias="meisterschueler_fr.qm">translations/meisterschueler_fr.qm</file>
+    </qresource>
+</RCC>

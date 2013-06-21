@@ -83,4 +83,8 @@ FORMS    += mainwindow.ui \
     guidoview.ui \
     echodialog.ui
 
-TRANSLATIONS += translations/meisterschueler_de.ts
+TRANSLATIONS += translations/meisterschueler_de.ts \
+    translations/meisterschueler_fr.ts
+
+RESOURCES += \
+    resources.qrc

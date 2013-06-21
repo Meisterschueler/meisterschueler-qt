@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="de_DE">
+<TS version="2.0" language="fr_FR">
 <context>
     <name>EchoesDialog</name>
     <message>
@@ -16,12 +16,12 @@
     <message>
         <location filename="../echodialog.ui" line="26"/>
         <source>Off</source>
-        <translation>Aus</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../echodialog.ui" line="33"/>
         <source>Echoes</source>
-        <translation type="unfinished">Echo</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../echodialog.ui" line="70"/>
@@ -47,12 +47,12 @@
     <message>
         <location filename="../mainwindow.ui" line="30"/>
         <source>&amp;File</source>
-        <translation>&amp;Datei</translation>
+        <translation>&amp;Fichier</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="38"/>
         <source>&amp;Help</source>
-        <translation>&amp;Hilfe</translation>
+        <translation>&amp;Aide</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="45"/>
@@ -62,12 +62,12 @@
     <message>
         <location filename="../mainwindow.ui" line="51"/>
         <source>&amp;Edit</source>
-        <translation>&amp;Bearbeiten</translation>
+        <translation>&amp;Editer</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="75"/>
         <source>Full Screen</source>
-        <translation>Vollbild</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="78"/>
@@ -77,17 +77,17 @@
     <message>
         <location filename="../mainwindow.ui" line="83"/>
         <source>Settings</source>
-        <translation type="unfinished">Einstellungen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="88"/>
         <source>About &amp;Qt...</source>
-        <translation>Über &amp;Qt...</translation>
+        <translation>A propos de &amp;Qt...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="93"/>
         <source>&amp;Open File...</source>
-        <translation>&amp;Datei öffnen...</translation>
+        <translation>&amp;Ouvrir fichier...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="96"/>
@@ -97,7 +97,7 @@
     <message>
         <location filename="../mainwindow.ui" line="101"/>
         <source>E&amp;xit</source>
-        <translation>&amp;Beenden</translation>
+        <translation>&amp;Quitter</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="104"/>
@@ -128,7 +128,7 @@
     <message>
         <location filename="../mainwindow.ui" line="132"/>
         <source>About...</source>
-        <translation>Über...</translation>
+        <translation>A propos de...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="206"/>
@@ -153,7 +153,7 @@
         <location filename="../../src/midiwrapper.cpp" line="148"/>
         <location filename="../../src/midiwrapper.cpp" line="164"/>
         <source>(none)</source>
-        <translation>(kein)</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

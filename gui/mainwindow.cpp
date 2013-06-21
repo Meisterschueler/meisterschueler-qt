@@ -225,3 +225,9 @@ void MainWindow::on_actionChordWidget_triggered()
 
     setCentralWidget(chordWidget);
 }
+
+void MainWindow::on_actionExit_triggered()
+{
+    signalManager->playShutdownSound();
+    exit(0);
+}

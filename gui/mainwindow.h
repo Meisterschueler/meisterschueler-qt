@@ -64,6 +64,7 @@ private slots:
     void on_actionLoad_File_triggered();
     void on_actionEcho_triggered();
     void on_actionChordWidget_triggered();
+    void on_actionExit_triggered();
 };
 
 #endif // MAINWINDOW_H
