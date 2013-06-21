@@ -24,7 +24,8 @@ public:
     static QByteArray getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const char& transposition=0, const QByteArray& oldAlignment = "");
     static QByteArray getSaveAlignment(const QByteArray& alignment);
     static char getTransposition(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const QByteArray& intervalAlignment);
-    static double getQuality(const QByteArray& pitchAlignment, char transposition);
+    static double getSongQuality(const QByteArray& pitchAlignment, char transposition);
+    static double getChordQuality(const QByteArray& pitchAlignment);
     static bool isFinished(const QByteArray& pitchAlignment, const QByteArray& pressedSequence);
     static QList<MidiPair> cutMatchingMidiPairs(QList<MidiPair>& pairs, const QByteArray& pitchAlignment);
 
