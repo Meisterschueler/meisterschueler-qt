@@ -88,7 +88,7 @@ char MatchingService::getTransposition(const QByteArray& scorePitchSequence, con
     return notePitch - scorePitch;
 }
 
-double MatchingService::getQuality(const QByteArray &pitchAlignment, char transposition) {
+double MatchingService::getSongQuality(const QByteArray &pitchAlignment, char transposition) {
     QString alignment(pitchAlignment);
 
     int firstHitChord = alignment.replace(QRegExp("[mwi]"), ".").indexOf(".");
@@ -118,6 +118,16 @@ double MatchingService::getQuality(const QByteArray &pitchAlignment, char transp
     } else {
         return quality;
     }
+}
+
+double MatchingService::getChordQuality(const QByteArray &pitchAlignment) {
+    //int open = pitchAlignment.count(NeedlemanWunsch::OPEN);
+    int played = pitchAlignment.count(NeedlemanWunsch::MATCH);
+    //int missed = pitchAlignment.count(NeedlemanWunsch::DELETED);
+    //int extra = pitchAlignment.count(NeedlemanWunsch::INSERT);
+    //int wrong = pitchAlignment.count(NeedlemanWunsch::WRONG);
+
+    return (double)played/pitchAlignment.size();
 }
 
 bool MatchingService::isFinished(const QByteArray& pitchAlignment, const QByteArray& pressedSequence) {

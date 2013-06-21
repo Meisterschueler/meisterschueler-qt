@@ -78,7 +78,8 @@ private Q_SLOTS:
     void matchingService_getSaveAlignment();
     void matchingService_getAlignment_prunning();
     void matchingService_getTransposition();
-    void matchingService_getQuality();
+    void matchingService_getSongQuality();
+    void matchingService_getChordQuality();
     void matchingService_isFinished();
     void matchingService_cutMatchingMidiPairs();
     void matchingService_merge();
@@ -787,9 +788,14 @@ void Test::matchingService_getTransposition() {
     QCOMPARE( transposition, -6 );
 }
 
-void Test::matchingService_getQuality() {
-    QVERIFY( MatchingService::getQuality("mmmmm", 0) == 1.0 );
-    QVERIFY( MatchingService::getQuality("xxxxx", 0) == 0.0 );
+void Test::matchingService_getSongQuality() {
+    QVERIFY( MatchingService::getSongQuality("mmmmm", 0) == 1.0 );
+    QVERIFY( MatchingService::getSongQuality("xxxxx", 0) == 0.0 );
+}
+
+void Test::matchingService_getChordQuality() {
+    QVERIFY( MatchingService::getChordQuality("mmm") == 1.0 );
+    QVERIFY( MatchingService::getChordQuality("xxx") == 0.0 );
 }
 
 void Test::matchingService_isFinished() {

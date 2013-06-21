@@ -69,7 +69,7 @@ void MatchingHandler::match() {
             }
         }
 
-        item.quality = MatchingService::getQuality(item.pitchAlignment, item.transposition);
+        item.quality = MatchingService::getSongQuality(item.pitchAlignment, item.transposition);
         *i = item;
     }
 
@@ -78,11 +78,7 @@ void MatchingHandler::match() {
 
     double bestQuality = bestMatchingItem.quality;
     double badQuality = bestQuality/5.0;
-    for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
-        if ((*i).quality < badQuality) {
-            (*i).enabled = false;
-        }
-    }
+    disableBadItems(badQuality);
 
     bool isFinished = MatchingService::isFinished(bestMatchingItem.pitchAlignment, *bestMatchingItem.pressedSequence);
     if (isFinished) {
@@ -90,6 +86,14 @@ void MatchingHandler::match() {
         (*midiPairs).append(MatchingService::cutMatchingMidiPairs(*bestMatchingItem.midiPairs, bestMatchingItem.pitchAlignment));
         prepareAndEmitFinishedItem(bestMatchingItem);
         reset();
+    }
+}
+
+void MatchingHandler::disableBadItems(const double &lowerQualityLimit) {
+    for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
+        if ((*i).quality < lowerQualityLimit) {
+            (*i).enabled = false;
+        }
     }
 }
 

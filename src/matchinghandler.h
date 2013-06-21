@@ -29,7 +29,9 @@ private:
     QSharedPointer<QList<MidiPair>> midiPairs;
 
     void match();
+    void disableBadItems(const double& lowerQualityLimit);
     void prepareAndEmitFinishedItem(const MatchingItem &item);
+
 };
 
 #endif // MATCHINGHANDLER_H
