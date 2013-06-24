@@ -19,7 +19,8 @@ public slots:
     void matchNoteOffEvent(NoteOffEvent noteOff);
 
 signals:
-    void gotChannelEvents(QList<ChannelEvent>  events);
+    void gotChannelEvents(QList<ChannelEvent> events);
+    void gotControlChangeEvent(ControlChangeEvent event);
     void reset();
 
 private:

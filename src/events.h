@@ -76,6 +76,9 @@ protected:
     unsigned char m_channel;
 };
 
+Q_DECLARE_METATYPE(ChannelEvent)
+
+
 class NoteOnEvent : public ChannelEvent
 {
 public:

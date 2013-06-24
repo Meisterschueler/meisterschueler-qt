@@ -15,6 +15,7 @@
 #include "midiwrapper.h"
 #include "needlemanwunsch.h"
 #include "playbackhandler.h"
+#include "recordhandler.h"
 #include "score.h"
 #include "songservice.h"
 #include "statisticsservice.h"
@@ -97,6 +98,8 @@ private Q_SLOTS:
     void clusterHandler_simple();
 
     void playbackHandler_simple();
+
+    void recordHandler_simple();
 
     void midiWrapper_simple();
 
@@ -1185,6 +1188,30 @@ void Test::playbackHandler_simple() {
     QTest::qSleep(300);
     QCOMPARE( noteOnEventSpy.count(), 2 );
     QCOMPARE( noteOffEventSpy.count(), 2 );
+}
+
+// RECORDHANDLER
+
+void Test::recordHandler_simple() {
+    RecordHandler recordHandler;
+    QSignalSpy spy(&recordHandler, SIGNAL(gotChannelEventsToSave(QList<ChannelEvent>)));
+    recordHandler.recordChannelEvent(ChannelEvent(0, 0, 48, 0, Event::NoteOnEventType));
+    recordHandler.save();
+    QCOMPARE( spy.count(), 0 );
+
+    recordHandler.startRecording();
+    recordHandler.recordChannelEvent(ChannelEvent(0, 0, 48, 0, Event::NoteOnEventType));
+    recordHandler.recordChannelEvent(ChannelEvent(0, 0, 48, 0, Event::NoteOnEventType));
+    recordHandler.recordChannelEvent(ChannelEvent(0, 0, 48, 0, Event::NoteOnEventType));
+    QCOMPARE( spy.count(), 0 );
+    recordHandler.stopRecording();
+    recordHandler.recordChannelEvent(ChannelEvent(0, 0, 48, 0, Event::NoteOnEventType));
+    QCOMPARE( spy.count(), 0 );
+    recordHandler.save();
+    QCOMPARE( spy.count(), 1 );
+    QList<QVariant> arguments = spy.takeFirst();
+    QList<ChannelEvent> events = qvariant_cast<QList<ChannelEvent>>(arguments.at(0));
+    QCOMPARE( events.size(), 3 );
 }
 
 // MIDIWRAPPER
