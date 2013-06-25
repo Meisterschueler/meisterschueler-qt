@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     graphicsscoreitem.cpp \
     mymapcollector.cpp \
     chordhandler.cpp \
-    recordhandler.cpp
+    recordhandler.cpp \
+    commandmanager.cpp
 
 HEADERS  += \
     guidoservice.h \
@@ -65,7 +66,8 @@ HEADERS  += \
     graphicsscoreitem.h \
     mymapcollector.h \
     chordhandler.h \
-    recordhandler.h
+    recordhandler.h \
+    commandmanager.h
 
 FORMS    +=
 

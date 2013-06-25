@@ -33,6 +33,7 @@ INCLUDEPATH += ../src
 VPATH += ../src
 
 SOURCES += clusterhandler.cpp \
+           commandmanager.cpp \
            echomanager.cpp \
            graphicsscoreitem.cpp \
            guidoservice.cpp \
@@ -47,6 +48,7 @@ SOURCES += clusterhandler.cpp \
            needlemanwunsch.cpp \
            notemapper.cpp \
            playbackhandler.cpp \
+           recordhandler.cpp \
            resultmanager.cpp \
            score.cpp \
            scoreservice.cpp \
@@ -56,6 +58,7 @@ SOURCES += clusterhandler.cpp \
            events.cpp
 
 HEADERS += clusterhandler.h \
+           commandmanager.h \
            echomanager.h \
            graphicsscoreitem.h \
            guidoservice.h \
@@ -70,6 +73,7 @@ HEADERS += clusterhandler.h \
            needlemanwunsch.h \
            notemapper.h \
            playbackhandler.h \
+           recordhandler.h \
            resultmanager.h \
            score.h \
            scoreservice.h \

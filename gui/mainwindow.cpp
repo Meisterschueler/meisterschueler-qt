@@ -12,12 +12,14 @@
 #include "settingsdialog.h"
 
 #include "clusterhandler.h"
+#include "commandmanager.h"
 #include "echomanager.h"
 #include "matchinghandler.h"
 #include "merginghandler.h"
 #include "midiservice.h"
 #include "midiwrapper.h"
 #include "playbackhandler.h"
+#include "recordhandler.h"
 #include "resultmanager.h"
 #include "signalmanager.h"
 #include "songservice.h"
@@ -32,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     qRegisterMetaType<NoteOffEvent>("NoteOffEvent");
 
     clusterHandler = new ClusterHandler();
+    commandManager = new CommandManager();
     echoManager = new EchoManager();
     midiWrapper = new MidiWrapper();
     QList<Song> songs = SongService::getSongsBuiltIn();
@@ -39,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     matchingHandler = new MatchingHandler(matchingItems);
     mergingHandler = new MergingHandler();
     playbackHandler = new PlaybackHandler();
+    recordHandler = new RecordHandler();
     resultManager = new ResultManager();
     signalManager = new SignalManager();
 
@@ -82,6 +86,17 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(echoManager, &EchoManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
     QObject::connect(echoManager, &EchoManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
+    // CommandManager
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, commandManager, &CommandManager::handleNoteOnEvent);
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, commandManager, &CommandManager::handleNoteOffEvent);
+    QObject::connect(midiWrapper, &MidiWrapper::gotControlChangeEvent, commandManager, &CommandManager::handleControlChangeEvent);
+
+    QObject::connect(commandManager, &CommandManager::startRecording, recordHandler, &RecordHandler::startRecording);
+    QObject::connect(commandManager, &CommandManager::stopRecording, recordHandler, &RecordHandler::stopRecording);
+
+    QObject::connect(commandManager, &CommandManager::startRecording, signalManager, &SignalManager::playRecordStartSignal);
+    QObject::connect(commandManager, &CommandManager::stopRecording, signalManager, &SignalManager::playRecordStopSignal);
+
     on_actionBubbleView_triggered();
 
     signalManager->playStartupSound();
@@ -91,11 +106,14 @@ MainWindow::~MainWindow()
 {
     delete ui;
 
+    delete clusterHandler;
+    delete commandManager;
     delete echoManager;
     delete midiWrapper;
     delete matchingHandler;
     delete mergingHandler;
     delete playbackHandler;
+    delete recordHandler;
     delete resultManager;
     delete signalManager;
 }

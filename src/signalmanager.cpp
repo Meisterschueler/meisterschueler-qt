@@ -51,6 +51,14 @@ void SignalManager::playResetSound() {
     play(RESET_SOUND);
 }
 
+void SignalManager::playRecordStartSignal() {
+    play(RECORD_START_SOUND);
+}
+
+void SignalManager::playRecordStopSignal() {
+    play(RECORD_STOP_SOUND);
+}
+
 void SignalManager::playNextEvent() {
     if (events.at(idx).type() == Event::NoteOnEventType) {
         emit gotNoteOnEvent(NoteOnEvent(events.at(idx)));

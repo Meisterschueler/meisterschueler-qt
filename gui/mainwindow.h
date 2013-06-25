@@ -9,11 +9,13 @@ class BubbleView;
 class GuidoView;
 
 class ClusterHandler;
+class CommandManager;
 class EchoManager;
 class MidiWrapper;
 class MatchingHandler;
 class MergingHandler;
 class PlaybackHandler;
+class RecordHandler;
 class ResultManager;
 class SignalManager;
 
@@ -43,11 +45,13 @@ private:
     Ui::MainWindow *ui;
 
     ClusterHandler *clusterHandler;
+    CommandManager *commandManager;
     EchoManager *echoManager;
     MidiWrapper *midiWrapper;
     MatchingHandler *matchingHandler;
     MergingHandler *mergingHandler;
     PlaybackHandler *playbackHandler;
+    RecordHandler *recordHandler;
     ResultManager *resultManager;
     SignalManager *signalManager;
 

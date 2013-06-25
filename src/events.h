@@ -121,6 +121,7 @@ public:
 class ControlChangeEvent : public Event
 {
 public:
+    ControlChangeEvent() : Event(ControlChangeEventType), m_time(0), m_ctl(0), m_value(0) {}
     ControlChangeEvent(time_t time, unsigned char ctl, unsigned char value)
         : Event(ControlChangeEventType), m_time(time), m_ctl(ctl), m_value(value) { }
     time_t getTime() const { return m_time; }
@@ -131,6 +132,9 @@ private:
     unsigned char m_ctl;
     unsigned char m_value;
 };
+
+Q_DECLARE_METATYPE(ControlChangeEvent)
+
 
 class ValueEvent : public Event
 {
