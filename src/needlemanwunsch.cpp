@@ -4,16 +4,12 @@
 
 NeedlemanWunsch::NeedlemanWunsch()
 {
-    similarity = new int[matrix_size*matrix_size];
-
-    calcSimilarityMatrix();
 }
 
 NeedlemanWunsch::~NeedlemanWunsch() {
-    delete[] similarity;
 }
 
-QByteArray NeedlemanWunsch::getAlignments(const QByteArray &seq1, const QByteArray &seq2, const char &offset) const {
+QByteArray NeedlemanWunsch::getAlignments(const QByteArray &seq1, const QByteArray &seq2, const char &offset) {
     int width = 30;
 
     int big = 10000;
@@ -106,20 +102,12 @@ QByteArray NeedlemanWunsch::getAlignments(const QByteArray &seq1, const QByteArr
     return align;
 }
 
-int NeedlemanWunsch::getSimilarity(const unsigned char i, const unsigned char j) const {
-    return similarity[i*matrix_size + j];
-}
-
-void NeedlemanWunsch::calcSimilarityMatrix() {
-    for (int i=0; i<matrix_size; i++) {
-        for (int j=0; j<matrix_size; j++) {
-            if (i == j) {
-                similarity[i*matrix_size + j] = cost_mat;
-            } else if (i-j == 1 || j-i == 1) {
-                similarity[i*matrix_size + j] = 10;
-            } else {
-                similarity[i*matrix_size + j] = 200;
-            }
-        }
+int NeedlemanWunsch::getSimilarity(const unsigned char i, const unsigned char j) {
+    if (i == j) {
+        return cost_mat;
+    } else if (i-j == 1 || j-i == 1) {
+        return 10;
+    } else {
+        return 200;
     }
 }
