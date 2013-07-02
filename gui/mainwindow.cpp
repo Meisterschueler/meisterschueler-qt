@@ -92,9 +92,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(midiWrapper, &MidiWrapper::gotControlChangeEvent, commandManager, &CommandManager::handleControlChangeEvent);
 
     QObject::connect(commandManager, &CommandManager::startRecording, recordHandler, &RecordHandler::startRecording);
-    QObject::connect(commandManager, &CommandManager::stopRecording, recordHandler, &RecordHandler::stopRecording);
-
     QObject::connect(commandManager, &CommandManager::startRecording, signalManager, &SignalManager::playRecordStartSignal);
+
+    QObject::connect(commandManager, &CommandManager::stopRecording, recordHandler, &RecordHandler::stopRecording);
     QObject::connect(commandManager, &CommandManager::stopRecording, signalManager, &SignalManager::playRecordStopSignal);
 
     on_actionBubbleView_triggered();

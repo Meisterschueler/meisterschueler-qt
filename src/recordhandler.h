@@ -13,7 +13,6 @@ public:
     explicit RecordHandler(QObject *parent = 0);
     
 signals:
-    void gotChannelEventsToSave(const QList<ChannelEvent>& events);
 
 public slots:
     void startRecording();
@@ -24,7 +23,7 @@ public slots:
 
 private:
     bool recording;
-    QList<ChannelEvent> events;
+    QList<ChannelEvent> channelEvents;
 };
 
 #endif // RECORDHANDLER_H

@@ -1,12 +1,17 @@
 #include "recordhandler.h"
 
+#include "midiservice.h"
+
+#include <QDate>
+#include <QTime>
+
 RecordHandler::RecordHandler(QObject *parent) :
     QObject(parent), recording(false)
 {
 }
 
 void RecordHandler::startRecording() {
-    events.clear();
+    channelEvents.clear();
     recording = true;
 }
 
@@ -15,14 +20,16 @@ void RecordHandler::stopRecording() {
 }
 
 void RecordHandler::save() {
-    if (events.size() != 0) {
-        emit gotChannelEventsToSave(events);
-        events.clear();
+    if (channelEvents.size() != 0) {
+        QString filename = "Record_" + QDate::currentDate().toString("yyMMdd") + QTime::currentTime().toString("HHmmss");
+        MidiService::save(filename, channelEvents);
+
+        channelEvents.clear();
     }
 }
 
 void RecordHandler::recordChannelEvent(ChannelEvent event) {
     if (recording) {
-        events.append(event);
+        channelEvents.append(event);
     }
 }
