@@ -32,20 +32,12 @@ public:
 
     QList<Score> mergedScores;
 
-    bool operator<(const MatchingItem& rhs) const {
-        if (this->quality > rhs.quality) {
-            return true;
-        } else {
-            return false;
-        }
+    bool operator < (const MatchingItem& rhs) const {
+        return (this->quality > rhs.quality);
     }
 
-    bool operator>(const MatchingItem& rhs) const {
-        if (this->quality < rhs.quality) {
-            return true;
-        } else {
-            return false;
-        }
+    bool operator > (const MatchingItem& rhs) const {
+        return (this->quality < rhs.quality);
     }
 };
 Q_DECLARE_METATYPE(MatchingItem)
