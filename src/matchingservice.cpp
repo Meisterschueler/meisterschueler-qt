@@ -14,7 +14,7 @@ MatchingService::MatchingService()
 QByteArray MatchingService::midiPairs2pitchSequence(const QList<MidiPair>& pairs) {
     QByteArray sequence;
     for (MidiPair midiPair : pairs) {
-        sequence.append(midiPair.noteOn->getNote());
+        sequence.append(midiPair.noteOn.getNote());
     }
     return sequence;
 }
@@ -32,11 +32,11 @@ QByteArray MatchingService::midiPairs2intervalSequence(const QList<MidiPair>& pa
 QByteArray MatchingService::midiPairs2pressedSequence(const QList<MidiPair>& pairs) {
     QByteArray sequence;
     for (MidiPair midiPair : pairs) {
-        if (midiPair.noteOn != NULL && midiPair.noteOff != NULL) {
+        if (midiPair.noteOn != emptyNoteOnEvent && midiPair.noteOff != emptyNoteOffEvent) {
             sequence.append(MatchingService::RELEASED);
-        } else if (midiPair.noteOn != NULL){
+        } else if (midiPair.noteOn != emptyNoteOnEvent){
             sequence.append(MatchingService::PRESSED);
-        } else if (midiPair.noteOff != NULL) {
+        } else if (midiPair.noteOff != emptyNoteOffEvent) {
             sequence.append("y");
         } else {
             sequence.append("o");
@@ -182,7 +182,7 @@ QList<Score> MatchingService::merge(const QList<Score>& scores, const QList<Midi
             break;
         }
         case 'i': {
-            Score s((*midiPairs.at(idx_midiPairs).noteOn).getNote());
+            Score s(midiPairs.at(idx_midiPairs).noteOn.getNote());
             s.midiPair = midiPairs.at(idx_midiPairs);
             s.status = EXTRA;
             result.append(s);

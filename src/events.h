@@ -61,11 +61,11 @@ public:
     unsigned char getChannel() const { return m_channel; }
 
     bool operator==(ChannelEvent const& rhs) const {
-        if (this->m_channel == rhs.m_channel && this->m_note == rhs.m_note && this->m_time == rhs.m_time && this->m_velocity == rhs.m_velocity) {
-            return true;
-        } else {
-            return false;
-        }
+        return (this->m_channel == rhs.m_channel && this->m_note == rhs.m_note && this->m_time == rhs.m_time && this->m_velocity == rhs.m_velocity);
+    }
+
+    bool operator!=(ChannelEvent const& rhs) const {
+        return (this->m_channel != rhs.m_channel || this->m_note != rhs.m_note || this->m_time != rhs.m_time || this->m_velocity != rhs.m_velocity);
     }
 
     bool operator<(ChannelEvent const& rhs) const {
@@ -87,7 +87,7 @@ public:
     NoteOnEvent(time_t time, unsigned char chan, unsigned char note, unsigned char vel)
         : ChannelEvent(time, chan, note, vel, NoteOnEventType) { }
 
-    bool operator<(NoteOnEvent const& rhs) const {
+    bool operator<(const NoteOnEvent& rhs) const {
         return this->m_note<rhs.getNote();
     }
 };
@@ -167,41 +167,29 @@ public:
         : ValueEvent(value, PitchWheelEventType) { }
 };
 
+static NoteOnEvent emptyNoteOnEvent(0, 255, 0, 0);
+static NoteOnEvent emptyNoteOffEvent(0, 255, 0, 0);
+
 class MidiPair {
 public:
-    QSharedPointer<NoteOnEvent> noteOn;
-    QSharedPointer<NoteOffEvent> noteOff;
+    NoteOnEvent noteOn;
+    NoteOffEvent noteOff;
 
-    MidiPair() {}
-    MidiPair(NoteOnEvent noteOn) { this->noteOn = QSharedPointer<NoteOnEvent>(new NoteOnEvent(noteOn)); }
-    MidiPair(NoteOnEvent noteOn, NoteOffEvent noteOff) : noteOn(QSharedPointer<NoteOnEvent>(new NoteOnEvent(noteOn))), noteOff(QSharedPointer<NoteOffEvent>(new NoteOffEvent(noteOff))) {}
+    MidiPair() : noteOn(emptyNoteOnEvent), noteOff(emptyNoteOffEvent) {}
+    MidiPair(NoteOnEvent noteOn) : noteOn(noteOn), noteOff(emptyNoteOffEvent) {}
+    MidiPair(NoteOnEvent noteOn, NoteOffEvent noteOff) : noteOn(noteOn), noteOff(noteOff) {}
 
     bool operator==(const MidiPair& rhs) const {
-        bool noteOnSimilar = false;
-        bool noteOffSimilar = false;
-
-        if ( (!this->noteOn && !rhs.noteOn) || ((this->noteOn && rhs.noteOn) && *(this->noteOn) == *(rhs.noteOn)) ) {
-            noteOnSimilar = true;
-        }
-
-        if ( (!this->noteOff && !rhs.noteOff) || ((this->noteOff && rhs.noteOff) && *(this->noteOff) == *(rhs.noteOff)) ) {
-            noteOffSimilar = true;
-        }
-
-        if (noteOnSimilar && noteOffSimilar) {
-            return true;
-        } else {
-            return false;
-        }
+        return (noteOn == rhs.noteOn && noteOff == rhs.noteOff);
     }
 
     bool operator<(const MidiPair& rhs) const {
-        if (this->noteOn && rhs.noteOn) {
-            if ( (*this->noteOn).getTime() + 50 < (*rhs.noteOn).getTime() ) {
+        if (this->noteOn != emptyNoteOnEvent && rhs.noteOn != emptyNoteOffEvent) {
+            if ( noteOn.getTime() + 50 < rhs.noteOn.getTime() ) {
                 return true;
-            } else if ( (*this->noteOn).getTime() > (*rhs.noteOn).getTime() + 50 ) {
+            } else if ( noteOn.getTime() > rhs.noteOn.getTime() + 50 ) {
                 return false;
-            } else if ( *this->noteOn < *rhs.noteOn ) {
+            } else if ( noteOn < rhs.noteOn ) {
                 return true;
             }
         }

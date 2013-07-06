@@ -14,8 +14,8 @@ void PlaybackHandler::setMidiPairs(QList<MidiPair> midiPairs) {
     idx = 0;
     events.clear();
     for (MidiPair midiPair : midiPairs) {
-        events.append(*midiPair.noteOn);
-        events.append(*midiPair.noteOff);
+        events.append(midiPair.noteOn);
+        events.append(midiPair.noteOff);
     }
 
     qSort(events);

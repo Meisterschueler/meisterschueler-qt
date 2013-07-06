@@ -142,13 +142,13 @@ void Test::noteOnEvent_comparisons() {
 void Test::midiPair_constructors() {
     NoteOnEvent A(0, 0, 10, 0);
     MidiPair pair1(A);
-    QVERIFY( A == *(pair1.noteOn) );
-    QVERIFY( NULL == pair1.noteOff );
+    QVERIFY( A == pair1.noteOn );
+    QVERIFY( emptyNoteOffEvent == pair1.noteOff );
 
     NoteOffEvent a(10, 0, 10, 0);
     MidiPair pair2(A, a);
-    QVERIFY( A == *(pair2.noteOn) );
-    QVERIFY( a == *(pair2.noteOff) );
+    QVERIFY( A == pair2.noteOn );
+    QVERIFY( a == pair2.noteOff );
 }
 
 void Test::midiPair_comparisons_single() {
@@ -658,22 +658,22 @@ void Test::midiService_addNote() {
 
     QCOMPARE( pairs.size(), 8 );
 
-    QVERIFY( A == *pairs.at(0).noteOn );
-    QVERIFY( a == *pairs.at(0).noteOff );
-    QVERIFY( B == *pairs.at(1).noteOn );
-    QVERIFY( b == *pairs.at(1).noteOff );
-    QVERIFY( C == *pairs.at(2).noteOn );
-    QVERIFY( c == *pairs.at(2).noteOff );
-    QVERIFY( D == *pairs.at(3).noteOn );
-    QVERIFY( d == *pairs.at(3).noteOff );
-    QVERIFY( E == *pairs.at(4).noteOn );
-    QVERIFY( e == *pairs.at(4).noteOff );
-    QVERIFY( F == *pairs.at(5).noteOn );
-    QVERIFY( f == *pairs.at(5).noteOff );
-    QVERIFY( G == *pairs.at(6).noteOn );
-    QVERIFY( g == *pairs.at(6).noteOff );
-    QVERIFY( H == *pairs.at(7).noteOn );
-    QVERIFY( h == *pairs.at(7).noteOff );
+    QVERIFY( A == pairs.at(0).noteOn );
+    QVERIFY( a == pairs.at(0).noteOff );
+    QVERIFY( B == pairs.at(1).noteOn );
+    QVERIFY( b == pairs.at(1).noteOff );
+    QVERIFY( C == pairs.at(2).noteOn );
+    QVERIFY( c == pairs.at(2).noteOff );
+    QVERIFY( D == pairs.at(3).noteOn );
+    QVERIFY( d == pairs.at(3).noteOff );
+    QVERIFY( E == pairs.at(4).noteOn );
+    QVERIFY( e == pairs.at(4).noteOff );
+    QVERIFY( F == pairs.at(5).noteOn );
+    QVERIFY( f == pairs.at(5).noteOff );
+    QVERIFY( G == pairs.at(6).noteOn );
+    QVERIFY( g == pairs.at(6).noteOff );
+    QVERIFY( H == pairs.at(7).noteOn );
+    QVERIFY( h == pairs.at(7).noteOff );
 }
 
 void Test::midiService_saveLoad() {

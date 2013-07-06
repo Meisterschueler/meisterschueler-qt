@@ -63,23 +63,23 @@ StatisticCluster StatisticsService::getStatisticCluster(const QList<Score>& scor
 
     QVector<double> velocities;
     for (Score score : scores) {
-        velocities.append((*score.midiPair.noteOn).getVelocity());
+        velocities.append(score.midiPair.noteOn.getVelocity());
     }
     result.velocity = getStatisticItem(velocities);
 
     QVector<double> speeds;
     if (scores.size() >= 2) {
-        double delta_t = (*scores.at(1).midiPair.noteOn).getTime()-(*scores.at(0).midiPair.noteOn).getTime();
+        double delta_t = scores.at(1).midiPair.noteOn.getTime()-scores.at(0).midiPair.noteOn.getTime();
         double speed_bpm = (double)scores.at(0).duration/delta_t * 4 * 1000 * 60;
         speeds.append(speed_bpm);
 
         for (int i = 1; i < scores.size()-1; ++i) {
-            delta_t = (*scores.at(i+1).midiPair.noteOn).getTime()-(*scores.at(i).midiPair.noteOn).getTime();
+            delta_t = scores.at(i+1).midiPair.noteOn.getTime()-scores.at(i).midiPair.noteOn.getTime();
             speed_bpm = (double)scores.at(i).duration/delta_t * 4 * 1000 * 60;
             speeds.append(speed_bpm);
         }
 
-        delta_t = (*scores.last().midiPair.noteOff).getTime()-(*scores.last().midiPair.noteOn).getTime();
+        delta_t = scores.last().midiPair.noteOff.getTime()-scores.last().midiPair.noteOn.getTime();
         speed_bpm = (double)scores.last().duration/delta_t * 4 * 1000 * 60;
         speeds.append(speed_bpm);
 

@@ -17,20 +17,17 @@ MidiService::MidiService()
 }
 
 void MidiService::addNoteOn(QList<MidiPair>& pairs, const NoteOnEvent &noteOn) {
-    QSharedPointer<NoteOnEvent> pointer(new NoteOnEvent(noteOn));
-    MidiPair pair;
-    pair.noteOn = pointer;
+    MidiPair pair(noteOn);
     pairs.append(pair);
     qSort(pairs);
 }
 
 void MidiService::addNoteOff(QList<MidiPair>& pairs, const NoteOffEvent &noteOff) {
-    QSharedPointer<NoteOffEvent> pointer(new NoteOffEvent(noteOff));
     QMutableListIterator<MidiPair> it(pairs);
     while (it.hasNext()) {
         it.next();
-        if (it.value().noteOn->getNote() == pointer->getNote() && !it.value().noteOff) {
-            it.value().noteOff = pointer;
+        if (it.value().noteOn.getNote() == noteOff.getNote() && it.value().noteOff == emptyNoteOffEvent) {
+            it.value().noteOff = noteOff;
             break;
         }
     }
