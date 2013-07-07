@@ -103,6 +103,8 @@ private Q_SLOTS:
 
     void midiWrapper_simple();
 
+    void performance_simple();
+
 private:
     MatchingItem gmnToMatchingItem(const QString &gmn);
 };
@@ -1223,6 +1225,22 @@ void Test::midiWrapper_simple() {
         qDebug( "%s", inputPort.toStdString().c_str() );
     }
     QVERIFY( inputPorts.size() > 1 );
+}
+
+// PERFORMANCE TESTS
+
+void Test::performance_simple() {
+    QList<Song> songs = SongService::getSongsBuiltIn();
+    QList<MatchingItem> matchingItems = SongService::createMatchingItems(songs);
+    MatchingHandler matchingHandler(matchingItems);
+
+    QStringList nameFilter("*.mid");
+    QDir directory("/home/fritz/build-meisterschueler-Desktop-Debug");
+    QStringList midiFilesAndDirectories = directory.entryList(nameFilter);
+    for (QString midiFileName : midiFilesAndDirectories) {
+        QList<ChannelEvent> channelEvents = MidiService::load(midiFileName);
+        matchingHandler.matchChannelEvents(channelEvents);
+    }
 }
 
 // HELPER FUNCTIONS

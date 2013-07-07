@@ -1,5 +1,5 @@
-#ifndef ECHOMANAGER_H
-#define ECHOMANAGER_H
+#ifndef FEEDBACKMANAGER_H
+#define FEEDBACKMANAGER_H
 
 #include <QObject>
 #include <QQueue>
@@ -8,15 +8,16 @@
 
 class QTimer;
 
-class EchoManager : public QObject
+class FeedbackManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit EchoManager(QObject *parent = 0);
+    explicit FeedbackManager(QObject *parent = 0);
 
-    enum State { OFF, ECHO, REPING };
+    enum State { OFF, ECHO, REPING, HURDLE };
     State getState() const;
     int getEchoDelay() const;
+    int getHurdleVelocity() const;
     
 signals:
     void gotNoteOnEvent(NoteOnEvent event);
@@ -26,7 +27,10 @@ public slots:
     void toggleOff(bool value);
     void toggleEcho(bool value);
     void toggleReping(bool value);
+    void toggleHurdle(bool value);
+
     void setEchoDelay(int value);
+    void setHurdleVelocity(int value);
 
     void playNoteOnEvent(NoteOnEvent event);
     void playNoteOffEvent(NoteOffEvent event);
@@ -35,6 +39,7 @@ private:
     QQueue<ChannelEvent> events;
     QTimer *timer;
     int echoDelay;
+    int hurdleVelocity;
 
     State state;
 
@@ -46,4 +51,4 @@ private slots:
     void playNextEvent();
 };
 
-#endif // ECHOMANAGER_H
+#endif // FEEDBACKMANAGER_H

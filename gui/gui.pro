@@ -17,16 +17,16 @@ SOURCES += main.cpp\
     bubblegraphicsitem.cpp \
     bubbleview.cpp \
     guidoview.cpp \
-    echodialog.cpp \
-    chordview.cpp
+    chordview.cpp \
+    feedbackdialog.cpp
 
 HEADERS  += mainwindow.h \
     settingsdialog.h \
     bubblegraphicsitem.h \
     bubbleview.h \
     guidoview.h \
-    echodialog.h \
-    chordwidget.h
+    chordwidget.h \
+    feedbackdialog.h
 
 # Get Classes
 INCLUDEPATH += ../src
@@ -34,7 +34,7 @@ VPATH += ../src
 
 SOURCES += clusterhandler.cpp \
            commandmanager.cpp \
-           echomanager.cpp \
+           feedbackmanager.cpp \
            graphicsscoreitem.cpp \
            guidoservice.cpp \
            hanonsongfactory.cpp \
@@ -59,7 +59,7 @@ SOURCES += clusterhandler.cpp \
 
 HEADERS += clusterhandler.h \
            commandmanager.h \
-           echomanager.h \
+           feedbackmanager.h \
            graphicsscoreitem.h \
            guidoservice.h \
            hanonsongfactory.h \
@@ -85,7 +85,7 @@ HEADERS += clusterhandler.h \
 FORMS    += mainwindow.ui \
     settingsdialog.ui \
     guidoview.ui \
-    echodialog.ui
+    feedbackdialog.ui
 
 TRANSLATIONS += translations/meisterschueler_de.ts \
     translations/meisterschueler_fr.ts

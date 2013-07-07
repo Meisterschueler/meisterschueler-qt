@@ -10,7 +10,7 @@ class GuidoView;
 
 class ClusterHandler;
 class CommandManager;
-class EchoManager;
+class FeedbackManager;
 class MidiWrapper;
 class MatchingHandler;
 class MergingHandler;
@@ -46,7 +46,7 @@ private:
 
     ClusterHandler *clusterHandler;
     CommandManager *commandManager;
-    EchoManager *echoManager;
+    FeedbackManager *feedbackManager;
     MidiWrapper *midiWrapper;
     MatchingHandler *matchingHandler;
     MergingHandler *mergingHandler;

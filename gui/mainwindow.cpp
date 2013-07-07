@@ -7,13 +7,13 @@
 
 #include "bubbleview.h"
 #include "chordwidget.h"
-#include "echodialog.h"
+#include "feedbackdialog.h"
 #include "guidoview.h"
 #include "settingsdialog.h"
 
 #include "clusterhandler.h"
 #include "commandmanager.h"
-#include "echomanager.h"
+#include "feedbackmanager.h"
 #include "matchinghandler.h"
 #include "merginghandler.h"
 #include "midiservice.h"
@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     clusterHandler = new ClusterHandler();
     commandManager = new CommandManager();
-    echoManager = new EchoManager();
+    feedbackManager = new FeedbackManager();
     midiWrapper = new MidiWrapper();
     QList<Song> songs = SongService::getSongsBuiltIn();
     QList<MatchingItem> matchingItems = SongService::createMatchingItems(songs);
@@ -80,11 +80,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(signalManager, &SignalManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
     // EchoManager
-    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, echoManager, &EchoManager::playNoteOnEvent);
-    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, echoManager, &EchoManager::playNoteOffEvent);
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, feedbackManager, &FeedbackManager::playNoteOnEvent);
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, feedbackManager, &FeedbackManager::playNoteOffEvent);
 
-    QObject::connect(echoManager, &EchoManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
-    QObject::connect(echoManager, &EchoManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
+    QObject::connect(feedbackManager, &FeedbackManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
+    QObject::connect(feedbackManager, &FeedbackManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
     // CommandManager
     QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, commandManager, &CommandManager::handleNoteOnEvent);
@@ -108,7 +108,7 @@ MainWindow::~MainWindow()
 
     delete clusterHandler;
     delete commandManager;
-    delete echoManager;
+    delete feedbackManager;
     delete midiWrapper;
     delete matchingHandler;
     delete mergingHandler;
@@ -232,9 +232,9 @@ void MainWindow::on_actionLoad_File_triggered()
 
 void MainWindow::on_actionEcho_triggered()
 {
-    EchoDialog *echoDialog = new EchoDialog(this);
-    echoDialog->init(echoManager);
-    echoDialog->exec();
+    FeedbackDialog *feedbackDialog = new FeedbackDialog(this);
+    feedbackDialog->init(feedbackManager);
+    feedbackDialog->exec();
 }
 
 void MainWindow::on_actionChordWidget_triggered()

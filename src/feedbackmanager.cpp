@@ -1,46 +1,60 @@
-#include "echomanager.h"
+#include "feedbackmanager.h"
 
 #include <QTimer>
 
-EchoManager::EchoManager(QObject *parent) :
+FeedbackManager::FeedbackManager(QObject *parent) :
     QObject(parent)
 {
     timer = new QTimer(this);
     timer->setSingleShot(true);
-    QObject::connect(timer, &QTimer::timeout, this, &EchoManager::playNextEvent);
+    QObject::connect(timer, &QTimer::timeout, this, &FeedbackManager::playNextEvent);
 
     state = OFF;
     echoDelay = 1000;
+    hurdleVelocity = 30;
 }
 
-EchoManager::State EchoManager::getState() const {
+FeedbackManager::State FeedbackManager::getState() const {
     return state;
 }
 
-int EchoManager::getEchoDelay() const {
+int FeedbackManager::getEchoDelay() const {
     return echoDelay;
 }
 
-void EchoManager::toggleOff(bool value) {
+int FeedbackManager::getHurdleVelocity() const {
+    return hurdleVelocity;
+}
+
+void FeedbackManager::toggleOff(bool value) {
     if (value)
         state = OFF;
 }
 
-void EchoManager::toggleEcho(bool value) {
+void FeedbackManager::toggleEcho(bool value) {
     if (value)
         state = ECHO;
 }
 
-void EchoManager::toggleReping(bool value) {
+void FeedbackManager::toggleReping(bool value) {
     if (value)
         state = REPING;
 }
 
-void EchoManager::setEchoDelay(int value) {
+void FeedbackManager::toggleHurdle(bool value) {
+    if (value)
+        state = HURDLE;
+}
+
+void FeedbackManager::setEchoDelay(int value) {
     echoDelay = value;
 }
 
-void EchoManager::playNoteOnEvent(NoteOnEvent event) {
+void FeedbackManager::setHurdleVelocity(int value) {
+    hurdleVelocity = value;
+}
+
+void FeedbackManager::playNoteOnEvent(NoteOnEvent event) {
     switch (state) {
     case OFF:
         break;
@@ -49,10 +63,20 @@ void EchoManager::playNoteOnEvent(NoteOnEvent event) {
         break;
     case REPING:
         break;
+    case HURDLE:
+        if (event.getVelocity() > hurdleVelocity) {
+            unsigned char note = qMax(127, event.getNote()+12);
+            unsigned char velocity = qMax(127, event.getVelocity()+10);
+            NoteOnEvent loudOnEvent(event.getTime(), event.getChannel(), note, velocity);
+            NoteOffEvent loudOffEvent(event.getTime(), event.getChannel(), note, 0);
+
+            emit gotNoteOnEvent(loudOnEvent);
+            emit gotNoteOffEvent(loudOffEvent);
+        }
     }
 }
 
-void EchoManager::playNoteOffEvent(NoteOffEvent event) {
+void FeedbackManager::playNoteOffEvent(NoteOffEvent event) {
     switch (state) {
     case OFF:
         break;
@@ -64,10 +88,12 @@ void EchoManager::playNoteOffEvent(NoteOffEvent event) {
         events.enqueue(event);
         timer->start(PINGDELAY);
         break;
+    case HURDLE:
+        break;
     }
 }
 
-void EchoManager::eatChannelEvent(const ChannelEvent& event) {
+void FeedbackManager::eatChannelEvent(const ChannelEvent& event) {
     events.enqueue(event);
     if (!timer->isActive()) {
         timer->start(echoDelay);
@@ -80,7 +106,7 @@ void EchoManager::eatChannelEvent(const ChannelEvent& event) {
     }
 }
 
-void EchoManager::playNextEvent() {
+void FeedbackManager::playNextEvent() {
     ChannelEvent event = events.dequeue();
     if (event.type() == Event::NoteOnEventType) {
         emit gotNoteOnEvent(event);

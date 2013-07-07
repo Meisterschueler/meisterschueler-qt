@@ -32,12 +32,12 @@ SOURCES += main.cpp\
     merginghandler.cpp \
     signalmanager.cpp \
     resultmanager.cpp \
-    echomanager.cpp \
     graphicsscoreitem.cpp \
     mymapcollector.cpp \
     chordhandler.cpp \
     recordhandler.cpp \
-    commandmanager.cpp
+    commandmanager.cpp \
+    feedbackmanager.cpp
 
 HEADERS  += \
     guidoservice.h \
@@ -62,7 +62,7 @@ HEADERS  += \
     merginghandler.h \
     signalmanager.h \
     resultmanager.h \
-    echomanager.h \
+    feedbackmanager.h \
     graphicsscoreitem.h \
     mymapcollector.h \
     chordhandler.h \
