@@ -65,10 +65,10 @@ void FeedbackManager::playNoteOnEvent(NoteOnEvent event) {
         break;
     case HURDLE:
         if (event.getVelocity() > hurdleVelocity) {
-            unsigned char note = qMax(127, event.getNote()+12);
-            unsigned char velocity = qMax(127, event.getVelocity()+10);
-            NoteOnEvent loudOnEvent(event.getTime(), event.getChannel(), note, velocity);
-            NoteOffEvent loudOffEvent(event.getTime(), event.getChannel(), note, 0);
+            unsigned char note = qMin(127, event.getNote()+12);
+            unsigned char velocity = qMin(127, event.getVelocity()+10);
+            NoteOnEvent loudOnEvent(0, 0, note, velocity);
+            NoteOffEvent loudOffEvent(0, 0, note, 0);
 
             emit gotNoteOnEvent(loudOnEvent);
             emit gotNoteOffEvent(loudOffEvent);

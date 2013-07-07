@@ -230,7 +230,7 @@ void MainWindow::on_actionLoad_File_triggered()
     playbackHandler->play();
 }
 
-void MainWindow::on_actionEcho_triggered()
+void MainWindow::on_actionFeedback_triggered()
 {
     FeedbackDialog *feedbackDialog = new FeedbackDialog(this);
     feedbackDialog->init(feedbackManager);

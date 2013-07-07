@@ -66,9 +66,9 @@ private slots:
     void on_actionFull_Screen_triggered();
     void on_actionSettings_triggered();
     void on_actionLoad_File_triggered();
-    void on_actionEcho_triggered();
     void on_actionChordWidget_triggered();
     void on_actionExit_triggered();
+    void on_actionFeedback_triggered();
 };
 
 #endif // MAINWINDOW_H

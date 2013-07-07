@@ -22,7 +22,7 @@
      <x>0</x>
      <y>0</y>
      <width>529</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -51,7 +51,7 @@
      <string>&amp;Edit</string>
     </property>
     <addaction name="actionSettings"/>
-    <addaction name="actionEcho"/>
+    <addaction name="actionFeedback"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -114,9 +114,9 @@
     <string>BubbleView</string>
    </property>
   </action>
-  <action name="actionEcho">
+  <action name="actionFeedback">
    <property name="text">
-    <string>Echo</string>
+    <string>Feedback</string>
    </property>
   </action>
   <action name="actionChordWidget">
