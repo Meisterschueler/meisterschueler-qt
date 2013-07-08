@@ -23,8 +23,6 @@ private:
     static constexpr char cost_ins = 10;
     static constexpr char cost_wro = 10;
 
-    static constexpr short matrix_size = 256;
-
     static int getSimilarity(const unsigned char i, const unsigned char j);
 };
 

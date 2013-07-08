@@ -51,12 +51,12 @@ QByteArray NeedlemanWunsch::getAlignments(const QByteArray &seq1, const QByteArr
     // For DTW only
     if (i > j) {
         while ((i > 0) && (dist[ i*(n2+1) + j ] == big )) {
-            align = DELETED + align;
+            align.insert(0, DELETED);
             i--;
         }
     } else {
         while ((j > 0) && (dist[ i*(n2+1) + j ]  == big )) {
-            align = INSERT + align;
+            align.insert(0, INSERT);
             j--;
         }
     }
@@ -82,19 +82,19 @@ QByteArray NeedlemanWunsch::getAlignments(const QByteArray &seq1, const QByteArr
 
         if (diag>=up && diag>=left) {
             if (diag == cost_mat) {
-                align = MATCH + align;
+                align.insert(0, MATCH);
                 i--;
                 j--;
             } else {
-                align = WRONG + align;
+                align.insert(0, WRONG);
                 i--;
                 j--;
             }
         } else if (up>=left) {
-            align = DELETED + align;
+            align.insert(0, DELETED);
             i--;
         } else {
-            align = INSERT + align;
+            align.insert(0, INSERT);
             j--;
         }
     }
