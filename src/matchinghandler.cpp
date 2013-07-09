@@ -13,6 +13,7 @@ void MatchingHandler::reset() {
     for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
         (*i).enabled = true;
     }
+    (*midiPairs).clear();
 }
 
 void MatchingHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
