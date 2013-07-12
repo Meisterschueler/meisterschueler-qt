@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     bubbleview.cpp \
     guidoview.cpp \
     chordview.cpp \
-    feedbackdialog.cpp
+    feedbackdialog.cpp \
+    graphicsscoreitem.cpp
 
 HEADERS  += mainwindow.h \
     settingsdialog.h \
@@ -26,7 +27,8 @@ HEADERS  += mainwindow.h \
     bubbleview.h \
     guidoview.h \
     chordwidget.h \
-    feedbackdialog.h
+    feedbackdialog.h \
+    graphicsscoreitem.h
 
 # Get Classes
 INCLUDEPATH += ../src
@@ -35,7 +37,6 @@ VPATH += ../src
 SOURCES += clusterhandler.cpp \
            commandmanager.cpp \
            feedbackmanager.cpp \
-           graphicsscoreitem.cpp \
            guidoservice.cpp \
            hanonsongfactory.cpp \
            matchinghandler.cpp \
@@ -60,7 +61,6 @@ SOURCES += clusterhandler.cpp \
 HEADERS += clusterhandler.h \
            commandmanager.h \
            feedbackmanager.h \
-           graphicsscoreitem.h \
            guidoservice.h \
            hanonsongfactory.h \
            matchinghandler.h \

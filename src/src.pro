@@ -32,7 +32,6 @@ SOURCES += main.cpp\
     merginghandler.cpp \
     signalmanager.cpp \
     resultmanager.cpp \
-    graphicsscoreitem.cpp \
     mymapcollector.cpp \
     chordhandler.cpp \
     recordhandler.cpp \
@@ -63,7 +62,6 @@ HEADERS  += \
     signalmanager.h \
     resultmanager.h \
     feedbackmanager.h \
-    graphicsscoreitem.h \
     mymapcollector.h \
     chordhandler.h \
     recordhandler.h \

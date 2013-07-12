@@ -9,7 +9,7 @@
 #include "QGuidoGraphicsItem.h"
 
 #include "guidoservice.h"
-#include "graphicsscoreitem.h"
+#include "../gui/graphicsscoreitem.h"
 #include "mymapcollector.h"
 #include "score.h"
 
