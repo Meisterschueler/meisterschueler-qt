@@ -14,10 +14,11 @@ class FeedbackManager : public QObject
 public:
     explicit FeedbackManager(QObject *parent = 0);
 
-    enum State { OFF, ECHO, REPING, HURDLE };
+    enum State { OFF, ECHO, REPING, TUNNEL };
     State getState() const;
     int getEchoDelay() const;
-    int getHurdleVelocity() const;
+    int getTunnelMin() const;
+    int getTunnelMax() const;
     
 signals:
     void gotNoteOnEvent(NoteOnEvent event);
@@ -27,10 +28,11 @@ public slots:
     void toggleOff(bool value);
     void toggleEcho(bool value);
     void toggleReping(bool value);
-    void toggleHurdle(bool value);
+    void toggleTunnel(bool value);
 
     void setEchoDelay(int value);
-    void setHurdleVelocity(int value);
+    void setTunnelMin(int value);
+    void setTunnelMax(int value);
 
     void playNoteOnEvent(NoteOnEvent event);
     void playNoteOffEvent(NoteOffEvent event);
@@ -39,7 +41,8 @@ private:
     QQueue<ChannelEvent> events;
     QTimer *timer;
     int echoDelay;
-    int hurdleVelocity;
+    int tunnelMin;
+    int tunnelMax;
 
     State state;
 

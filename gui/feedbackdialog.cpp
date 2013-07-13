@@ -23,38 +23,44 @@ void FeedbackDialog::init(FeedbackManager *echoManager) {
         ui->radioButtonOff->toggle();
         ui->horizontalSliderDelay->setEnabled(false);
         ui->horizontalSliderVelocity->setEnabled(false);
-        ui->horizontalSliderHurdle->setEnabled(false);
+        ui->horizontalSliderTunnelMin->setEnabled(false);
+        ui->horizontalSliderTunnelMax->setEnabled(false);
         break;
     case FeedbackManager::ECHO:
         ui->radioButtonEcho->toggle();
         ui->horizontalSliderDelay->setEnabled(true);
         ui->horizontalSliderVelocity->setEnabled(false);
-        ui->horizontalSliderHurdle->setEnabled(false);
+        ui->horizontalSliderTunnelMin->setEnabled(false);
+        ui->horizontalSliderTunnelMax->setEnabled(false);
         break;
     case FeedbackManager::REPING:
         ui->radioButtonReping->toggle();
         ui->horizontalSliderDelay->setEnabled(false);
         ui->horizontalSliderVelocity->setEnabled(true);
-        ui->horizontalSliderHurdle->setEnabled(false);
+        ui->horizontalSliderTunnelMin->setEnabled(false);
+        ui->horizontalSliderTunnelMax->setEnabled(false);
         break;
-    case FeedbackManager::HURDLE:
-        ui->radioButtonHurdle->toggle();
+    case FeedbackManager::TUNNEL:
+        ui->radioButtonTunnel->toggle();
         ui->horizontalSliderDelay->setEnabled(false);
         ui->horizontalSliderVelocity->setEnabled(false);
-        ui->horizontalSliderHurdle->setEnabled(true);
+        ui->horizontalSliderTunnelMin->setEnabled(true);
+        ui->horizontalSliderTunnelMax->setEnabled(true);
         break;
     }
 
     ui->horizontalSliderDelay->setValue(echoManager->getEchoDelay());
-    ui->horizontalSliderHurdle->setValue(echoManager->getHurdleVelocity());
+    ui->horizontalSliderTunnelMin->setValue(echoManager->getTunnelMin());
+    ui->horizontalSliderTunnelMax->setValue(echoManager->getTunnelMax());
 
     QObject::connect(ui->radioButtonOff, &QRadioButton::toggled, echoManager, &FeedbackManager::toggleOff);
     QObject::connect(ui->radioButtonEcho, &QRadioButton::toggled, echoManager, &FeedbackManager::toggleEcho);
     QObject::connect(ui->radioButtonReping, &QRadioButton::toggled, echoManager, &FeedbackManager::toggleReping);
-    QObject::connect(ui->radioButtonHurdle, &QRadioButton::toggled, echoManager, &FeedbackManager::toggleHurdle);
+    QObject::connect(ui->radioButtonTunnel, &QRadioButton::toggled, echoManager, &FeedbackManager::toggleTunnel);
 
     QObject::connect(ui->horizontalSliderDelay, &QSlider::valueChanged, echoManager, &FeedbackManager::setEchoDelay);
-    QObject::connect(ui->horizontalSliderHurdle, &QSlider::valueChanged, echoManager, &FeedbackManager::setHurdleVelocity);
+    QObject::connect(ui->horizontalSliderTunnelMin, &QSlider::valueChanged, echoManager, &FeedbackManager::setTunnelMin);
+    QObject::connect(ui->horizontalSliderTunnelMax, &QSlider::valueChanged, echoManager, &FeedbackManager::setTunnelMax);
 }
 
 void FeedbackDialog::changeEvent(QEvent *e)

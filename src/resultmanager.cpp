@@ -18,6 +18,6 @@ void ResultManager::analyseFinishedSong(MatchingItem item) {
         channelEvents.append(score.midiPair.noteOff);
     }
 
-    QString filename = item.song.name + "_" + QDate::currentDate().toString("yyMMdd") + QTime::currentTime().toString("HHmmss");
+    QString filename = item.song.name + "_" + QDate::currentDate().toString("yyMMdd") + QTime::currentTime().toString("HHmmss") + ".mid";
     MidiService::save(filename, channelEvents);
 }

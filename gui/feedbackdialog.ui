@@ -102,9 +102,9 @@
        </layout>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButtonHurdle">
+       <widget class="QRadioButton" name="radioButtonTunnel">
         <property name="text">
-         <string>Hurdle</string>
+         <string>Tunnel</string>
         </property>
        </widget>
       </item>
@@ -127,8 +127,41 @@
          </spacer>
         </item>
         <item>
-         <widget class="QSlider" name="horizontalSliderHurdle">
+         <widget class="QSlider" name="horizontalSliderTunnelMin">
           <property name="maximum">
+           <number>127</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QSlider" name="horizontalSliderTunnelMax">
+          <property name="maximum">
+           <number>127</number>
+          </property>
+          <property name="value">
            <number>127</number>
           </property>
           <property name="orientation">
@@ -233,9 +266,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>radioButtonHurdle</sender>
+   <sender>radioButtonTunnel</sender>
    <signal>toggled(bool)</signal>
-   <receiver>horizontalSliderHurdle</receiver>
+   <receiver>horizontalSliderTunnelMin</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

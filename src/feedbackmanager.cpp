@@ -11,7 +11,8 @@ FeedbackManager::FeedbackManager(QObject *parent) :
 
     state = OFF;
     echoDelay = 1000;
-    hurdleVelocity = 30;
+    tunnelMin = 0;
+    tunnelMax = 127;
 }
 
 FeedbackManager::State FeedbackManager::getState() const {
@@ -22,8 +23,12 @@ int FeedbackManager::getEchoDelay() const {
     return echoDelay;
 }
 
-int FeedbackManager::getHurdleVelocity() const {
-    return hurdleVelocity;
+int FeedbackManager::getTunnelMin() const {
+    return tunnelMin;
+}
+
+int FeedbackManager::getTunnelMax() const {
+    return tunnelMax;
 }
 
 void FeedbackManager::toggleOff(bool value) {
@@ -41,17 +46,21 @@ void FeedbackManager::toggleReping(bool value) {
         state = REPING;
 }
 
-void FeedbackManager::toggleHurdle(bool value) {
+void FeedbackManager::toggleTunnel(bool value) {
     if (value)
-        state = HURDLE;
+        state = TUNNEL;
 }
 
 void FeedbackManager::setEchoDelay(int value) {
     echoDelay = value;
 }
 
-void FeedbackManager::setHurdleVelocity(int value) {
-    hurdleVelocity = value;
+void FeedbackManager::setTunnelMin(int value) {
+    tunnelMin = value;
+}
+
+void FeedbackManager::setTunnelMax(int value) {
+    tunnelMax = value;
 }
 
 void FeedbackManager::playNoteOnEvent(NoteOnEvent event) {
@@ -63,10 +72,10 @@ void FeedbackManager::playNoteOnEvent(NoteOnEvent event) {
         break;
     case REPING:
         break;
-    case HURDLE:
-        if (event.getVelocity() > hurdleVelocity) {
-            unsigned char note = qMin(127, event.getNote()+12);
-            unsigned char velocity = qMin(127, event.getVelocity()+10);
+    case TUNNEL:
+        if (event.getVelocity() > tunnelMin && event.getVelocity() < tunnelMax) {
+            unsigned char note = 127;
+            unsigned char velocity = 127;
             NoteOnEvent loudOnEvent(0, 0, note, velocity);
             NoteOffEvent loudOffEvent(0, 0, note, 0);
 
@@ -88,7 +97,7 @@ void FeedbackManager::playNoteOffEvent(NoteOffEvent event) {
         events.enqueue(event);
         timer->start(PINGDELAY);
         break;
-    case HURDLE:
+    case TUNNEL:
         break;
     }
 }
