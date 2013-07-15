@@ -51,6 +51,11 @@ void FeedbackManager::toggleTunnel(bool value) {
         state = TUNNEL;
 }
 
+void FeedbackManager::togglePingPong(bool value) {
+    if (value)
+        state = PINGPONG;
+}
+
 void FeedbackManager::setEchoDelay(int value) {
     echoDelay = value;
 }
@@ -82,6 +87,11 @@ void FeedbackManager::playNoteOnEvent(NoteOnEvent event) {
             emit gotNoteOnEvent(loudOnEvent);
             emit gotNoteOffEvent(loudOffEvent);
         }
+        break;
+    case PINGPONG:
+        emit gotNoteOnEvent(NoteOnEvent(0, 0, 127, 127));
+        emit gotNoteOffEvent(NoteOffEvent(0, 0, 127, 0));
+        break;
     }
 }
 
@@ -98,6 +108,10 @@ void FeedbackManager::playNoteOffEvent(NoteOffEvent event) {
         timer->start(PINGDELAY);
         break;
     case TUNNEL:
+        break;
+    case PINGPONG:
+        emit gotNoteOnEvent(NoteOnEvent(0, 0, 127, 127));
+        emit gotNoteOffEvent(NoteOffEvent(0, 0, 127, 0));
         break;
     }
 }

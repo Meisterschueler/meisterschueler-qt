@@ -172,6 +172,13 @@
        </layout>
       </item>
       <item>
+       <widget class="QRadioButton" name="radioButtonPingPong">
+        <property name="text">
+         <string>Ping Pong</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -278,6 +285,22 @@
     <hint type="destinationlabel">
      <x>226</x>
      <y>235</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonTunnel</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>horizontalSliderTunnelMax</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>203</x>
+     <y>202</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>226</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>

@@ -47,6 +47,13 @@ void FeedbackDialog::init(FeedbackManager *echoManager) {
         ui->horizontalSliderTunnelMin->setEnabled(true);
         ui->horizontalSliderTunnelMax->setEnabled(true);
         break;
+    case FeedbackManager::PINGPONG:
+        ui->radioButtonPingPong->toggle();
+        ui->horizontalSliderDelay->setEnabled(false);
+        ui->horizontalSliderVelocity->setEnabled(false);
+        ui->horizontalSliderTunnelMin->setEnabled(false);
+        ui->horizontalSliderTunnelMax->setEnabled(false);
+        break;
     }
 
     ui->horizontalSliderDelay->setValue(echoManager->getEchoDelay());
@@ -57,6 +64,7 @@ void FeedbackDialog::init(FeedbackManager *echoManager) {
     QObject::connect(ui->radioButtonEcho, &QRadioButton::toggled, echoManager, &FeedbackManager::toggleEcho);
     QObject::connect(ui->radioButtonReping, &QRadioButton::toggled, echoManager, &FeedbackManager::toggleReping);
     QObject::connect(ui->radioButtonTunnel, &QRadioButton::toggled, echoManager, &FeedbackManager::toggleTunnel);
+    QObject::connect(ui->radioButtonPingPong, &QRadioButton::toggled, echoManager, &FeedbackManager::togglePingPong);
 
     QObject::connect(ui->horizontalSliderDelay, &QSlider::valueChanged, echoManager, &FeedbackManager::setEchoDelay);
     QObject::connect(ui->horizontalSliderTunnelMin, &QSlider::valueChanged, echoManager, &FeedbackManager::setTunnelMin);

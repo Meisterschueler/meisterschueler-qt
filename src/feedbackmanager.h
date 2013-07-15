@@ -14,7 +14,7 @@ class FeedbackManager : public QObject
 public:
     explicit FeedbackManager(QObject *parent = 0);
 
-    enum State { OFF, ECHO, REPING, TUNNEL };
+    enum State { OFF, ECHO, REPING, TUNNEL, PINGPONG };
     State getState() const;
     int getEchoDelay() const;
     int getTunnelMin() const;
@@ -29,6 +29,7 @@ public slots:
     void toggleEcho(bool value);
     void toggleReping(bool value);
     void toggleTunnel(bool value);
+    void togglePingPong(bool value);
 
     void setEchoDelay(int value);
     void setTunnelMin(int value);
