@@ -22,7 +22,7 @@ INCLUDEPATH += $$GUIDOLIB/Qt/GuidoQt/include \
                $$GUIDOLIB/src/parser \
                $$GUIDOLIB/src/midisharelight
 
-LIBS += -L$$GUIDOLIB/Qt/GuidoQt \
+LIBS += -L$$GUIDOLIB/Qt \
         -L$$GUIDOLIB/cmake \
         -lGuidoQt \
         -lGUIDOEngine

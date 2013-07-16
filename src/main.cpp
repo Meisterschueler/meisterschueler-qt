@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     QGuidoWidget w;
-    w.setGMNCode("[c d e f g]");
+    w.setGMNCode("[c d e f g]", "");
     w.show();
 
     int result = a.exec();
