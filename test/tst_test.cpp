@@ -1086,22 +1086,37 @@ void Test::mergingHandler_simple() {
     QSignalSpy positionChangedSpy(&mergingHandler, SIGNAL(positionChanged(Fraction)));
 
     Score A(48, PLAYED);
+    A.position = Fraction(1, 4);
     Score B(50, PLAYED);
+    B.position = Fraction(2, 4);
     Score C(52, PLAYED);
+    C.position = Fraction(3, 4);
     Score c(52, OPEN);
+    c.position = Fraction(3, 4);
     Score d(53, OPEN);
+    d.position = Fraction(4, 4);
     Score dx(53, MISSED);
+    dx.position = Fraction(0, 4);
     Score E(55, PLAYED);
+    E.position = Fraction(5, 4);
     Score e(55, OPEN);
+    e.position = Fraction(5, 4);
 
     MatchingItem itemBefore;
     itemBefore.mergedScores = QList<Score>() << A << B << c << d << e;
+    itemBefore.pitchAlignment = "mmooo";
 
     MatchingItem itemMiddle;
     itemMiddle.mergedScores = QList<Score>() << A << B << C << d << e;
+    itemMiddle.pitchAlignment = "mmmoo";
 
     MatchingItem itemLast;
     itemLast.mergedScores = QList<Score>() << A << B << C << dx << E;
+    itemLast.pitchAlignment = "mmmdm";
+
+    MatchingItem itemVeryLast;
+    itemVeryLast.mergedScores = QList<Score>() << A << B << C << dx << e;
+    itemVeryLast.pitchAlignment = "mmmdd";
 
     // itemBefore
     mergingHandler.eatMatchingItem(itemBefore);
@@ -1135,20 +1150,31 @@ void Test::mergingHandler_simple() {
     // itemLast
     mergingHandler.eatMatchingItem(itemLast);
 
-    QCOMPARE( scoreDeletedSpy.count(), 1 );
-    arguments = scoreDeletedSpy.takeFirst();
-    Score deletedScore1 = qvariant_cast<Score>(arguments.at(0));
-    QCOMPARE( deletedScore1, dx );
-
-    QCOMPARE( scoreInsertedSpy.count(), 1 );
+    QCOMPARE( scoreInsertedSpy.count(), 2 );
     arguments = scoreInsertedSpy.takeFirst();
     Score insertedScore4 = qvariant_cast<Score>(arguments.at(0));
-    QCOMPARE( insertedScore4, E );
+    QCOMPARE( insertedScore4, dx );
+    arguments = scoreInsertedSpy.takeFirst();
+    Score insertedScore5 = qvariant_cast<Score>(arguments.at(0));
+    QCOMPARE( insertedScore5, E );
 
     QCOMPARE( positionChangedSpy.count(), 1 );
     arguments = positionChangedSpy.takeFirst();
     Fraction positionLast = qvariant_cast<Fraction>(arguments.at(0));
     QVERIFY( positionLast == Fraction(5,4) );
+
+    // itemVeryLast
+    mergingHandler.eatMatchingItem(itemVeryLast);
+
+    QCOMPARE( scoreDeletedSpy.count(), 1 );
+    arguments = scoreDeletedSpy.takeFirst();
+    Score deletedScore = qvariant_cast<Score>(arguments.at(0));
+    QCOMPARE( deletedScore, E );
+
+    QCOMPARE( positionChangedSpy.count(), 1 );
+    arguments = positionChangedSpy.takeFirst();
+    Fraction positionVeryLast = qvariant_cast<Fraction>(arguments.at(0));
+    QVERIFY( positionVeryLast == Fraction(3,4) );
 }
 
 // CLUSTERHANDLER

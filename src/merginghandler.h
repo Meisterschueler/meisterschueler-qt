@@ -26,6 +26,10 @@ signals:
 
 public slots:
     void eatMatchingItem(MatchingItem matchingItem);
+
+private:
+    void manageCID(MatchingItem matchingItem);
+    void managePositionChanged(MatchingItem matchingItem);
 };
 
 #endif // MERGINGHANDLER_H

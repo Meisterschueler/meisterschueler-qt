@@ -49,6 +49,10 @@ public:
                 && this->hand==rhs.hand
                 && this->voice==rhs.voice);
     }
+
+    bool operator!=(const Score& rhs) const {
+        return (*this == rhs) == false;
+    }
 };
 Q_DECLARE_METATYPE(Score)
 
