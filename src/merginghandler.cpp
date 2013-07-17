@@ -51,12 +51,12 @@ void MergingHandler::manageCID(MatchingItem matchingItem) {
     int idxAfter = 0;
     for (int i = 0; i < alignment.size(); ++i) {
         if (alignment.at(i) == NeedlemanWunsch::DELETED) {
-            emit scoreDeleted(scores.at(i));
+            emit scoreDeleted(scoresBefore.at(idxBefore));
             idxBefore++;
         } else if (alignment.at(i) == NeedlemanWunsch::INSERT) {
-            emit scoreInserted(scores.at(i));
+            emit scoreInserted(scoresAfter.at(idxAfter));
             idxAfter++;
-        } else if (alignment.at(i) == NeedlemanWunsch::MATCH) {
+        } else if (alignment.at(i) == NeedlemanWunsch::MATCH || alignment.at(i) == NeedlemanWunsch::WRONG) {
             if (scoresBefore.at(idxBefore) != scoresAfter.at(idxAfter)) {
                 emit scoreChanged(scoresBefore.at(idxBefore), scoresAfter.at(idxAfter));
             }

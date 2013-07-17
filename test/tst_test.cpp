@@ -1081,24 +1081,38 @@ void Test::statisticsService_statisticCluster() {
 
 void Test::mergingHandler_simple() {
     MergingHandler mergingHandler;
+    QSignalSpy scoreChangedSpy(&mergingHandler, SIGNAL(scoreChanged(Score, Score)));
     QSignalSpy scoreInsertedSpy(&mergingHandler, SIGNAL(scoreInserted(Score)));
     QSignalSpy scoreDeletedSpy(&mergingHandler, SIGNAL(scoreDeleted(Score)));
     QSignalSpy positionChangedSpy(&mergingHandler, SIGNAL(positionChanged(Fraction)));
 
     Score A(48, PLAYED);
     A.position = Fraction(1, 4);
+
     Score B(50, PLAYED);
     B.position = Fraction(2, 4);
+
     Score C(52, PLAYED);
     C.position = Fraction(3, 4);
+
     Score c(52, OPEN);
     c.position = Fraction(3, 4);
+
     Score d(53, OPEN);
     d.position = Fraction(4, 4);
+
     Score dx(53, MISSED);
     dx.position = Fraction(0, 4);
-    Score E(55, PLAYED);
-    E.position = Fraction(5, 4);
+
+    Score E_pressed(55, PLAYED);
+    E_pressed.position = Fraction(5, 4);
+    E_pressed.midiPair.noteOn = NoteOnEvent(0, 0, 55, 20);
+
+    Score E_released(55, PLAYED);
+    E_released.position = Fraction(5, 4);
+    E_released.midiPair.noteOn = NoteOnEvent(0, 0, 55, 20);
+    E_released.midiPair.noteOff = NoteOffEvent(0, 0, 55, 0);
+
     Score e(55, OPEN);
     e.position = Fraction(5, 4);
 
@@ -1111,12 +1125,16 @@ void Test::mergingHandler_simple() {
     itemMiddle.pitchAlignment = "mmmoo";
 
     MatchingItem itemLast;
-    itemLast.mergedScores = QList<Score>() << A << B << C << dx << E;
+    itemLast.mergedScores = QList<Score>() << A << B << C << dx << E_pressed;
     itemLast.pitchAlignment = "mmmdm";
 
     MatchingItem itemVeryLast;
-    itemVeryLast.mergedScores = QList<Score>() << A << B << C << dx << e;
-    itemVeryLast.pitchAlignment = "mmmdd";
+    itemVeryLast.mergedScores = QList<Score>() << A << B << C << dx << E_released;
+    itemVeryLast.pitchAlignment = "mmmdm";
+
+    MatchingItem itemVeryVeryLast;
+    itemVeryVeryLast.mergedScores = QList<Score>() << A << B << C << dx << e;
+    itemVeryVeryLast.pitchAlignment = "mmmdd";
 
     // itemBefore
     mergingHandler.eatMatchingItem(itemBefore);
@@ -1156,7 +1174,7 @@ void Test::mergingHandler_simple() {
     QCOMPARE( insertedScore4, dx );
     arguments = scoreInsertedSpy.takeFirst();
     Score insertedScore5 = qvariant_cast<Score>(arguments.at(0));
-    QCOMPARE( insertedScore5, E );
+    QCOMPARE( insertedScore5, E_pressed );
 
     QCOMPARE( positionChangedSpy.count(), 1 );
     arguments = positionChangedSpy.takeFirst();
@@ -1166,10 +1184,20 @@ void Test::mergingHandler_simple() {
     // itemVeryLast
     mergingHandler.eatMatchingItem(itemVeryLast);
 
+    QCOMPARE( scoreChangedSpy.count(), 1 );
+    arguments = scoreChangedSpy.takeFirst();
+    Score changedScoreBefore = qvariant_cast<Score>(arguments.at(0));
+    Score changedScoreAfter = qvariant_cast<Score>(arguments.at(1));
+    QCOMPARE( changedScoreBefore, E_pressed );
+    QCOMPARE( changedScoreAfter, E_released );
+
+    // itemVeryVeryLast
+    mergingHandler.eatMatchingItem(itemVeryVeryLast);
+
     QCOMPARE( scoreDeletedSpy.count(), 1 );
     arguments = scoreDeletedSpy.takeFirst();
     Score deletedScore = qvariant_cast<Score>(arguments.at(0));
-    QCOMPARE( deletedScore, E );
+    QCOMPARE( deletedScore, E_released );
 
     QCOMPARE( positionChangedSpy.count(), 1 );
     arguments = positionChangedSpy.takeFirst();
