@@ -72,12 +72,12 @@ QStringList SongService::getGmnFileNames(const QString& directory) {
     dir.setNameFilters(QStringList("*.gmn"));
     dir.setFilter(QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks);
 
-    qDebug() << "Scanning: " << dir.path();
+    //qDebug() << "Scanning: " << dir.path();
 
     QStringList fileList = dir.entryList();
     for (int i=0; i<fileList.count(); i++) {
         QString fileName = QString("%1/%2").arg(dir.absolutePath()).arg(fileList.at(i));
-        qDebug() << "Found file: " << fileName;
+        //qDebug() << "Found file: " << fileName;
         result.append(fileName);
     }
 

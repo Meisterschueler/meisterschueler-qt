@@ -36,7 +36,7 @@ void MidiService::addNoteOff(QList<MidiPair>& pairs, const NoteOffEvent &noteOff
 using namespace jdksmidi;
 using namespace std;
 
-void MidiService::save(const QString& fileName, const QList<ChannelEvent>& events) {
+bool MidiService::save(const QString& fileName, const QList<ChannelEvent>& events) {
 
     MIDITimedBigMessage m; // the object for individual midi events
     unsigned char chan, note, velocity;
@@ -115,19 +115,21 @@ void MidiService::save(const QString& fileName, const QList<ChannelEvent>& event
     const char *outfile_name = fileName.toLatin1();
     MIDIFileWriteStreamFileName out_stream( outfile_name );
 
+    bool success = false;
     if( out_stream.IsValid() ) {
         // the object which takes the midi tracks and writes the midifile to the output stream
         MIDIFileWriteMultiTrack writer( &tracks, &out_stream );
 
         // write the output file
         if ( writer.Write( num_tracks ) ) {
-            cout << "\nOK writing file " << outfile_name << endl;
+            success = true;
         } else {
             cerr << "\nError writing file " << outfile_name << endl;
         }
     } else {
         cerr << "\nError opening file " << outfile_name << endl;
     }
+    return success;
 }
 
 QList<ChannelEvent> parseMIDIMultiTrack ( MIDIMultiTrack *mlt ) {

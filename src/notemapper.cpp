@@ -50,7 +50,7 @@ void NoteMapper::Note(const ARMusicalObject *ev) {
     position += arn->getDuration();
 
     if (score.pitch == 255) {
-        qDebug("Invalid pitch");
+        //qDebug("Invalid pitch");
     } else {
         notes.append(score);
     }
