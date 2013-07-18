@@ -1,5 +1,7 @@
 #include "matchinghandler.h"
 
+#include <QDebug>
+
 #include "matchingservice.h"
 #include "midiservice.h"
 #include "needlemanwunsch.h"
@@ -9,10 +11,14 @@ MatchingHandler::MatchingHandler(const QList<MatchingItem> &matchingItems) : mat
     midiPairs = QSharedPointer<QList<MidiPair>>(new QList<MidiPair>());
 }
 
-void MatchingHandler::reset() {
+void MatchingHandler::init() {
     for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
         (*i).enabled = true;
     }
+}
+
+void MatchingHandler::reset() {
+    init();
     (*midiPairs).clear();
 }
 
@@ -86,7 +92,7 @@ void MatchingHandler::match() {
         midiPairs = QSharedPointer<QList<MidiPair>>(new QList<MidiPair>());
         (*midiPairs).append(MatchingService::cutMatchingMidiPairs(*bestMatchingItem.midiPairs, bestMatchingItem.pitchAlignment));
         prepareAndEmitFinishedItem(bestMatchingItem);
-        reset();
+        init();
     }
 }
 
@@ -105,6 +111,8 @@ void MatchingHandler::prepareAndEmitFinishedItem(const MatchingItem& item) {
     *finishedItem.pressedSequence = MatchingService::midiPairs2pressedSequence(*item.midiPairs);
     finishedItem.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, finishedItem.transposition);
     finishedItem.intervalAlignment = MatchingService::getAlingment(item.scoreIntervalSequence, *item.midiIntervalSequence);
+
+    qDebug() << finishedItem.pitchAlignment;
 
     emit songFinished(finishedItem);
 }

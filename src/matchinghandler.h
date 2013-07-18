@@ -19,6 +19,7 @@ signals:
     void songFinished(MatchingItem item);
 
 public slots:
+    void init();
     void reset();
     void matchNoteOnEvent(NoteOnEvent noteOn);
     void matchNoteOffEvent(NoteOffEvent noteOff);
