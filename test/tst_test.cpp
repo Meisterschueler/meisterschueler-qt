@@ -431,6 +431,7 @@ void Test::guidoService_getScore() {
     TimeSegment dates(a, a);
 
     GuidoElementInfos infos;
+    infos.voiceNum = 1;
 
     RectInfos rectInfos(dates, infos);
     MapElement mapElement = std::pair<FloatRect, RectInfos>(box, rectInfos);
