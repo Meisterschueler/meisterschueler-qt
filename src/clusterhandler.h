@@ -29,6 +29,9 @@ private:
     QList<ChannelEvent> channelEvents;
     bool pressedKeys[128];
 
+    static constexpr int CHORD_DELAY = 50;
+    static constexpr int RESET_DELAY = 2000;
+
 private slots:
     void timeOutDelay();
     void timeOutReset();

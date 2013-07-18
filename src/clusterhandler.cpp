@@ -22,7 +22,7 @@ void ClusterHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
 
     channelEvents.append(noteOn);
     if (!delayTimer->isActive()) {
-        delayTimer->start(50);
+        delayTimer->start(CHORD_DELAY);
     }
     pressedKeys[noteOn.getNote()] = true;
 }
@@ -30,7 +30,7 @@ void ClusterHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
 void ClusterHandler::matchNoteOffEvent(NoteOffEvent noteOff) {    
     channelEvents.append(noteOff);
     if (!delayTimer->isActive()) {
-        delayTimer->start(50);
+        delayTimer->start(CHORD_DELAY);
     }
     pressedKeys[noteOff.getNote()] = false;
 
@@ -43,7 +43,7 @@ void ClusterHandler::matchNoteOffEvent(NoteOffEvent noteOff) {
     }
 
     if (!anyKeyPressed) {
-        resetTimer->start(2000);
+        resetTimer->start(RESET_DELAY);
     }
 }
 
