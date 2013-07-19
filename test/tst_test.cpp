@@ -917,6 +917,7 @@ void Test::matchingHandler_simple() {
     QVERIFY( finishedItem1.song == upItem.song );
     QVERIFY( finishedItem1.pitchAlignment == "mmmm" );
     QVERIFY( finishedItem1.intervalAlignment == "mmm" );
+    QCOMPARE( finishedItem1.mergedScores.count(), 4 );
 
     // Play accurate scores down
     matchingHandler.matchNoteOnEvent(E); matchingHandler.matchNoteOffEvent(e);
@@ -931,6 +932,7 @@ void Test::matchingHandler_simple() {
     QVERIFY( finishedItem2.song == downItem.song );
     QVERIFY( finishedItem2.pitchAlignment == "mmmm" );
     QVERIFY( finishedItem2.intervalAlignment == "mmm" );
+    QCOMPARE( finishedItem2.mergedScores.count(), 4 );
 
     // And now we play not so accurate:
     // Play scores up, but lets start with the second song before we really finished the first one
@@ -1294,12 +1296,19 @@ void Test::performance_simple() {
     QList<MatchingItem> matchingItems = SongService::createMatchingItems(songs);
     MatchingHandler matchingHandler(matchingItems);
 
+    QSignalSpy spy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
+
+    QString dirName = "/home/fritz/build-meisterschueler-Desktop-Debug/gui";
     QStringList nameFilter("*.mid");
-    QDir directory("/home/fritz/build-meisterschueler-Desktop-Debug");
+    QDir directory(dirName);
     QStringList midiFilesAndDirectories = directory.entryList(nameFilter);
     for (QString midiFileName : midiFilesAndDirectories) {
-        QList<ChannelEvent> channelEvents = MidiService::load(midiFileName);
+        QList<ChannelEvent> channelEvents = MidiService::load(dirName + "/" + midiFileName);
         matchingHandler.matchChannelEvents(channelEvents);
+        QCOMPARE( spy.count(), 1 );
+        QList<QVariant> arguments = spy.takeFirst();
+        MatchingItem matchingItem = qvariant_cast<MatchingItem>(arguments.at(0));
+        qDebug() << matchingItem.song.name;
     }
 }
 
@@ -1310,6 +1319,8 @@ MatchingItem Test::gmnToMatchingItem(const QString& gmn) {
     QByteArray pitchSequence = ScoreService::scoresToPitchSequence(scores);
     QByteArray intervalSequence = ScoreService::scoresToIntervalSequence(scores);
     Song song;
+    song.name = gmn;
+    song.voices.insert(Hand::LEFT, scores);
 
     return MatchingItem(song, pitchSequence, intervalSequence);
 }

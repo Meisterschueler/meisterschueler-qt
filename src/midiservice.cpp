@@ -38,6 +38,8 @@ using namespace std;
 
 bool MidiService::save(const QString& fileName, const QList<ChannelEvent>& events) {
 
+    Q_ASSERT( events.count() > 0 );
+
     MIDITimedBigMessage m; // the object for individual midi events
     unsigned char chan, note, velocity;
 

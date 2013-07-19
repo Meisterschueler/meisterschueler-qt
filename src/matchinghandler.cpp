@@ -112,6 +112,8 @@ void MatchingHandler::prepareAndEmitFinishedItem(const MatchingItem& item) {
     finishedItem.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, finishedItem.transposition);
     finishedItem.intervalAlignment = MatchingService::getAlingment(item.scoreIntervalSequence, *item.midiIntervalSequence);
 
+    finishedItem.mergedScores = MatchingService::merge(finishedItem.song.voices.value(Hand::LEFT), *finishedItem.midiPairs, finishedItem.pitchAlignment);
+
     qDebug() << finishedItem.pitchAlignment;
 
     emit songFinished(finishedItem);
