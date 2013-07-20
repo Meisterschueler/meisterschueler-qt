@@ -31,12 +31,13 @@ StatisticItem StatisticsService::getStatisticItem(const QVector<double>& values)
     double mean = sum/N;
     double variance = squaresum/N - mean*mean;
 
-    int nfft=N;
+    int nfft = pow(2, ceil(log(N)/log(2)));
+
     kiss_fftr_cfg  kiss_fftr_state;
     kiss_fft_scalar rin[nfft+2];
     kiss_fft_cpx sout[nfft];
 
-    for (int i = 0; i < nfft; ++i) {
+    for (int i = 0; i < N; ++i) {
         rin[i] = values.at(i);
     }
 
@@ -67,21 +68,31 @@ StatisticCluster StatisticsService::getStatisticCluster(const QList<Score>& scor
     }
     result.velocity = getStatisticItem(velocities);
 
-    QVector<double> speeds;
     if (scores.size() >= 2) {
-        double delta_t = scores.at(1).midiPair.noteOn.getTime()-scores.at(0).midiPair.noteOn.getTime();
-        double speed_bpm = (double)scores.at(0).duration/delta_t * 4 * 1000 * 60;
-        speeds.append(speed_bpm);
+        QVector<double> speeds;
 
-        for (int i = 1; i < scores.size()-1; ++i) {
-            delta_t = scores.at(i+1).midiPair.noteOn.getTime()-scores.at(i).midiPair.noteOn.getTime();
-            speed_bpm = (double)scores.at(i).duration/delta_t * 4 * 1000 * 60;
-            speeds.append(speed_bpm);
+        for (int i = 0; i < scores.count()-1; ++i) {
+            if (scores.at(i).status == Status::PLAYED || scores.at(i).status == Status::FAILED) {
+                // find next played or wrong note
+                Fraction duration = scores.at(i).duration;
+                for (int j = i+1; j < scores.count(); ++j) {
+                    if (scores.at(j).status == Status::PLAYED || scores.at(j).status == Status::FAILED) {
+                        double delta_t = scores.at(j).midiPair.noteOn.getTime()-scores.at(i).midiPair.noteOn.getTime();
+                        double speed_bpm = (double)duration/delta_t * 4 * 1000 * 60;
+                        speeds.append(speed_bpm);
+                        break;
+                    } else if (scores.at(j).status == Status::MISSED) {
+                        duration += scores.at(j).duration;
+                    }
+                }
+            }
         }
 
-        delta_t = scores.last().midiPair.noteOff.getTime()-scores.last().midiPair.noteOn.getTime();
-        speed_bpm = (double)scores.last().duration/delta_t * 4 * 1000 * 60;
-        speeds.append(speed_bpm);
+        if ((scores.last().status == Status::PLAYED || scores.last().status == Status::FAILED) && (scores.last().midiPair.noteOn != emptyNoteOnEvent && scores.last().midiPair.noteOff != emptyNoteOffEvent)) {
+            double delta_t = scores.last().midiPair.noteOff.getTime()-scores.last().midiPair.noteOn.getTime();
+            double speed_bpm = (double)scores.last().duration/delta_t * 4 * 1000 * 60;
+            speeds.append(speed_bpm);
+        }
 
         result.speed = getStatisticItem(speeds);
     }

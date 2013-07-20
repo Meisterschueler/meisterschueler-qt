@@ -93,6 +93,7 @@ private Q_SLOTS:
 
     void statisticsService_statisticItem();
     void statisticsService_statisticCluster_constantSpeed();
+    void statisticsService_statisticCluster_variableSpeed();
 
     void mergingHandler_simple();
 
@@ -1063,17 +1064,17 @@ void Test::statisticsService_statisticCluster_constantSpeed() {
     QList<Score> scores;
     Score a(48, Status::PLAYED);
     a.duration = Fraction(1, 4);
-    a.midiPair = MidiPair(NoteOnEvent(  0, 0, 48, 0), NoteOffEvent(100, 0, 48, 0));
+    a.midiPair = MidiPair(NoteOnEvent(  0, 0, 48, 0), NoteOffEvent(200, 0, 48, 0));
     scores.append(a);
 
     Score b(48, Status::PLAYED);
     b.duration = Fraction(1, 4);
-    b.midiPair = MidiPair(NoteOnEvent(200, 0, 48, 0), NoteOffEvent(300, 0, 48, 0));
+    b.midiPair = MidiPair(NoteOnEvent(200, 0, 48, 0), NoteOffEvent(400, 0, 48, 0));
     scores.append(b);
 
     Score c(48, Status::PLAYED);
     c.duration = Fraction(1, 4);
-    c.midiPair = MidiPair(NoteOnEvent(400, 0, 48, 0), NoteOffEvent(500, 0, 48, 0));
+    c.midiPair = MidiPair(NoteOnEvent(400, 0, 48, 0), NoteOffEvent(600, 0, 48, 0));
     scores.append(c);
 
     Score d(48, Status::PLAYED);
@@ -1092,7 +1093,7 @@ void Test::statisticsService_statisticCluster_constantSpeed() {
 
     Score f(48, Status::PLAYED);
     f.duration = Fraction(1, 4);
-    f.midiPair = MidiPair(NoteOnEvent(1000, 0, 48, 0), NoteOffEvent(1100, 0, 48, 0));
+    f.midiPair = MidiPair(NoteOnEvent(1000, 0, 48, 0), NoteOffEvent(1200, 0, 48, 0));
     scores.append(f);
 
     statisticCluster = StatisticsService::getStatisticCluster(scores);
@@ -1106,7 +1107,7 @@ void Test::statisticsService_statisticCluster_constantSpeed() {
 
     Score h(48, Status::PLAYED);
     h.duration = Fraction(1, 4);
-    h.midiPair = MidiPair(NoteOnEvent(1200, 0, 48, 0), NoteOffEvent(1300, 0, 48, 0));
+    h.midiPair = MidiPair(NoteOnEvent(1200, 0, 48, 0), NoteOffEvent(1400, 0, 48, 0));
     scores.append(h);
 
     statisticCluster = StatisticsService::getStatisticCluster(scores);
@@ -1122,6 +1123,10 @@ void Test::statisticsService_statisticCluster_constantSpeed() {
     QCOMPARE( statisticCluster.speed.min, 300.0 );
     QCOMPARE( statisticCluster.speed.mean, 300.0 );
     QCOMPARE( statisticCluster.speed.max, 300.0 );
+}
+
+void Test::statisticsService_statisticCluster_variableSpeed() {
+
 }
 
 // MERGINGHANDLER
