@@ -181,6 +181,16 @@ QList<Score> MatchingService::merge(const QList<Score>& scores, const QList<Midi
             idx_alignment++;
             break;
         }
+        case 'w': {
+            Score s = scores.at(idx_scores);
+            s.midiPair = midiPairs.at(idx_midiPairs);
+            s.status = FAILED;
+            result.append(s);
+            idx_scores++;
+            idx_midiPairs++;
+            idx_alignment++;
+            break;
+        }
         case 'i': {
             Score s(midiPairs.at(idx_midiPairs).noteOn.getNote());
             s.midiPair = midiPairs.at(idx_midiPairs);

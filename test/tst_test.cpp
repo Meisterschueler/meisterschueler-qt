@@ -850,23 +850,29 @@ void Test::matchingService_merge() {
     scores.append(Score(51));
     scores.append(Score(54));
     scores.append(Score(57));
+    scores.append(Score(63));
+    scores.append(Score(66));
 
     MidiPair A(NoteOnEvent(  0, 0, 48, 0));
     MidiPair Bb(NoteOnEvent(100, 0, 51, 0), NoteOffEvent(110, 0, 51, 0));
     MidiPair Cc(NoteOnEvent(100, 0, 57, 0), NoteOffEvent(110, 0, 57, 0));
     MidiPair Dd(NoteOnEvent(100, 0, 60, 0), NoteOffEvent(110, 0, 60, 0));
+    MidiPair Ee(NoteOnEvent(100, 0, 63, 0), NoteOffEvent(110, 0, 63, 0));
+    MidiPair Ff(NoteOnEvent(100, 0, 65, 0), NoteOffEvent(110, 0, 65, 0));
 
     QList<MidiPair> midiPairs;
     midiPairs.append(A);
     midiPairs.append(Bb);
     midiPairs.append(Cc);
     midiPairs.append(Dd);
+    midiPairs.append(Ee);
+    midiPairs.append(Ff);
 
-    QByteArray pitchAlignment = "mmdmi";
+    QByteArray pitchAlignment = "mmdmimw";
 
     QList<Score> mergedScores = MatchingService::merge(scores, midiPairs, pitchAlignment);
 
-    QCOMPARE( mergedScores.size(), 5 );
+    QCOMPARE( mergedScores.size(), 7 );
     QVERIFY( mergedScores.at(0).status == PLAYED );
     QVERIFY( mergedScores.at(0).midiPair == A );
     QVERIFY( mergedScores.at(1).status == PLAYED );
@@ -876,6 +882,10 @@ void Test::matchingService_merge() {
     QVERIFY( mergedScores.at(3).midiPair == Cc );
     QVERIFY( mergedScores.at(4).status == EXTRA );
     QVERIFY( mergedScores.at(4).midiPair == Dd );
+    QVERIFY( mergedScores.at(5).status == PLAYED );
+    QVERIFY( mergedScores.at(5).midiPair == Ee );
+    QVERIFY( mergedScores.at(6).status == FAILED );
+    QVERIFY( mergedScores.at(6).midiPair == Ff );
 }
 
 // MATCHINGHANDLER
