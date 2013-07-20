@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(matchingHandler, &MatchingHandler::songRecognized, mergingHandler, &MergingHandler::eatMatchingItem);
     QObject::connect(matchingHandler, &MatchingHandler::songFinished, signalManager, &SignalManager::playFinishedSound);
-    QObject::connect(matchingHandler, &MatchingHandler::songFinished, resultManager, &ResultManager::analyseFinishedSong);
+    QObject::connect(matchingHandler, &MatchingHandler::songFinished, resultManager, &ResultManager::saveFinishedSong);
 
     QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
     QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);

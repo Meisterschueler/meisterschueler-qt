@@ -15,6 +15,7 @@ signals:
     
 public slots:
     void analyseFinishedSong(MatchingItem item);
+    void saveFinishedSong(MatchingItem item);
 };
 
 #endif // RESULTHANDLER_H

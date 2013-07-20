@@ -114,7 +114,5 @@ void MatchingHandler::prepareAndEmitFinishedItem(const MatchingItem& item) {
 
     finishedItem.mergedScores = MatchingService::merge(finishedItem.song.voices.value(Hand::LEFT), *finishedItem.midiPairs, finishedItem.pitchAlignment);
 
-    qDebug() << finishedItem.pitchAlignment;
-
     emit songFinished(finishedItem);
 }

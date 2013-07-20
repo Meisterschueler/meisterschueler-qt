@@ -16,6 +16,7 @@
 #include "needlemanwunsch.h"
 #include "playbackhandler.h"
 #include "recordhandler.h"
+#include "resultmanager.h"
 #include "score.h"
 #include "songservice.h"
 #include "statisticsservice.h"
@@ -91,7 +92,7 @@ private Q_SLOTS:
     void chordHandler_cminor();
 
     void statisticsService_statisticItem();
-    void statisticsService_statisticCluster();
+    void statisticsService_statisticCluster_constantSpeed();
 
     void mergingHandler_simple();
 
@@ -1058,7 +1059,7 @@ void Test::statisticsService_statisticItem() {
     //QCOMPARE( item.spectrum.at(3), sqrt(8) );
 }
 
-void Test::statisticsService_statisticCluster() {
+void Test::statisticsService_statisticCluster_constantSpeed() {
     QList<Score> scores;
     Score a(48, Status::PLAYED);
     a.duration = Fraction(1, 4);
@@ -1081,7 +1082,46 @@ void Test::statisticsService_statisticCluster() {
     scores.append(d);
 
     StatisticCluster statisticCluster = StatisticsService::getStatisticCluster(scores);
+    QCOMPARE( statisticCluster.speed.min, 300.0 );
     QCOMPARE( statisticCluster.speed.mean, 300.0 );
+    QCOMPARE( statisticCluster.speed.max, 300.0 );
+
+    Score e(48, Status::MISSED);
+    e.duration = Fraction(1, 4);
+    scores.append(e);
+
+    Score f(48, Status::PLAYED);
+    f.duration = Fraction(1, 4);
+    f.midiPair = MidiPair(NoteOnEvent(1000, 0, 48, 0), NoteOffEvent(1100, 0, 48, 0));
+    scores.append(f);
+
+    statisticCluster = StatisticsService::getStatisticCluster(scores);
+    QCOMPARE( statisticCluster.speed.min, 300.0 );
+    QCOMPARE( statisticCluster.speed.mean, 300.0 );
+    QCOMPARE( statisticCluster.speed.max, 300.0 );
+
+    Score g(48, Status::EXTRA);
+    g.midiPair = MidiPair(NoteOnEvent(1150, 0, 48, 0), NoteOffEvent(1160, 0, 48, 0));
+    scores.append(g);
+
+    Score h(48, Status::PLAYED);
+    h.duration = Fraction(1, 4);
+    h.midiPair = MidiPair(NoteOnEvent(1200, 0, 48, 0), NoteOffEvent(1300, 0, 48, 0));
+    scores.append(h);
+
+    statisticCluster = StatisticsService::getStatisticCluster(scores);
+    QCOMPARE( statisticCluster.speed.min, 300.0 );
+    QCOMPARE( statisticCluster.speed.mean, 300.0 );
+    QCOMPARE( statisticCluster.speed.max, 300.0 );
+
+    Score i(48, Status::OPEN);
+    i.duration = Fraction(1, 4);
+    scores.append(i);
+
+    statisticCluster = StatisticsService::getStatisticCluster(scores);
+    QCOMPARE( statisticCluster.speed.min, 300.0 );
+    QCOMPARE( statisticCluster.speed.mean, 300.0 );
+    QCOMPARE( statisticCluster.speed.max, 300.0 );
 }
 
 // MERGINGHANDLER
@@ -1296,7 +1336,9 @@ void Test::performance_simple() {
     QList<MatchingItem> matchingItems = SongService::createMatchingItems(songs);
     MatchingHandler matchingHandler(matchingItems);
 
-    QSignalSpy spy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
+    ResultManager resultManager;
+
+    QObject::connect(&matchingHandler, &MatchingHandler::songFinished, &resultManager, &ResultManager::analyseFinishedSong);
 
     QString dirName = "/home/fritz/build-meisterschueler-Desktop-Debug/gui";
     QStringList nameFilter("*.mid");
@@ -1305,10 +1347,6 @@ void Test::performance_simple() {
     for (QString midiFileName : midiFilesAndDirectories) {
         QList<ChannelEvent> channelEvents = MidiService::load(dirName + "/" + midiFileName);
         matchingHandler.matchChannelEvents(channelEvents);
-        QCOMPARE( spy.count(), 1 );
-        QList<QVariant> arguments = spy.takeFirst();
-        MatchingItem matchingItem = qvariant_cast<MatchingItem>(arguments.at(0));
-        qDebug() << matchingItem.song.name;
     }
 }
 

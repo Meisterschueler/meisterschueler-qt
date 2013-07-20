@@ -56,6 +56,7 @@ SOURCES += clusterhandler.cpp \
            signalmanager.cpp \
            song.cpp \
            songservice.cpp \
+           statisticsservice.cpp \
            events.cpp
 
 HEADERS += clusterhandler.h \
@@ -80,6 +81,7 @@ HEADERS += clusterhandler.h \
            signalmanager.h \
            song.h \
            songservice.h \
+           statisticsservice.h \
            events.h
 
 FORMS    += mainwindow.ui \

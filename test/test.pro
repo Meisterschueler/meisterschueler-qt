@@ -37,6 +37,7 @@ SOURCES += chordhandler.cpp \
     midiwrapper.cpp \
     playbackhandler.cpp \
     recordhandler.cpp \
+    resultmanager.cpp \
     score.cpp \
     songservice.cpp \
     notemapper.cpp \
@@ -59,6 +60,7 @@ HEADERS  += chordhandler.h \
     mididefs.h \
     playbackhandler.h \
     recordhandler.h \
+    resultmanager.h \
     score.h \
     songservice.h \
     notemapper.h \
