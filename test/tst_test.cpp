@@ -1126,7 +1126,7 @@ void Test::statisticsService_statisticCluster_constantSpeed() {
 }
 
 void Test::statisticsService_statisticCluster_variableSpeed() {
-
+    QSKIP("Not yet implemented");
 }
 
 // MERGINGHANDLER
