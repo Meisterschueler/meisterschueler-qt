@@ -19,13 +19,18 @@ MidiService::MidiService()
 void MidiService::addNoteOn(QList<MidiPair>& pairs, const NoteOnEvent &noteOn) {
     MidiPair pair(noteOn);
     pairs.append(pair);
-    qSort(pairs);
+
+    // Just sort the last 10 elements
+    // TODO: just insert at the right place would be even faster
+    QList<MidiPair>::iterator it = pairs.end() - 10;
+    qSort(qMax(pairs.begin(), it), pairs.end());
 }
 
 void MidiService::addNoteOff(QList<MidiPair>& pairs, const NoteOffEvent &noteOff) {
     QMutableListIterator<MidiPair> it(pairs);
-    while (it.hasNext()) {
-        it.next();
+    it.toBack();
+    while (it.hasPrevious()) {
+        it.previous();
         if (it.value().noteOn.getNote() == noteOff.getNote() && it.value().noteOff == emptyNoteOffEvent) {
             it.value().noteOff = noteOff;
             break;
