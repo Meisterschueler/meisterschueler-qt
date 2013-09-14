@@ -1355,13 +1355,21 @@ void Test::performance_simple() {
 
     QObject::connect(&matchingHandler, &MatchingHandler::songFinished, &resultManager, &ResultManager::analyseFinishedSong);
 
+    QSignalSpy spy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
+
     QString dirName = "/home/fritz/build-meisterschueler-Desktop-Debug/gui";
     QStringList nameFilter("*.mid");
     QDir directory(dirName);
     QStringList midiFilesAndDirectories = directory.entryList(nameFilter);
     for (QString midiFileName : midiFilesAndDirectories) {
+        qDebug() << midiFileName;
         QList<ChannelEvent> channelEvents = MidiService::load(dirName + "/" + midiFileName);
         matchingHandler.matchChannelEvents(channelEvents);
+
+        QCOMPARE( spy.count(), 1 );
+        spy.takeFirst();
+
+        matchingHandler.reset();
     }
 }
 
