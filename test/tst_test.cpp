@@ -891,11 +891,11 @@ void Test::matchingService_merge() {
 // MATCHINGHANDLER
 
 void Test::matchingHandler_simple() {
-    QString gmn = "[c0/16 d e f]";
-    MatchingItem upItem = gmnToMatchingItem(gmn);
+    QString gmnUp = "[c0/16 d e f]";
+    MatchingItem upItem = gmnToMatchingItem(gmnUp);
 
-    gmn = "[g0/16 f e d]";
-    MatchingItem downItem = gmnToMatchingItem(gmn);
+    QString gmnDown = "[g0/16 f e d]";
+    MatchingItem downItem = gmnToMatchingItem(gmnDown);
 
     QList<MatchingItem> matchingItems;
     matchingItems.append(upItem);
@@ -917,12 +917,15 @@ void Test::matchingHandler_simple() {
 
     // Play accurate scores up
     matchingHandler.matchNoteOnEvent(A); matchingHandler.matchNoteOffEvent(a);
+    QCOMPARE( songRecognizedSpy.count(), 2 );
     matchingHandler.matchNoteOnEvent(B); matchingHandler.matchNoteOffEvent(b);
+    QCOMPARE( songRecognizedSpy.count(), 4 );
     matchingHandler.matchNoteOnEvent(C); matchingHandler.matchNoteOffEvent(c);
+    QCOMPARE( songRecognizedSpy.count(), 6 );
     matchingHandler.matchNoteOnEvent(D); matchingHandler.matchNoteOffEvent(d);
+    QCOMPARE( songRecognizedSpy.count(), 8 );
 
     QCOMPARE( songFinishedSpy.count(), 1 );
-
     QList<QVariant> arguments1 = songFinishedSpy.takeFirst();
     MatchingItem finishedItem1 = qvariant_cast<MatchingItem>(arguments1.at(0));
 
@@ -933,9 +936,13 @@ void Test::matchingHandler_simple() {
 
     // Play accurate scores down
     matchingHandler.matchNoteOnEvent(E); matchingHandler.matchNoteOffEvent(e);
+    QCOMPARE( songRecognizedSpy.count(), 10 );
     matchingHandler.matchNoteOnEvent(F); matchingHandler.matchNoteOffEvent(f);
+    QCOMPARE( songRecognizedSpy.count(), 12 );
     matchingHandler.matchNoteOnEvent(G); matchingHandler.matchNoteOffEvent(g);
+    QCOMPARE( songRecognizedSpy.count(), 14 );
     matchingHandler.matchNoteOnEvent(H); matchingHandler.matchNoteOffEvent(h);
+    QCOMPARE( songRecognizedSpy.count(), 16 );
 
     QCOMPARE( songFinishedSpy.count(), 1 );
     QList<QVariant> arguments2 = songFinishedSpy.takeFirst();
@@ -1355,7 +1362,8 @@ void Test::performance_simple() {
 
     QObject::connect(&matchingHandler, &MatchingHandler::songFinished, &resultManager, &ResultManager::analyseFinishedSong);
 
-    QSignalSpy spy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
+    QSignalSpy recognizedSpy(&matchingHandler, SIGNAL(songRecognized(MatchingItem)));
+    QSignalSpy finishSpy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
 
     QString dirName = "/home/fritz/build-meisterschueler-Desktop-Debug/gui";
     QStringList nameFilter("*.mid");
@@ -1366,8 +1374,17 @@ void Test::performance_simple() {
         QList<ChannelEvent> channelEvents = MidiService::load(dirName + "/" + midiFileName);
         matchingHandler.matchChannelEvents(channelEvents);
 
-        QCOMPARE( spy.count(), 1 );
-        spy.takeFirst();
+        if (finishSpy.count() != 1) {
+            qDebug() << "Not finished!";
+            QList<QVariant> arguments = recognizedSpy.takeFirst();
+            MatchingItem item = qvariant_cast<MatchingItem>(arguments.at(0));
+            qDebug() << item.song.name;
+        } else {
+            QList<QVariant> arguments = finishSpy.takeFirst();
+            MatchingItem item = qvariant_cast<MatchingItem>(arguments.at(0));
+            qDebug() << item.song.name;
+        }
+        qDebug();
 
         matchingHandler.reset();
     }

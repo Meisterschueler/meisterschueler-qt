@@ -82,6 +82,7 @@ void MatchingHandler::match() {
 
     qSort(matchingItems);
     MatchingItem bestMatchingItem = matchingItems[0];
+    emit songRecognized(bestMatchingItem);
 
     double bestQuality = bestMatchingItem.quality;
     double badQuality = bestQuality/5.0;
