@@ -28,6 +28,7 @@ public slots:
 private:
     QList<MatchingItem> matchingItems;
     QSharedPointer<QList<MidiPair>> midiPairs;
+    QSharedPointer<QByteArray> oldPitchSequence;
 
     void match();
     void disableBadItems(const double& lowerQualityLimit);

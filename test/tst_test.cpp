@@ -94,6 +94,7 @@ private Q_SLOTS:
     void statisticsService_statisticItem();
     void statisticsService_statisticCluster_constantSpeed();
     void statisticsService_statisticCluster_variableSpeed();
+    void statisticsService_statisticCluster_badValues();
 
     void mergingHandler_simple();
 
@@ -1146,6 +1147,18 @@ void Test::statisticsService_statisticCluster_variableSpeed() {
     QSKIP("Not yet implemented");
 }
 
+// TODO: standard values? 0.0? 60.0?
+void Test::statisticsService_statisticCluster_badValues() {
+    QList<Score> scores;
+    scores.append(Score(48, Status::MISSED));
+    scores.append(Score(50, Status::MISSED));
+    scores.append(Score(52, Status::MISSED));
+    StatisticCluster statisticCluster = StatisticsService::getStatisticCluster(scores);
+    //QCOMPARE( statisticCluster.speed.min, 0.0 );
+    //QCOMPARE( statisticCluster.speed.mean, 0.0 );
+    //QCOMPARE( statisticCluster.speed.max, 0.0 );
+}
+
 // MERGINGHANDLER
 
 void Test::mergingHandler_simple() {
@@ -1369,25 +1382,31 @@ void Test::performance_simple() {
     QStringList nameFilter("*.mid");
     QDir directory(dirName);
     QStringList midiFilesAndDirectories = directory.entryList(nameFilter);
+    int good = 0;
+    int bad = 0;
     for (QString midiFileName : midiFilesAndDirectories) {
         qDebug() << midiFileName;
         QList<ChannelEvent> channelEvents = MidiService::load(dirName + "/" + midiFileName);
         matchingHandler.matchChannelEvents(channelEvents);
 
         if (finishSpy.count() != 1) {
-            qDebug() << "Not finished!";
+            bad++;
+            //qDebug() << "Not finished!";
             QList<QVariant> arguments = recognizedSpy.takeFirst();
-            MatchingItem item = qvariant_cast<MatchingItem>(arguments.at(0));
-            qDebug() << item.song.name;
+            //MatchingItem item = qvariant_cast<MatchingItem>(arguments.at(0));
+            //qDebug() << item.song.name;
         } else {
+            good++;
             QList<QVariant> arguments = finishSpy.takeFirst();
-            MatchingItem item = qvariant_cast<MatchingItem>(arguments.at(0));
-            qDebug() << item.song.name;
+            //MatchingItem item = qvariant_cast<MatchingItem>(arguments.at(0));
+            //qDebug() << item.song.name;
         }
-        qDebug();
 
         matchingHandler.reset();
     }
+
+    qDebug()  << "Good:" << good;
+    qDebug()  << "Bad:" << bad;
 }
 
 // HELPER FUNCTIONS

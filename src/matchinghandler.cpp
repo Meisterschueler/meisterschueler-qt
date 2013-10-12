@@ -9,6 +9,7 @@
 MatchingHandler::MatchingHandler(const QList<MatchingItem> &matchingItems) : matchingItems(matchingItems)
 {
     midiPairs = QSharedPointer<QList<MidiPair>>(new QList<MidiPair>());
+    oldPitchSequence = QSharedPointer<QByteArray>(new QByteArray());
 }
 
 void MatchingHandler::init() {
@@ -20,6 +21,7 @@ void MatchingHandler::init() {
 void MatchingHandler::reset() {
     init();
     (*midiPairs).clear();
+    (*oldPitchSequence).clear();
 }
 
 void MatchingHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
@@ -44,14 +46,11 @@ void MatchingHandler::matchChannelEvents(QList<ChannelEvent> channelEvents) {
 }
 
 void MatchingHandler::match() {
-    static QSharedPointer<QByteArray> oldPitchSequence;
-
     QSharedPointer<QByteArray> midiPitchSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2pitchSequence(*midiPairs)));
     QSharedPointer<QByteArray> midiIntervalSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2intervalSequence(*midiPairs)));
     QSharedPointer<QByteArray> pressedSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2pressedSequence(*midiPairs)));
 
-    bool pitchSequenceChanged = !oldPitchSequence || !(*oldPitchSequence == *midiPitchSequence);
-    oldPitchSequence = midiPitchSequence;
+    bool pitchSequenceChanged = !(*oldPitchSequence == *midiPitchSequence);
 
     for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
         MatchingItem item = *i;
@@ -79,6 +78,7 @@ void MatchingHandler::match() {
         item.quality = MatchingService::getSongQuality(item.pitchAlignment, item.transposition);
         *i = item;
     }
+    oldPitchSequence = midiPitchSequence;
 
     qSort(matchingItems);
     MatchingItem bestMatchingItem = matchingItems[0];

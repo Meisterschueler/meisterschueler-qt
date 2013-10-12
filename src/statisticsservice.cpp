@@ -94,7 +94,9 @@ StatisticCluster StatisticsService::getStatisticCluster(const QList<Score>& scor
             speeds.append(speed_bpm);
         }
 
-        result.speed = getStatisticItem(speeds);
+        if (speeds.count() >= 1) {
+            result.speed = getStatisticItem(speeds);
+        }
     }
 
     return result;
