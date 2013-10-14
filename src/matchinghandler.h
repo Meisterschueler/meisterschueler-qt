@@ -24,6 +24,7 @@ public slots:
     void matchNoteOnEvent(NoteOnEvent noteOn);
     void matchNoteOffEvent(NoteOffEvent noteOff);
     void matchChannelEvents(QList<ChannelEvent> channelEvents);
+    void matchChannelEvents2(QList<ChannelEvent> channelEvents);
 
 private:
     QList<MatchingItem> matchingItems;

@@ -45,12 +45,23 @@ void MatchingHandler::matchChannelEvents(QList<ChannelEvent> channelEvents) {
     match();
 }
 
+void MatchingHandler::matchChannelEvents2(QList<ChannelEvent> channelEvents) {
+    for (ChannelEvent channelEvent : channelEvents) {
+        if (channelEvent.type() == Event::NoteOnEventType) {
+            MidiService::addNoteOn(*midiPairs, channelEvent);
+        } else if (channelEvent.type() == Event::NoteOffEventType) {
+            MidiService::addNoteOff(*midiPairs, channelEvent);
+        }
+        match();
+    }
+}
+
 void MatchingHandler::match() {
     QSharedPointer<QByteArray> midiPitchSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2pitchSequence(*midiPairs)));
     QSharedPointer<QByteArray> midiIntervalSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2intervalSequence(*midiPairs)));
     QSharedPointer<QByteArray> pressedSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2pressedSequence(*midiPairs)));
 
-    bool pitchSequenceChanged = !(*oldPitchSequence == *midiPitchSequence);
+    bool pitchSequenceChanged = *oldPitchSequence != *midiPitchSequence;
 
     for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
         MatchingItem item = *i;
@@ -66,7 +77,7 @@ void MatchingHandler::match() {
         if (pitchSequenceChanged) {
             QByteArray saveAlignment = MatchingService::getSaveAlignment(item.pitchAlignment);
 
-            if (saveAlignment.isEmpty()) {
+            if (saveAlignment.isEmpty() || (*oldPitchSequence).isEmpty()) {
                 item.intervalAlignment = MatchingService::getAlingment(item.scoreIntervalSequence, *item.midiIntervalSequence);
                 item.transposition = MatchingService::getTransposition(item.scorePitchSequence, *item.midiPitchSequence, item.intervalAlignment);
                 item.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, item.transposition);

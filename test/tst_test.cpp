@@ -1370,13 +1370,16 @@ void Test::performance_simple() {
     QList<Song> songs = SongService::getSongsBuiltIn();
     QList<MatchingItem> matchingItems = SongService::createMatchingItems(songs);
     MatchingHandler matchingHandler(matchingItems);
+    MatchingHandler matchingHandler2(matchingItems);
 
-    ResultManager resultManager;
-
-    QObject::connect(&matchingHandler, &MatchingHandler::songFinished, &resultManager, &ResultManager::analyseFinishedSong);
+    //ResultManager resultManager;
+    //QObject::connect(&matchingHandler, &MatchingHandler::songFinished, &resultManager, &ResultManager::analyseFinishedSong);
 
     QSignalSpy recognizedSpy(&matchingHandler, SIGNAL(songRecognized(MatchingItem)));
     QSignalSpy finishSpy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
+
+    QSignalSpy recognizedSpy2(&matchingHandler2, SIGNAL(songRecognized(MatchingItem)));
+    QSignalSpy finishSpy2(&matchingHandler2, SIGNAL(songFinished(MatchingItem)));
 
     QString dirName = "/home/fritz/build-meisterschueler-Desktop-Debug/gui";
     QStringList nameFilter("*.mid");
@@ -1384,29 +1387,62 @@ void Test::performance_simple() {
     QStringList midiFilesAndDirectories = directory.entryList(nameFilter);
     int good = 0;
     int bad = 0;
+    int good2 = 0;
+    int bad2 = 0;
+    int diff = 0;
     for (QString midiFileName : midiFilesAndDirectories) {
         qDebug() << midiFileName;
         QList<ChannelEvent> channelEvents = MidiService::load(dirName + "/" + midiFileName);
         matchingHandler.matchChannelEvents(channelEvents);
+        matchingHandler2.matchChannelEvents2(channelEvents);
 
-        if (finishSpy.count() != 1) {
-            bad++;
-            //qDebug() << "Not finished!";
-            QList<QVariant> arguments = recognizedSpy.takeFirst();
-            //MatchingItem item = qvariant_cast<MatchingItem>(arguments.at(0));
-            //qDebug() << item.song.name;
-        } else {
-            good++;
+        MatchingItem item;
+        MatchingItem item2;
+
+        if (finishSpy.count() == 1) {
             QList<QVariant> arguments = finishSpy.takeFirst();
-            //MatchingItem item = qvariant_cast<MatchingItem>(arguments.at(0));
-            //qDebug() << item.song.name;
+            item = qvariant_cast<MatchingItem>(arguments.at(0));
+            qDebug() << item.song.name << ": OK! (OOO)";
+            good++;
+        } else {
+            QList<QVariant> arguments = recognizedSpy.takeLast();
+            item = qvariant_cast<MatchingItem>(arguments.at(0));
+            qDebug() << item.song.name << ": NOT FINISHED! (OOO)";
+            bad++;
+        }
+
+        if (finishSpy2.count() == 1) {
+            QList<QVariant> arguments = finishSpy2.takeFirst();
+            item2 = qvariant_cast<MatchingItem>(arguments.at(0));
+            qDebug() << item2.song.name << ": OK! (XXX)";
+            good2++;
+        } else {
+            QList<QVariant> arguments = recognizedSpy2.takeLast();
+            item2 = qvariant_cast<MatchingItem>(arguments.at(0));
+            qDebug() << item2.song.name << ": NOT FINISHED! (XXX)";
+            bad2++;
+        }
+
+        if (item.song.name != item2.song.name || !midiFileName.startsWith(item.song.name)) {
+            if (*item.midiPitchSequence != *item2.midiPitchSequence) {
+                qDebug() << "Pitch Sequence is different";
+                diff++;
+            }
+
+            QFile::copy(dirName + "/" + midiFileName, "/home/fritz/build-meisterschueler-Desktop-Debug/bad/" + midiFileName);
         }
 
         matchingHandler.reset();
+        matchingHandler2.reset();
     }
 
-    qDebug()  << "Good:" << good;
-    qDebug()  << "Bad:" << bad;
+    qDebug()  << "Good: " << good << " (" << good2 << ")";
+    qDebug()  << "Bad: " << bad << " (" << bad2 << ")";
+    qDebug()  << "Different: " << diff;
+
+    QCOMPARE( diff, 0 );
+    QCOMPARE( bad, 0 );
+    QCOMPARE( bad2, 0 );
 }
 
 // HELPER FUNCTIONS
