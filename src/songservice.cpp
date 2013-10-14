@@ -64,6 +64,19 @@ QList<MatchingItem> SongService::createMatchingItems(const QList<Song>& songs) {
     return result;
 }
 
+int SongService::countSpecialInterval(const Song &song, const int &interval, const Finger &fingerFrom, const Finger &fingerTo) {
+    int count = 0;
+    QList<Score> scores = song.voices.value(Hand::LEFT);
+    for (int i=1; i<scores.count(); i++) {
+        Score from = scores.at(i-1);
+        Score to = scores.at(i);
+        if (interval == to.pitch-from.pitch && from.finger == fingerFrom && to.finger == fingerTo) {
+            count++;
+        }
+    }
+    return count;
+}
+
 QStringList SongService::getGmnFileNames(const QString& directory) {
     QStringList result;
 

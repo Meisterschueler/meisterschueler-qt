@@ -71,6 +71,7 @@ private Q_SLOTS:
     void hanonSongFactory_simple();
 
     void songService_simple();
+    void songService_findIntervalWithFingers();
 
     void midiService_addNote();
     void midiService_saveLoad();
@@ -629,6 +630,13 @@ void Test::hanonSongFactory_simple() {
 void Test::songService_simple() {
     QList<Song> songs = SongService::getSongsFromDirectory("/home/fritz/meisterschueler-misc");
     QVERIFY( songs.count() > 10 );
+}
+
+void Test::songService_findIntervalWithFingers() {
+    HanonSongFactory hsf;
+    Song song = hsf.getNo(0);
+    int count = SongService::countSpecialInterval(song, 4, Finger::LITTLE, Finger::RING);
+    QCOMPARE( count, 6 );
 }
 
 // MIDISERVICE

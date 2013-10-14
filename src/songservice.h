@@ -4,6 +4,8 @@
 #include <QList>
 #include <QStringList>
 
+#include "score.h"
+
 class MatchingItem;
 class Song;
 
@@ -16,6 +18,8 @@ public:
     static QList<Song> getSongsFromDirectory(const QString &directory);
 
     static QList<MatchingItem> createMatchingItems(const QList<Song> &songs);
+
+    static int countSpecialInterval(const Song &song, const int &interval, const Finger &fingerFrom, const Finger &fingerTo);
 
 private:
     static QStringList getGmnFileNames(const QString& directory);
