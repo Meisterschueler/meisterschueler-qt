@@ -23,7 +23,8 @@ private:
 
     QPoint toSoundCoords(const QPoint& pos);
     bool makeSound(const QPoint& soundCoords);
-    void makeBubble(const QPoint& pos);
+    BubbleGraphicsItem *makeBubble();
+    void attachDisappearingAnimation(BubbleGraphicsItem *bubble, const QPoint& pos);
 
     QPixmap getBackgroundPixmap();
 

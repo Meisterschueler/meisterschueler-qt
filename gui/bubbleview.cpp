@@ -44,12 +44,17 @@ bool BubbleView::makeSound(const QPoint& soundCoords) {
     return coordinatesChanged;
 }
 
-void BubbleView::makeBubble(const QPoint& pos) {
+BubbleGraphicsItem *BubbleView::makeBubble() {
     BubbleGraphicsItem *bubble = new BubbleGraphicsItem();
     bubble->pen().setWidth( 10 );
     bubble->setFlag( QGraphicsItem::ItemIgnoresTransformations );
 
     graphicsScene->addItem( bubble );
+
+    return bubble;
+}
+
+void BubbleView::attachDisappearingAnimation(BubbleGraphicsItem *bubble, const QPoint& pos) {
 
     QPropertyAnimation *animRect = new QPropertyAnimation(bubble, "rect", this);
     animRect->setStartValue( QRectF(pos.x()-10, pos.y()-10, 20, 20) );
@@ -73,7 +78,8 @@ void BubbleView::makeBubble(const QPoint& pos) {
 
 void BubbleView::showNoteOnEvent(NoteOnEvent event) {
     QPoint pos = mapFromScene(event.getNote(), 127-event.getVelocity());
-    makeBubble(pos);
+    BubbleGraphicsItem *bubble = makeBubble();
+    attachDisappearingAnimation(bubble, pos);
 }
 
 QPixmap BubbleView::getBackgroundPixmap() {
@@ -114,7 +120,8 @@ void BubbleView::mousePressEvent(QMouseEvent *event) {
 
     QPoint soundCoords = toSoundCoords(event->pos());
     if (makeSound(soundCoords)) {
-        makeBubble(event->pos());
+        BubbleGraphicsItem *bubble = makeBubble();
+        attachDisappearingAnimation(bubble, event->pos());
     }
 }
 
@@ -123,7 +130,8 @@ void BubbleView::mouseMoveEvent(QMouseEvent *event) {
 
     QPoint soundCoords = toSoundCoords(event->pos());
     if (makeSound(soundCoords)) {
-        makeBubble(event->pos());
+        BubbleGraphicsItem *bubble = makeBubble();
+        attachDisappearingAnimation(bubble, event->pos());
     }
 }
 
