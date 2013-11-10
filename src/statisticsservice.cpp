@@ -31,7 +31,7 @@ StatisticItem StatisticsService::getStatisticItem(const QVector<double>& values)
     double mean = sum/N;
     double variance = squaresum/N - mean*mean;
 
-    int nfft = pow(2, ceil(log(N)/log(2)));
+    int nfft = qMax(2.0, pow(2, ceil(log(N)/log(2))));
 
     kiss_fftr_cfg  kiss_fftr_state;
     kiss_fft_scalar rin[nfft+2];
@@ -49,12 +49,38 @@ StatisticItem StatisticsService::getStatisticItem(const QVector<double>& values)
         spectrum[i]= sqrt(sout[i].r*sout[i].r +sout[i].i*sout[i].i);
     }
 
+    result.values = values;
     result.min = min;
     result.max = max;
     result.mean = mean;
     result.variance = variance;
     result.standarddeviation = sqrt(variance);
     result.spectrum = spectrum;
+
+    return result;
+}
+
+StatisticCluster StatisticsService::getStatisticCluster(const QList<MidiPair>& midiPairs) {
+    QVector<double> velocities;
+    QVector<double> speeds;
+
+    for (MidiPair midiPair : midiPairs ) {
+        velocities.append(midiPair.noteOn.getVelocity());
+    }
+
+    for (int i = 1; i < midiPairs.count(); ++i) {
+        speeds.append((60.0 * 1000.0)/(midiPairs.at(i).noteOn.getTime()-midiPairs.at(i-1).noteOn.getTime()));
+    }
+
+    if (speeds.count() > 0) {
+        speeds.append(speeds.last());
+    } else {
+        speeds.append(60.0);
+    }
+
+    StatisticCluster result;
+    result.speed = getStatisticItem(speeds);
+    result.velocity = getStatisticItem(velocities);
 
     return result;
 }

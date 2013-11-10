@@ -93,6 +93,7 @@ private Q_SLOTS:
     void chordHandler_cminor();
 
     void statisticsService_statisticItem();
+    void statisticsService_statisticCluster_fromMidiPairs();
     void statisticsService_statisticCluster_constantSpeed();
     void statisticsService_statisticCluster_variableSpeed();
     void statisticsService_statisticCluster_badValues();
@@ -1073,6 +1074,7 @@ void Test::chordHandler_cminor() {
 void Test::statisticsService_statisticItem() {
     QVector<double> values {0.0, 1.0, 2.0, 3.0};
     StatisticItem item = StatisticsService::getStatisticItem(values);
+    QVERIFY( item.values == values );
     QCOMPARE( item.min, 0.0 );
     QCOMPARE( item.max, 3.0 );
     QCOMPARE( item.mean, 1.5 );
@@ -1084,6 +1086,73 @@ void Test::statisticsService_statisticItem() {
     QCOMPARE( item.spectrum.at(1), sqrt(8) );
     QCOMPARE( item.spectrum.at(2), sqrt(4) );
     //QCOMPARE( item.spectrum.at(3), sqrt(8) );
+}
+
+void Test::statisticsService_statisticCluster_fromMidiPairs() {
+    QList<MidiPair> midiPairs;
+    MidiPair a(NoteOnEvent(   0, 0, 60, 50), NoteOffEvent( 50, 0, 60, 0));
+    MidiPair b(NoteOnEvent(1000, 0, 62, 50), NoteOffEvent(1050, 0, 62, 0));
+    MidiPair c(NoteOnEvent(1800, 0, 64, 50), NoteOffEvent(1850, 0, 64, 0));
+    MidiPair d(NoteOnEvent(2400, 0, 65, 50), NoteOffEvent(2450, 0, 65, 0));
+    MidiPair e(NoteOnEvent(2900, 0, 67, 50), NoteOffEvent(2900, 0, 67, 0));
+    MidiPair f(NoteOnEvent(3300, 0, 65, 50), NoteOffEvent(3350, 0, 65, 0));
+    MidiPair g(NoteOnEvent(3600, 0, 67, 50), NoteOffEvent(3600, 0, 67, 0));
+
+    midiPairs.append(a);
+    StatisticCluster statisticCluster = StatisticsService::getStatisticCluster(midiPairs);
+    QCOMPARE( statisticCluster.speed.values.size(), 1 );
+    QCOMPARE( statisticCluster.speed.values.at(0), 60.0 );
+
+    midiPairs.append(b);
+    statisticCluster = StatisticsService::getStatisticCluster(midiPairs);
+    QCOMPARE( statisticCluster.speed.values.size(), 2 );
+    QCOMPARE( statisticCluster.speed.values.at(0), 60.0 );
+    QCOMPARE( statisticCluster.speed.values.at(1), 60.0 );
+
+    midiPairs.append(c);
+    statisticCluster = StatisticsService::getStatisticCluster(midiPairs);
+    QCOMPARE( statisticCluster.speed.values.size(), 3 );
+    QCOMPARE( statisticCluster.speed.values.at(0), 60.0 );
+    QCOMPARE( statisticCluster.speed.values.at(1), 75.0 );
+    QCOMPARE( statisticCluster.speed.values.at(2), 75.0 );
+
+    midiPairs.append(d);
+    statisticCluster = StatisticsService::getStatisticCluster(midiPairs);
+    QCOMPARE( statisticCluster.speed.values.size(), 4 );
+    QCOMPARE( statisticCluster.speed.values.at(0), 60.0 );
+    QCOMPARE( statisticCluster.speed.values.at(1), 75.0 );
+    QCOMPARE( statisticCluster.speed.values.at(2), 100.0 );
+    QCOMPARE( statisticCluster.speed.values.at(3), 100.0 );
+
+    midiPairs.append(e);
+    statisticCluster = StatisticsService::getStatisticCluster(midiPairs);
+    QCOMPARE( statisticCluster.speed.values.size(), 5 );
+    QCOMPARE( statisticCluster.speed.values.at(0), 60.0 );
+    QCOMPARE( statisticCluster.speed.values.at(1), 75.0 );
+    QCOMPARE( statisticCluster.speed.values.at(2), 100.0 );
+    QCOMPARE( statisticCluster.speed.values.at(3), 120.0 );
+    QCOMPARE( statisticCluster.speed.values.at(4), 120.0 );
+
+    midiPairs.append(f);
+    statisticCluster = StatisticsService::getStatisticCluster(midiPairs);
+    QCOMPARE( statisticCluster.speed.values.size(), 6 );
+    QCOMPARE( statisticCluster.speed.values.at(0), 60.0 );
+    QCOMPARE( statisticCluster.speed.values.at(1), 75.0 );
+    QCOMPARE( statisticCluster.speed.values.at(2), 100.0 );
+    QCOMPARE( statisticCluster.speed.values.at(3), 120.0 );
+    QCOMPARE( statisticCluster.speed.values.at(4), 150.0 );
+    QCOMPARE( statisticCluster.speed.values.at(5), 150.0 );
+
+    midiPairs.append(g);
+    statisticCluster = StatisticsService::getStatisticCluster(midiPairs);
+    QCOMPARE( statisticCluster.speed.values.size(), 7 );
+    QCOMPARE( statisticCluster.speed.values.at(0), 60.0 );
+    QCOMPARE( statisticCluster.speed.values.at(1), 75.0 );
+    QCOMPARE( statisticCluster.speed.values.at(2), 100.0 );
+    QCOMPARE( statisticCluster.speed.values.at(3), 120.0 );
+    QCOMPARE( statisticCluster.speed.values.at(4), 150.0 );
+    QCOMPARE( statisticCluster.speed.values.at(5), 200.0 );
+    QCOMPARE( statisticCluster.speed.values.at(6), 200.0 );
 }
 
 void Test::statisticsService_statisticCluster_constantSpeed() {

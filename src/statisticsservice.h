@@ -3,9 +3,11 @@
 
 #include <QVector>
 
+class MidiPair;
 class Score;
 
 struct StatisticItem {
+    QVector<double> values;
     double min;
     double max;
     double mean;
@@ -25,6 +27,7 @@ public:
     StatisticsService();
 
     static StatisticItem getStatisticItem(const QVector<double>& values);
+    static StatisticCluster getStatisticCluster(const QList<MidiPair>& midiPairs);
     static StatisticCluster getStatisticCluster(const QList<Score>& scores);
 };
 
