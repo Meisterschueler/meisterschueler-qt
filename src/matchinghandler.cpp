@@ -93,6 +93,7 @@ void MatchingHandler::match() {
 
     qSort(matchingItems);
     MatchingItem bestMatchingItem = matchingItems[0];
+    bestMatchingItem.mergedScores = MatchingService::merge(bestMatchingItem.song.voices.value(Hand::LEFT), *bestMatchingItem.midiPairs, bestMatchingItem.pitchAlignment);
     emit songRecognized(bestMatchingItem);
 
     double bestQuality = bestMatchingItem.quality;
