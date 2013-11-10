@@ -23,6 +23,7 @@ void ClusterHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
     resetTimer->stop();
 
     MidiService::addNoteOn(midiPairs, noteOn);
+    emit gotMidiPairs(midiPairs);
     channelEvents.append(noteOn);
     if (!delayTimer->isActive()) {
         delayTimer->start(CHORD_DELAY);
@@ -33,6 +34,7 @@ void ClusterHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
 void ClusterHandler::matchNoteOffEvent(NoteOffEvent noteOff) {    
     MidiService::addNoteOff(midiPairs, noteOff);
     channelEvents.append(noteOff);
+    emit gotMidiPairs(midiPairs);
     if (!delayTimer->isActive()) {
         delayTimer->start(CHORD_DELAY);
     }
