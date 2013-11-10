@@ -19,18 +19,18 @@ public:
 private:
     QGraphicsScene *graphicsScene;
     QGraphicsPixmapItem *backgroundItem;
-
-    QPoint toSoundCoords(const QPoint& pos);
-    bool makeSound(const QPoint& soundCoords);
-    BubbleGraphicsItem *makeBubble();
-    void attachDisappearingAnimation(BubbleGraphicsItem *bubble, const QPoint& pos);
-
-    QPixmap getBackgroundPixmap();
-
     QPoint soundCoords;
 
     QList<MidiPair> oldMidiPairs;
     QMap<MidiPair, BubbleGraphicsItem*> midiPairBubbleMap;
+
+    BubbleGraphicsItem *makeBubble();
+    QPixmap getBackgroundPixmap();
+
+    void attachDisappearingAnimation(BubbleGraphicsItem *bubble, const QPoint& pos);
+
+    QPoint toSoundCoords(const QPoint& pos);
+    bool makeSound(const QPoint& soundCoords);
 
 public slots:
     void reset();
