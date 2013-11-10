@@ -2,6 +2,7 @@
 #define BUBBLEVIEW_H
 
 #include <QGraphicsView>
+#include <QList>
 #include <QMouseEvent>
 
 #include "events.h"
@@ -19,8 +20,6 @@ private:
     QGraphicsScene *graphicsScene;
     QGraphicsPixmapItem *backgroundItem;
 
-    QMap<int, BubbleGraphicsItem> bubbles;
-
     QPoint toSoundCoords(const QPoint& pos);
     bool makeSound(const QPoint& soundCoords);
     BubbleGraphicsItem *makeBubble();
@@ -30,8 +29,12 @@ private:
 
     QPoint soundCoords;
 
+    QList<MidiPair> oldMidiPairs;
+    QMap<MidiPair, BubbleGraphicsItem*> midiPairBubbleMap;
+
 public slots:
-    void showNoteOnEvent(NoteOnEvent event);
+    void reset();
+    void showMidiPairs(QList<MidiPair> midiPairs);
 
 signals:
     void gotNoteOnEvent(NoteOnEvent event);

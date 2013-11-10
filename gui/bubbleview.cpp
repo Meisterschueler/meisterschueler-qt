@@ -76,10 +76,44 @@ void BubbleView::attachDisappearingAnimation(BubbleGraphicsItem *bubble, const Q
     animPenColor->start();
 }
 
-void BubbleView::showNoteOnEvent(NoteOnEvent event) {
-    QPoint pos = mapFromScene(event.getNote(), 127-event.getVelocity());
-    BubbleGraphicsItem *bubble = makeBubble();
-    attachDisappearingAnimation(bubble, pos);
+void BubbleView::reset() {
+    oldMidiPairs.clear();
+    for (BubbleGraphicsItem *bubble : midiPairBubbleMap.values()) {
+        graphicsScene->removeItem(bubble);
+    }
+    midiPairBubbleMap.clear();
+}
+
+void BubbleView::showMidiPairs(QList<MidiPair> midiPairs) {
+    for (int i = 0; i < midiPairs.count(); ++i) {
+        MidiPair midiPair = midiPairs.at(i);
+        if (i > oldMidiPairs.count()) {
+            // neues Bubble
+            BubbleGraphicsItem *bubble = makeBubble();
+            midiPairBubbleMap.insert(midiPair, bubble);
+
+            if (midiPair.noteOff != emptyNoteOnEvent && midiPair.noteOff != emptyNoteOffEvent) {
+                NoteOnEvent noteOn = midiPair.noteOn;
+                QPoint pos = mapFromScene(noteOn.getNote(), 127-noteOn.getVelocity());
+                attachDisappearingAnimation(bubble, pos);
+            }
+
+        } else if (midiPairs.at(i) != oldMidiPairs.at(i)) {
+            // geändertes Bubble
+            MidiPair oldMidiPair = oldMidiPairs.at(i);
+            BubbleGraphicsItem *bubble = midiPairBubbleMap.value(oldMidiPair);
+            midiPairBubbleMap.insert(midiPair, bubble);
+
+
+            if (midiPair.noteOff != emptyNoteOnEvent && midiPair.noteOff != emptyNoteOffEvent) {
+                NoteOnEvent noteOn = midiPair.noteOn;
+                QPoint pos = mapFromScene(noteOn.getNote(), 127-noteOn.getVelocity());
+                attachDisappearingAnimation(bubble, pos);
+            }
+        }
+    }
+
+    oldMidiPairs = midiPairs;
 }
 
 QPixmap BubbleView::getBackgroundPixmap() {

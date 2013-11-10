@@ -147,7 +147,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     }
 
     if ( idx != -1 && !event->isAutoRepeat() ) {
-        emit gotNoteOnEvent(NoteOnEvent(0, 0, offset+idx, 50));
+        NoteOnEvent noteOn = NoteOnEvent(0, 0, offset+idx, 50);
+        clusterHandler->matchNoteOnEvent(noteOn);
+        emit gotNoteOnEvent(noteOn);
     } else {
         QMainWindow::keyPressEvent(event);
     }
@@ -171,7 +173,9 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     }
 
     if ( idx != -1 && !event->isAutoRepeat() ) {
-        emit gotNoteOffEvent(NoteOffEvent(0, 0, offset+idx, 0));
+        NoteOffEvent noteOff = NoteOffEvent(0, 0, offset+idx, 0);
+        clusterHandler->matchNoteOffEvent(noteOff);
+        emit gotNoteOffEvent(noteOff);
     } else {
         QMainWindow::keyReleaseEvent(event);
     }
@@ -180,8 +184,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
 void MainWindow::on_actionBubbleView_triggered() {
     bubbleView = new BubbleView();
 
-    QObject::connect(this, &MainWindow::gotNoteOnEvent, bubbleView, &BubbleView::showNoteOnEvent);
-    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, bubbleView, &BubbleView::showNoteOnEvent);
+    QObject::connect(clusterHandler, &ClusterHandler::gotMidiPairs, bubbleView, &BubbleView::showMidiPairs);
     QObject::connect(bubbleView, &BubbleView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
     QObject::connect(bubbleView, &BubbleView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 

@@ -1,5 +1,7 @@
 #include "clusterhandler.h"
 
+#include "midiservice.h"
+
 #include <QTimer>
 
 ClusterHandler::ClusterHandler()
@@ -20,6 +22,7 @@ ClusterHandler::ClusterHandler()
 void ClusterHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
     resetTimer->stop();
 
+    MidiService::addNoteOn(midiPairs, noteOn);
     channelEvents.append(noteOn);
     if (!delayTimer->isActive()) {
         delayTimer->start(CHORD_DELAY);
@@ -28,6 +31,7 @@ void ClusterHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
 }
 
 void ClusterHandler::matchNoteOffEvent(NoteOffEvent noteOff) {    
+    MidiService::addNoteOff(midiPairs, noteOff);
     channelEvents.append(noteOff);
     if (!delayTimer->isActive()) {
         delayTimer->start(CHORD_DELAY);
@@ -53,5 +57,6 @@ void ClusterHandler::timeOutDelay() {
 }
 
 void ClusterHandler::timeOutReset() {
+    midiPairs.clear();
     emit reset();
 }

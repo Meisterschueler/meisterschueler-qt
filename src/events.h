@@ -183,6 +183,10 @@ public:
         return (noteOn == rhs.noteOn && noteOff == rhs.noteOff);
     }
 
+    bool operator!=(const MidiPair& rhs) const {
+        return (noteOn != rhs.noteOn || noteOff != rhs.noteOff);
+    }
+
     bool operator<(const MidiPair& rhs) const {
         if (this->noteOn != emptyNoteOnEvent && rhs.noteOn != emptyNoteOffEvent) {
             if ( noteOn.getTime() + 50 < rhs.noteOn.getTime() ) {
