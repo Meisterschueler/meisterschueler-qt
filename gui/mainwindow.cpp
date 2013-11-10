@@ -13,6 +13,7 @@
 
 #include "clusterhandler.h"
 #include "commandmanager.h"
+#include "customview.h"
 #include "feedbackmanager.h"
 #include "matchinghandler.h"
 #include "merginghandler.h"
@@ -251,4 +252,14 @@ void MainWindow::on_actionExit_triggered()
 {
     signalManager->playShutdownSound();
     exit(0);
+}
+
+
+void MainWindow::on_actionActionQCustomPlot_triggered()
+{
+    CustomView *customView = new CustomView();
+
+    QObject::connect(clusterHandler, &ClusterHandler::gotMidiPairs, customView, &CustomView::showMidiPairs);
+
+    setCentralWidget(customView);
 }

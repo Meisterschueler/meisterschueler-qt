@@ -68,6 +68,7 @@
    <addaction name="actionBubbleView"/>
    <addaction name="actionGuidoView"/>
    <addaction name="actionChordWidget"/>
+   <addaction name="actionActionQCustomPlot"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionFull_Screen">
@@ -130,6 +131,11 @@
   <action name="actionAbout">
    <property name="text">
     <string>About...</string>
+   </property>
+  </action>
+  <action name="actionActionQCustomPlot">
+   <property name="text">
+    <string>QCustomPlot</string>
    </property>
   </action>
  </widget>

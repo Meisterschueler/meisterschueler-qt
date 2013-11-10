@@ -69,6 +69,7 @@ private slots:
     void on_actionChordWidget_triggered();
     void on_actionExit_triggered();
     void on_actionFeedback_triggered();
+    void on_actionActionQCustomPlot_triggered();
 };
 
 #endif // MAINWINDOW_H

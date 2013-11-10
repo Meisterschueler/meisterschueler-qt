@@ -11,6 +11,7 @@ GUIDOLIB = ../../guidolib-code
 RTMIDI = ../../rtmidi-2.0.1
 JDKSMIDI = ../../jdksmidi
 KISSFFT = ../../kiss_fft130
+QCUSTOMPLOT = ../../qcustomplot
 
 #Guido
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
@@ -67,3 +68,8 @@ LIBS += -L$$JDKSMIDI \
 INCLUDEPATH += $$KISSFFT
 SOURCES += $$KISSFFT/kiss_fft.c \
            $$KISSFFT/tools/kiss_fftr.c
+
+#QCustomPlot
+INCLUDEPATH += $$QCUSTOMPLOT
+SOURCES += $$QCUSTOMPLOT/qcustomplot.cpp
+HEADERS += $$QCUSTOMPLOT/qcustomplot.h
