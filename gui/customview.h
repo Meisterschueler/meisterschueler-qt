@@ -20,6 +20,18 @@ public slots:
     
 private:
     QList<MidiPair> midiPairs;
+
+    enum eAxis {SPEED, VELOCITY};
+    eAxis xAxisType;
+    eAxis yAxisType;
+
+    enum eColorization {NONE, FINGER};
+    eColorization colorization;
+
+    void updateDiagram();
+
+private slots:
+    virtual void contextMenuEvent(QContextMenuEvent *event);
 };
 
 #endif // CUSTOMVIEW_H
