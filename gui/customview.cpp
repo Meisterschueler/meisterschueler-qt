@@ -12,6 +12,17 @@ CustomView::CustomView(QWidget *parent) :
     this->graph(0)->setLineStyle(QCPGraph::lsNone);
     this->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
 
+
+    ellipse = new QCPItemEllipse(this);
+    ellipse->setPen(QColor(255, 0, 0, 255));
+    ellipse->setBrush(QBrush(QColor(255, 0, 0, 32)));
+    this->addItem(ellipse);
+
+    ellipse16 = new QCPItemEllipse(this);
+    ellipse16->setPen(QColor(255, 0, 0, 255));
+    ellipse16->setBrush(QBrush(QColor(0, 255, 0, 64)));
+    this->addItem(ellipse16);
+
     xAxisType = SPEED;
     yAxisType = VELOCITY;
     colorization = NONE;
@@ -31,6 +42,20 @@ void CustomView::showMidiPairs(QList<MidiPair> midiPairs) {
     yData = statisticCluster.velocity.values;
 
     this->graph(0)->setData(xData, yData);
+
+    ellipse->topLeft->setCoords((statisticCluster.speed.mean-statisticCluster.speed.standarddeviation)/4.0,
+                                statisticCluster.velocity.mean+statisticCluster.velocity.standarddeviation);
+
+    ellipse->bottomRight->setCoords((statisticCluster.speed.mean+statisticCluster.speed.standarddeviation)/4.0,
+                                statisticCluster.velocity.mean-statisticCluster.velocity.standarddeviation);
+
+    ellipse16->topLeft->setCoords((statisticCluster.speedLast16.mean-statisticCluster.speedLast16.standarddeviation)/4.0,
+                                  statisticCluster.velocityLast16.mean+statisticCluster.velocityLast16.standarddeviation);
+
+    ellipse16->bottomRight->setCoords((statisticCluster.speedLast16.mean+statisticCluster.speedLast16.standarddeviation)/4.0,
+                                  statisticCluster.velocityLast16.mean-statisticCluster.velocityLast16.standarddeviation);
+
+
     this->replot();
 }
 

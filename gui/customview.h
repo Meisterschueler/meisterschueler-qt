@@ -30,6 +30,9 @@ private:
 
     void updateDiagram();
 
+    QCPItemEllipse *ellipse;
+    QCPItemEllipse *ellipse16;
+
 private slots:
     virtual void contextMenuEvent(QContextMenuEvent *event);
 };
