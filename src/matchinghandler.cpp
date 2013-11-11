@@ -15,6 +15,8 @@ MatchingHandler::MatchingHandler(const QList<MatchingItem> &matchingItems) : mat
 void MatchingHandler::init() {
     for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
         (*i).enabled = true;
+        (*i).pitchAlignment = "";
+        (*i).intervalAlignment = "";
     }
 }
 
