@@ -19,6 +19,8 @@ struct StatisticItem {
 struct StatisticCluster {
     StatisticItem speed;
     StatisticItem velocity;
+    StatisticItem speedLast16;
+    StatisticItem velocityLast16;
 };
 
 class StatisticsService

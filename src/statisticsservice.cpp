@@ -82,6 +82,16 @@ StatisticCluster StatisticsService::getStatisticCluster(const QList<MidiPair>& m
     result.speed = getStatisticItem(speeds);
     result.velocity = getStatisticItem(velocities);
 
+    QVector<double> velocitiesLast16 = velocities;
+    QVector<double> speedsLast16 = speeds;
+
+    if (velocitiesLast16.count() > 16) {
+        velocitiesLast16 = velocitiesLast16.mid(velocitiesLast16.count()-17);
+        speedsLast16 = speedsLast16.mid(speedsLast16.count()-17);
+    }
+    result.velocityLast16 = getStatisticItem(velocitiesLast16);
+    result.speedLast16 = getStatisticItem(speedsLast16);
+
     return result;
 }
 
