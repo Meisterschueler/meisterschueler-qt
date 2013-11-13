@@ -21,7 +21,7 @@ public slots:
 private:
     QList<MidiPair> midiPairs;
 
-    enum eAxis {SPEED, VELOCITY};
+    enum eAxis {SPEED, VELOCITY, OVERLAP};
     eAxis xAxisType;
     eAxis yAxisType;
 
@@ -31,7 +31,7 @@ private:
     void updateDiagram();
 
     QCPItemEllipse *ellipse;
-    QCPItemEllipse *ellipse16;
+    QCPItemEllipse *ellipseLM;
 
 private slots:
     virtual void contextMenuEvent(QContextMenuEvent *event);

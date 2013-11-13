@@ -18,10 +18,10 @@ CustomView::CustomView(QWidget *parent) :
     ellipse->setBrush(QBrush(QColor(255, 0, 0, 32)));
     this->addItem(ellipse);
 
-    ellipse16 = new QCPItemEllipse(this);
-    ellipse16->setPen(QColor(255, 0, 0, 255));
-    ellipse16->setBrush(QBrush(QColor(0, 255, 0, 64)));
-    this->addItem(ellipse16);
+    ellipseLM = new QCPItemEllipse(this);
+    ellipseLM->setPen(QColor(255, 0, 0, 255));
+    ellipseLM->setBrush(QBrush(QColor(0, 255, 0, 64)));
+    this->addItem(ellipseLM);
 
     xAxisType = SPEED;
     yAxisType = VELOCITY;
@@ -31,29 +31,62 @@ CustomView::CustomView(QWidget *parent) :
 }
 
 void CustomView::showMidiPairs(QList<MidiPair> midiPairs) {
-    StatisticCluster statisticCluster = StatisticsService::getStatisticCluster(midiPairs);
+    StatisticCluster statisticCluster = StatisticsService::getStatisticCluster(midiPairs, Frac_1_16);
+
+    StatisticItem x;
+    StatisticItem xLM;
+    StatisticItem y;
+    StatisticItem yLM;
+
+    switch (xAxisType) {
+    case SPEED:
+        x = statisticCluster.speed;
+        xLM = statisticCluster.speedLastMeasure;
+        break;
+    case VELOCITY:
+        x = statisticCluster.velocity;
+        xLM = statisticCluster.velocityLastMeasure;
+        break;
+    case OVERLAP:
+        x = statisticCluster.overlap;
+        xLM = statisticCluster.overlapLastMeasure;
+        break;
+    }
+
+    switch (yAxisType) {
+    case SPEED:
+        y = statisticCluster.speed;
+        yLM = statisticCluster.speedLastMeasure;
+        break;
+    case VELOCITY:
+        y = statisticCluster.velocity;
+        yLM = statisticCluster.velocityLastMeasure;
+        break;
+    case OVERLAP:
+        y = statisticCluster.overlap;
+        yLM = statisticCluster.overlapLastMeasure;
+        break;
+    }
 
     QVector<double> xData;
     QVector<double> yData;
 
-    for(double value : statisticCluster.speed.values) {
-        xData.append(value/4.0);
-    }
-    yData = statisticCluster.velocity.values;
+    xData = x.values;
+    yData = y.values;
 
     this->graph(0)->setData(xData, yData);
 
-    ellipse->topLeft->setCoords((statisticCluster.speed.mean-statisticCluster.speed.standarddeviation)/4.0,
-                                statisticCluster.velocity.mean+statisticCluster.velocity.standarddeviation);
+    ellipse->topLeft->setCoords(x.mean-x.standarddeviation,
+                                y.mean+y.standarddeviation);
 
-    ellipse->bottomRight->setCoords((statisticCluster.speed.mean+statisticCluster.speed.standarddeviation)/4.0,
-                                statisticCluster.velocity.mean-statisticCluster.velocity.standarddeviation);
+    ellipse->bottomRight->setCoords(x.mean+x.standarddeviation,
+                                y.mean-y.standarddeviation);
 
-    ellipse16->topLeft->setCoords((statisticCluster.speedLast16.mean-statisticCluster.speedLast16.standarddeviation)/4.0,
-                                  statisticCluster.velocityLast16.mean+statisticCluster.velocityLast16.standarddeviation);
+    ellipseLM->topLeft->setCoords(xLM.mean-xLM.standarddeviation,
+                                  yLM.mean+yLM.standarddeviation);
 
-    ellipse16->bottomRight->setCoords((statisticCluster.speedLast16.mean+statisticCluster.speedLast16.standarddeviation)/4.0,
-                                  statisticCluster.velocityLast16.mean-statisticCluster.velocityLast16.standarddeviation);
+    ellipseLM->bottomRight->setCoords(xLM.mean+xLM.standarddeviation,
+                                  yLM.mean-yLM.standarddeviation);
 
 
     this->replot();
@@ -69,6 +102,10 @@ void CustomView::updateDiagram() {
         this->xAxis->setLabel("velocity");
         this->xAxis->setRange(20, 80);
         break;
+    case OVERLAP:
+        this->xAxis->setLabel("overlap");
+        this->xAxis->setRange(-250, 250);
+        break;
     }
 
     switch (yAxisType) {
@@ -79,6 +116,10 @@ void CustomView::updateDiagram() {
     case VELOCITY:
         this->yAxis->setLabel("velocity");
         this->yAxis->setRange(20, 80);
+        break;
+    case OVERLAP:
+        this->xAxis->setLabel("overlap");
+        this->xAxis->setRange(-50, 50);
         break;
     }
 
@@ -99,11 +140,13 @@ void CustomView::contextMenuEvent(QContextMenuEvent *event) {
     xMenu.setTitle(tr("x-Axis"));
     QAction *xSpeed = xMenu.addAction(tr("Speed"));
     QAction *xVelocity = xMenu.addAction(tr("Velocity"));
+    QAction *xOverlap = xMenu.addAction(tr("Overlap"));
 
     QMenu yMenu;
     yMenu.setTitle(tr("y-Axis"));
     QAction *ySpeed = yMenu.addAction(tr("Speed"));
     QAction *yVelocity = yMenu.addAction(tr("Velocity"));
+    QAction *yOverlap = yMenu.addAction(tr("Overlap"));
 
     QMenu colorizationMenu;
     colorizationMenu.setTitle(tr("Colorization"));
@@ -121,10 +164,14 @@ void CustomView::contextMenuEvent(QContextMenuEvent *event) {
             xAxisType = SPEED;
         } else if (selectedItem == xVelocity) {
             xAxisType = VELOCITY;
+        } else if (selectedItem == xOverlap) {
+            xAxisType = OVERLAP;
         } else if (selectedItem == ySpeed) {
             yAxisType = SPEED;
         } else if (selectedItem == yVelocity) {
             yAxisType = VELOCITY;
+        } else if (selectedItem == yOverlap) {
+            yAxisType = OVERLAP;
         } else if (selectedItem == noneColorization) {
             colorization = NONE;
         } else if (selectedItem == fingerColorization) {

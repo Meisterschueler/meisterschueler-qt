@@ -60,37 +60,74 @@ StatisticItem StatisticsService::getStatisticItem(const QVector<double>& values)
     return result;
 }
 
-StatisticCluster StatisticsService::getStatisticCluster(const QList<MidiPair>& midiPairs) {
+StatisticCluster StatisticsService::getStatisticCluster(const QList<MidiPair>& midiPairs, const Fraction &fraction) {
     QVector<double> velocities;
     QVector<double> speeds;
+    QVector<double> overlap;
+    QVector<double> acceleration;
 
     for (MidiPair midiPair : midiPairs ) {
         velocities.append(midiPair.noteOn.getVelocity());
     }
 
+    // forward looking
     for (int i = 1; i < midiPairs.count(); ++i) {
-        speeds.append((60.0 * 1000.0)/(midiPairs.at(i).noteOn.getTime()-midiPairs.at(i-1).noteOn.getTime()));
+        speeds.append((60.0 * 1000.0)*(((double)Frac_1_4)/((double)fraction))/(midiPairs.at(i).noteOn.getTime()-midiPairs.at(i-1).noteOn.getTime()));
     }
-
-    if (speeds.count() > 0) {
+    if (midiPairs.count() > 1) {
         speeds.append(speeds.last());
     } else {
         speeds.append(60.0);
     }
 
+    // backward looking
+    for (int i = 0; i < midiPairs.count()-1; ++i) {
+        if (midiPairs.at(i).noteOff != emptyNoteOffEvent && midiPairs.at(i+1).noteOn != emptyNoteOnEvent) {
+            overlap.append(midiPairs.at(i+1).noteOn.getTime()-midiPairs.at(i).noteOff.getTime());
+        } else {
+            overlap.append(0.0);
+        }
+    }
+    if (midiPairs.count() > 1) {
+        overlap.insert(0, overlap.first());
+    } else {
+        overlap.insert(0, 0.0);
+    }
+
+    // forward and backward looking
+    for (int i = 1; i < midiPairs.count()-1; ++i) {
+        acceleration.append(2.0*(60.0 * 1000.0)*(((double)Frac_1_4)/((double)fraction))/((midiPairs.at(i).noteOn.getTime()-midiPairs.at(i-1).noteOn.getTime())*(midiPairs.at(i+1).noteOn.getTime()-midiPairs.at(i).noteOn.getTime())));
+    }
+    if (midiPairs.count() > 2) {
+        acceleration.append(acceleration.last());
+        acceleration.insert(0, acceleration.first());
+    } else {
+        acceleration.append(0.0);
+        acceleration.append(0.0);
+    }
+
     StatisticCluster result;
     result.speed = getStatisticItem(speeds);
     result.velocity = getStatisticItem(velocities);
+    result.overlap = getStatisticItem(overlap);
+    result.acceleration = getStatisticItem(acceleration);
 
-    QVector<double> velocitiesLast16 = velocities;
-    QVector<double> speedsLast16 = speeds;
+    QVector<double> velocitiesLastMeasure = velocities;
+    QVector<double> speedsLastMeasure = speeds;
+    QVector<double> overlapLastMeasure = speeds;
+    QVector<double> accelerationLastMeasure = acceleration;
 
-    if (velocitiesLast16.count() > 16) {
-        velocitiesLast16 = velocitiesLast16.mid(velocitiesLast16.count()-17);
-        speedsLast16 = speedsLast16.mid(speedsLast16.count()-17);
+    int eventsPerMeasure = 1.0/((double)fraction);
+    if (velocitiesLastMeasure.count() > eventsPerMeasure) {
+        velocitiesLastMeasure = velocitiesLastMeasure.mid(velocitiesLastMeasure.count()-(eventsPerMeasure+1));
+        speedsLastMeasure = speedsLastMeasure.mid(speedsLastMeasure.count()-(eventsPerMeasure+1));
+        overlapLastMeasure = overlapLastMeasure.mid(overlapLastMeasure.count()-(eventsPerMeasure+1));
+        accelerationLastMeasure = accelerationLastMeasure.mid(accelerationLastMeasure.count()-(eventsPerMeasure+1));
     }
-    result.velocityLast16 = getStatisticItem(velocitiesLast16);
-    result.speedLast16 = getStatisticItem(speedsLast16);
+    result.velocityLastMeasure = getStatisticItem(velocitiesLastMeasure);
+    result.speedLastMeasure = getStatisticItem(speedsLastMeasure);
+    result.overlapLastMeasure = getStatisticItem(overlapLastMeasure);
+    result.accelerationLastMeasure = getStatisticItem(accelerationLastMeasure);
 
     return result;
 }

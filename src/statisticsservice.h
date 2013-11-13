@@ -19,8 +19,13 @@ struct StatisticItem {
 struct StatisticCluster {
     StatisticItem speed;
     StatisticItem velocity;
-    StatisticItem speedLast16;
-    StatisticItem velocityLast16;
+    StatisticItem overlap;
+    StatisticItem acceleration;
+
+    StatisticItem speedLastMeasure;
+    StatisticItem velocityLastMeasure;
+    StatisticItem overlapLastMeasure;
+    StatisticItem accelerationLastMeasure;
 };
 
 class StatisticsService
@@ -29,7 +34,7 @@ public:
     StatisticsService();
 
     static StatisticItem getStatisticItem(const QVector<double>& values);
-    static StatisticCluster getStatisticCluster(const QList<MidiPair>& midiPairs);
+    static StatisticCluster getStatisticCluster(const QList<MidiPair>& midiPairs, const Fraction& fraction = Frac_1_4);
     static StatisticCluster getStatisticCluster(const QList<Score>& scores);
 };
 
