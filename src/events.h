@@ -197,6 +197,11 @@ public:
     time_t time;
     QList<MidiPair> midiPairs;
 
+    MidiPairCluster(MidiPair midiPair) {
+        time = midiPair.noteOn.getTime();
+        midiPairs.append(midiPair);
+    }
+
     bool operator<(const MidiPairCluster& rhs) const {
         return (this->time < rhs.time);
     }

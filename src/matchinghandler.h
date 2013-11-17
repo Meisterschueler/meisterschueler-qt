@@ -28,7 +28,7 @@ public slots:
 
 private:
     QList<MatchingItem> matchingItems;
-    QSharedPointer<QList<MidiPair>> midiPairs;
+    QSharedPointer<QList<MidiPairCluster>> midiPairClusters;
     QSharedPointer<QByteArray> oldPitchSequence;
 
     void match();

@@ -11,17 +11,19 @@ MatchingService::MatchingService()
 {
 }
 
-QByteArray MatchingService::midiPairs2pitchSequence(const QList<MidiPair>& pairs) {
+QByteArray MatchingService::midiPairClusters2pitchSequence(const QList<MidiPairCluster>& midiPairClusters) {
     QByteArray sequence;
-    for (MidiPair midiPair : pairs) {
-        sequence.append(midiPair.noteOn.getNote());
+    for (MidiPairCluster midiPairCluster : midiPairClusters) {
+        for (MidiPair midiPair : midiPairCluster.midiPairs) {
+            sequence.append(midiPair.noteOn.getNote());
+        }
     }
     return sequence;
 }
 
-QByteArray MatchingService::midiPairs2intervalSequence(const QList<MidiPair>& pairs) {
+QByteArray MatchingService::midiPairClusters2intervalSequence(const QList<MidiPairCluster>& midiPairClusters) {
     QByteArray sequence;
-    QByteArray pitchSequence = midiPairs2pitchSequence(pairs);
+    QByteArray pitchSequence = midiPairClusters2pitchSequence(midiPairClusters);
     for (int i=1; i<pitchSequence.length(); i++) {
         char delta = pitchSequence.at(i) - pitchSequence.at(i-1);
         sequence.append(delta);
@@ -29,17 +31,19 @@ QByteArray MatchingService::midiPairs2intervalSequence(const QList<MidiPair>& pa
     return sequence;
 }
 
-QByteArray MatchingService::midiPairs2pressedSequence(const QList<MidiPair>& pairs) {
+QByteArray MatchingService::midiPairClusters2pressedSequence(const QList<MidiPairCluster> &midiPairClusters) {
     QByteArray sequence;
-    for (MidiPair midiPair : pairs) {
-        if (midiPair.noteOn != emptyNoteOnEvent && midiPair.noteOff != emptyNoteOffEvent) {
-            sequence.append(MatchingService::RELEASED);
-        } else if (midiPair.noteOn != emptyNoteOnEvent){
-            sequence.append(MatchingService::PRESSED);
-        } else if (midiPair.noteOff != emptyNoteOffEvent) {
-            sequence.append("y");
-        } else {
-            sequence.append("o");
+    for (MidiPairCluster midiPairCluster : midiPairClusters) {
+        for (MidiPair midiPair : midiPairCluster.midiPairs) {
+            if (midiPair.noteOn != emptyNoteOnEvent && midiPair.noteOff != emptyNoteOffEvent) {
+                sequence.append(MatchingService::RELEASED);
+            } else if (midiPair.noteOn != emptyNoteOnEvent){
+                sequence.append(MatchingService::PRESSED);
+            } else if (midiPair.noteOff != emptyNoteOffEvent) {
+                sequence.append("y");
+            } else {
+                sequence.append("o");
+            }
         }
     }
     return sequence;

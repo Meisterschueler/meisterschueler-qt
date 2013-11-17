@@ -8,7 +8,7 @@
 
 MatchingHandler::MatchingHandler(const QList<MatchingItem> &matchingItems) : matchingItems(matchingItems)
 {
-    midiPairs = QSharedPointer<QList<MidiPair>>(new QList<MidiPair>());
+    midiPairClusters = QSharedPointer<QList<MidiPairCluster>>(new QList<MidiPairCluster>());
     oldPitchSequence = QSharedPointer<QByteArray>(new QByteArray());
 }
 
@@ -22,26 +22,26 @@ void MatchingHandler::init() {
 
 void MatchingHandler::reset() {
     init();
-    (*midiPairs).clear();
+    (*midiPairClusters).clear();
     (*oldPitchSequence).clear();
 }
 
 void MatchingHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
-    MidiService::addNoteOn(*midiPairs, noteOn);
+    MidiService::addNoteOn(*midiPairClusters, noteOn);
     match();
 }
 
 void MatchingHandler::matchNoteOffEvent(NoteOffEvent noteOff) {
-    MidiService::addNoteOff(*midiPairs, noteOff);
+    MidiService::addNoteOff(*midiPairClusters, noteOff);
     match();
 }
 
 void MatchingHandler::matchChannelEvents(QList<ChannelEvent> channelEvents) {
     for (ChannelEvent channelEvent : channelEvents) {
         if (channelEvent.type() == Event::NoteOnEventType) {
-            MidiService::addNoteOn(*midiPairs, channelEvent);
+            MidiService::addNoteOn(*midiPairClusters, channelEvent);
         } else if (channelEvent.type() == Event::NoteOffEventType) {
-            MidiService::addNoteOff(*midiPairs, channelEvent);
+            MidiService::addNoteOff(*midiPairClusters, channelEvent);
         }
     }
     match();
@@ -50,18 +50,18 @@ void MatchingHandler::matchChannelEvents(QList<ChannelEvent> channelEvents) {
 void MatchingHandler::matchChannelEvents2(QList<ChannelEvent> channelEvents) {
     for (ChannelEvent channelEvent : channelEvents) {
         if (channelEvent.type() == Event::NoteOnEventType) {
-            MidiService::addNoteOn(*midiPairs, channelEvent);
+            MidiService::addNoteOn(*midiPairClusters, channelEvent);
         } else if (channelEvent.type() == Event::NoteOffEventType) {
-            MidiService::addNoteOff(*midiPairs, channelEvent);
+            MidiService::addNoteOff(*midiPairClusters, channelEvent);
         }
         match();
     }
 }
 
 void MatchingHandler::match() {
-    QSharedPointer<QByteArray> midiPitchSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2pitchSequence(*midiPairs)));
-    QSharedPointer<QByteArray> midiIntervalSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2intervalSequence(*midiPairs)));
-    QSharedPointer<QByteArray> pressedSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2pressedSequence(*midiPairs)));
+    QSharedPointer<QByteArray> midiPitchSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairClusters2pitchSequence(*midiPairClusters)));
+    QSharedPointer<QByteArray> midiIntervalSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairClusters2intervalSequence(*midiPairClusters)));
+    QSharedPointer<QByteArray> pressedSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairClusters2pressedSequence(*midiPairClusters)));
 
     bool pitchSequenceChanged = *oldPitchSequence != *midiPitchSequence;
 
@@ -71,7 +71,7 @@ void MatchingHandler::match() {
             continue;
         }
 
-        item.midiPairs = midiPairs;
+        item.midiPairClusters = midiPairClusters;
         item.midiPitchSequence = midiPitchSequence;
         item.midiIntervalSequence = midiIntervalSequence;
         item.pressedSequence = pressedSequence;
@@ -95,7 +95,7 @@ void MatchingHandler::match() {
 
     qSort(matchingItems);
     MatchingItem bestMatchingItem = matchingItems[0];
-    bestMatchingItem.mergedScores = MatchingService::merge(bestMatchingItem.song.voices.value(Hand::LEFT), *bestMatchingItem.midiPairs, bestMatchingItem.pitchAlignment);
+    //bestMatchingItem.mergedScores = MatchingService::merge(bestMatchingItem.song.voices.value(Hand::LEFT), *bestMatchingItem.midiPairClusters, bestMatchingItem.pitchAlignment);
     emit songRecognized(bestMatchingItem);
 
     double bestQuality = bestMatchingItem.quality;
@@ -104,8 +104,8 @@ void MatchingHandler::match() {
 
     bool isFinished = MatchingService::isFinished(bestMatchingItem.pitchAlignment, *bestMatchingItem.pressedSequence);
     if (isFinished) {
-        midiPairs = QSharedPointer<QList<MidiPair>>(new QList<MidiPair>());
-        (*midiPairs).append(MatchingService::cutMatchingMidiPairs(*bestMatchingItem.midiPairs, bestMatchingItem.pitchAlignment));
+        midiPairClusters = QSharedPointer<QList<MidiPairCluster>>(new QList<MidiPairCluster>());
+        //(*midiPairClusters).append(MatchingService::cutMatchingMidiPairs(*bestMatchingItem.midiPairClusters, bestMatchingItem.pitchAlignment));
         prepareAndEmitFinishedItem(bestMatchingItem);
         init();
     }
@@ -121,13 +121,13 @@ void MatchingHandler::disableBadItems(const double &lowerQualityLimit) {
 
 void MatchingHandler::prepareAndEmitFinishedItem(const MatchingItem& item) {
     MatchingItem finishedItem = item;
-    *finishedItem.midiPitchSequence = MatchingService::midiPairs2pitchSequence(*item.midiPairs);
-    *finishedItem.midiIntervalSequence = MatchingService::midiPairs2intervalSequence(*item.midiPairs);
-    *finishedItem.pressedSequence = MatchingService::midiPairs2pressedSequence(*item.midiPairs);
+    *finishedItem.midiPitchSequence = MatchingService::midiPairClusters2pitchSequence(*item.midiPairClusters);
+    *finishedItem.midiIntervalSequence = MatchingService::midiPairClusters2intervalSequence(*item.midiPairClusters);
+    *finishedItem.pressedSequence = MatchingService::midiPairClusters2pressedSequence(*item.midiPairClusters);
     finishedItem.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, finishedItem.transposition);
     finishedItem.intervalAlignment = MatchingService::getAlingment(item.scoreIntervalSequence, *item.midiIntervalSequence);
 
-    finishedItem.mergedScores = MatchingService::merge(finishedItem.song.voices.value(Hand::LEFT), *finishedItem.midiPairs, finishedItem.pitchAlignment);
+    //finishedItem.mergedScores = MatchingService::merge(finishedItem.song.voices.value(Hand::LEFT), *finishedItem.midiPairClusters, finishedItem.pitchAlignment);
 
     emit songFinished(finishedItem);
 }

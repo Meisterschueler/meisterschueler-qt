@@ -6,6 +6,7 @@
 
 class Score;
 class MidiPair;
+class MidiPairCluster;
 
 class MatchingService
 {
@@ -16,9 +17,9 @@ public:
     static const char RELEASED = '.';
 
     // pre matching
-    static QByteArray midiPairs2pitchSequence(const QList<MidiPair>& pairs);
-    static QByteArray midiPairs2intervalSequence(const QList<MidiPair>& pairs);
-    static QByteArray midiPairs2pressedSequence(const QList<MidiPair>& pairs);
+    static QByteArray midiPairClusters2pitchSequence(const QList<MidiPairCluster> &midiPairClusters);
+    static QByteArray midiPairClusters2intervalSequence(const QList<MidiPairCluster>& midiPairClusters);
+    static QByteArray midiPairClusters2pressedSequence(const QList<MidiPairCluster>& midiPairClusters);
 
     // matching
     static QByteArray getAlingment(const QByteArray& scorePitchSequence, const QByteArray& midiPitchSequence, const char& transposition=0, const QByteArray& oldAlignment = "");

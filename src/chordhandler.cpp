@@ -171,7 +171,7 @@ ChordHandler::ChordHandler(QObject *parent) :
     // Blues-Skala
     scales.insert("Blues-Skala", "[c e& f-(b5) g b&]");//-
 
-    midiPairs = QSharedPointer<QList<MidiPair>>(new QList<MidiPair>());
+    midiPairs = QSharedPointer<QList<MidiPairCluster>>(new QList<MidiPairCluster>());
 
     for (QString key : chords.keys()) {
         QString value = chords.value(key);
@@ -201,7 +201,7 @@ void ChordHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
 
     (*midiPairs).clear();
     for (NoteOnEvent noteOnEvent : noteOnEvents) {
-        (*midiPairs).append(MidiPair(noteOnEvent));
+        (*midiPairs).append(MidiPairCluster(noteOnEvent));
     }
     match();
 }
@@ -216,7 +216,7 @@ void ChordHandler::matchNoteOffEvent(NoteOffEvent noteOff) {
 
     (*midiPairs).clear();
     for (NoteOnEvent noteOnEvent : noteOnEvents) {
-        (*midiPairs).append(MidiPair(noteOnEvent));
+        (*midiPairs).append(MidiPairCluster(noteOnEvent));
     }
     match();
 }
@@ -228,9 +228,9 @@ void ChordHandler::matchChannelEvents(QList<ChannelEvent> channelEvents) {
 }
 
 void ChordHandler::match() {
-    QSharedPointer<QByteArray> midiPitchSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2pitchSequence(*midiPairs)));
-    QSharedPointer<QByteArray> midiIntervalSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2intervalSequence(*midiPairs)));
-    QSharedPointer<QByteArray> pressedSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairs2pressedSequence(*midiPairs)));
+    QSharedPointer<QByteArray> midiPitchSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairClusters2pitchSequence(*midiPairs)));
+    QSharedPointer<QByteArray> midiIntervalSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairClusters2intervalSequence(*midiPairs)));
+    QSharedPointer<QByteArray> pressedSequence = QSharedPointer<QByteArray>(new QByteArray(MatchingService::midiPairClusters2pressedSequence(*midiPairs)));
 
     for (QList<MatchingItem>::iterator i = matchingItems.begin(); i != matchingItems.end(); ++i) {
         MatchingItem item = *i;

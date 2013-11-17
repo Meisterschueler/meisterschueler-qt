@@ -20,7 +20,7 @@ private:
     QList<NoteOnEvent> noteOnEvents;
 
     QList<MatchingItem> matchingItems;
-    QSharedPointer<QList<MidiPair>> midiPairs;
+    QSharedPointer<QList<MidiPairCluster>> midiPairs;
     
 signals:
     void chordRecognized(MatchingItem matchingItem);
