@@ -185,7 +185,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
 void MainWindow::on_actionBubbleView_triggered() {
     bubbleView = new BubbleView();
 
-    QObject::connect(clusterHandler, &ClusterHandler::gotMidiPairs, bubbleView, &BubbleView::showMidiPairs);
+    QObject::connect(clusterHandler, &ClusterHandler::gotMidiPairClusters, bubbleView, &BubbleView::showMidiPairClusters);
     QObject::connect(bubbleView, &BubbleView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
     QObject::connect(bubbleView, &BubbleView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
@@ -259,7 +259,7 @@ void MainWindow::on_actionActionQCustomPlot_triggered()
 {
     CustomView *customView = new CustomView();
 
-    QObject::connect(clusterHandler, &ClusterHandler::gotMidiPairs, customView, &CustomView::showMidiPairs);
+    QObject::connect(clusterHandler, &ClusterHandler::gotMidiPairClusters, customView, &CustomView::showMidiPairClusters);
 
     setCentralWidget(customView);
 }

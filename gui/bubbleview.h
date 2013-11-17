@@ -21,7 +21,7 @@ private:
     QGraphicsPixmapItem *backgroundItem;
     QPoint soundCoords;
 
-    QList<MidiPair> oldMidiPairs;
+    QList<MidiPairCluster> oldMidiPairClusters;
     QMap<MidiPair, BubbleGraphicsItem*> midiPairBubbleMap;
 
     BubbleGraphicsItem *makeBubble();
@@ -34,7 +34,7 @@ private:
 
 public slots:
     void reset();
-    void showMidiPairs(QList<MidiPair> midiPairs);
+    void showMidiPairClusters(QList<MidiPairCluster> midiPairClusters);
 
 signals:
     void gotNoteOnEvent(NoteOnEvent event);

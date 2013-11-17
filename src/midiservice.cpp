@@ -19,11 +19,6 @@ MidiService::MidiService()
 void MidiService::addNoteOn(QList<MidiPair>& pairs, const NoteOnEvent &noteOn) {
     MidiPair pair(noteOn);
     pairs.append(pair);
-
-    // Just sort the last 10 elements
-    // TODO: just insert at the right place would be even faster
-    QList<MidiPair>::iterator it = pairs.end() - 10;
-    qSort(qMax(pairs.begin(), it), pairs.end());
 }
 
 void MidiService::addNoteOff(QList<MidiPair>& pairs, const NoteOffEvent &noteOff) {
@@ -34,6 +29,38 @@ void MidiService::addNoteOff(QList<MidiPair>& pairs, const NoteOffEvent &noteOff
         if (it.value().noteOn.getNote() == noteOff.getNote() && it.value().noteOff == emptyNoteOffEvent) {
             it.value().noteOff = noteOff;
             break;
+        }
+    }
+}
+
+void MidiService::addNoteOn(QList<MidiPairCluster>& pairClusters, const NoteOnEvent &noteOn) {
+    QMutableListIterator<MidiPairCluster> it(pairClusters);
+    it.toBack();
+    while (it.hasPrevious()) {
+        it.previous();
+        if (it.value().time + 50 > noteOn.getTime()) {
+            MidiPair pair(noteOn);
+            it.value().midiPairs.append(pair);
+            qSort(it.value().midiPairs);
+            return;
+        }
+    }
+    MidiPair pair(noteOn);
+    it.value().midiPairs.append(pair);
+}
+
+void MidiService::addNoteOff(QList<MidiPairCluster>& pairClusters, const NoteOffEvent &noteOff) {
+    QMutableListIterator<MidiPairCluster> it(pairClusters);
+    it.toBack();
+    while (it.hasPrevious()) {
+        it.previous();
+        QMutableListIterator<MidiPair> it2(it.value().midiPairs);
+        while (it2.hasNext()) {
+            it2.next();
+            if (it2.value().noteOn.getNote() == noteOff.getNote() && it2.value().noteOff == emptyNoteOffEvent) {
+                it2.value().noteOff = noteOff;
+                return;
+            }
         }
     }
 }

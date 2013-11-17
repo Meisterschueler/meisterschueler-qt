@@ -22,8 +22,8 @@ ClusterHandler::ClusterHandler()
 void ClusterHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
     resetTimer->stop();
 
-    MidiService::addNoteOn(midiPairs, noteOn);
-    emit gotMidiPairs(midiPairs);
+    MidiService::addNoteOn(midiPairClusters, noteOn);
+    emit gotMidiPairClusters(midiPairClusters);
     channelEvents.append(noteOn);
     if (!delayTimer->isActive()) {
         delayTimer->start(CHORD_DELAY);
@@ -32,9 +32,9 @@ void ClusterHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
 }
 
 void ClusterHandler::matchNoteOffEvent(NoteOffEvent noteOff) {    
-    MidiService::addNoteOff(midiPairs, noteOff);
+    MidiService::addNoteOff(midiPairClusters, noteOff);
     channelEvents.append(noteOff);
-    emit gotMidiPairs(midiPairs);
+    emit gotMidiPairClusters(midiPairClusters);
     if (!delayTimer->isActive()) {
         delayTimer->start(CHORD_DELAY);
     }
@@ -59,6 +59,6 @@ void ClusterHandler::timeOutDelay() {
 }
 
 void ClusterHandler::timeOutReset() {
-    midiPairs.clear();
+    midiPairClusters.clear();
     emit reset();
 }

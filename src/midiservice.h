@@ -5,6 +5,7 @@
 #include <QList>
 
 class MidiPair;
+class MidiPairCluster;
 class ChannelEvent;
 class NoteOnEvent;
 class NoteOffEvent;
@@ -16,6 +17,9 @@ public:
 
     static void addNoteOn(QList<MidiPair> &pairs, const NoteOnEvent& noteOn);
     static void addNoteOff(QList<MidiPair> &pairs, const NoteOffEvent& noteOff);
+
+    static void addNoteOn(QList<MidiPairCluster> &pairClusters, const NoteOnEvent& noteOn);
+    static void addNoteOff(QList<MidiPairCluster> &pairClusters, const NoteOffEvent& noteOff);
 
     static bool save(const QString& fileName, const QList<ChannelEvent>& events);
     static QList<ChannelEvent> load(const QString fileName);

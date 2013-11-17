@@ -30,8 +30,8 @@ CustomView::CustomView(QWidget *parent) :
     updateDiagram();
 }
 
-void CustomView::showMidiPairs(QList<MidiPair> midiPairs) {
-    StatisticCluster statisticCluster = StatisticsService::getStatisticCluster(midiPairs, Frac_1_16);
+void CustomView::showMidiPairClusters(QList<MidiPairCluster> midiPairClusters) {
+    /*StatisticCluster statisticCluster = StatisticsService::getStatisticCluster(midiPairClusters, Frac_1_16);
 
     StatisticItem x;
     StatisticItem xLM;
@@ -88,8 +88,8 @@ void CustomView::showMidiPairs(QList<MidiPair> midiPairs) {
     ellipseLM->bottomRight->setCoords(xLM.mean+xLM.standarddeviation,
                                   yLM.mean-yLM.standarddeviation);
 
-
     this->replot();
+    */
 }
 
 void CustomView::updateDiagram() {

@@ -16,10 +16,10 @@ public:
 signals:
     
 public slots:
-    void showMidiPairs(QList<MidiPair> midiPairs);
+    void showMidiPairClusters(QList<MidiPairCluster> midiPairClusters);
     
 private:
-    QList<MidiPair> midiPairs;
+    QList<MidiPairCluster> midiPairClusters;
 
     enum eAxis {SPEED, VELOCITY, OVERLAP};
     eAxis xAxisType;

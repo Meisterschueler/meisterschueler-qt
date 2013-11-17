@@ -21,7 +21,7 @@ public slots:
 signals:
     void gotChannelEvents(QList<ChannelEvent> events);
     void gotControlChangeEvent(ControlChangeEvent event);
-    void gotMidiPairs(QList<MidiPair> midiPairs);
+    void gotMidiPairClusters(QList<MidiPairCluster> midiPairClusters);
     void reset();
 
 private:
@@ -30,7 +30,7 @@ private:
     QList<ChannelEvent> channelEvents;
     bool pressedKeys[128];
 
-    QList<MidiPair> midiPairs;
+    QList<MidiPairCluster> midiPairClusters;
 
     static constexpr int CHORD_DELAY = 50;
     static constexpr int RESET_DELAY = 2000;

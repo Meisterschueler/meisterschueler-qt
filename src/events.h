@@ -188,13 +188,27 @@ public:
     }
 
     bool operator<(const MidiPair& rhs) const {
-        if (this->noteOn != emptyNoteOnEvent && rhs.noteOn != emptyNoteOffEvent) {
-            if ( noteOn.getTime() + 50 < rhs.noteOn.getTime() ) {
-                return true;
-            } else if ( noteOn.getTime() > rhs.noteOn.getTime() + 50 ) {
-                return false;
-            } else if ( noteOn < rhs.noteOn ) {
-                return true;
+        return (this->noteOn.getNote() < rhs.noteOn.getNote() );
+    }
+};
+
+class MidiPairCluster {
+public:
+    time_t time;
+    QList<MidiPair> midiPairs;
+
+    bool operator<(const MidiPairCluster& rhs) const {
+        return (this->time < rhs.time);
+    }
+
+    bool operator!=(const MidiPairCluster& rhs) const {
+        if (this->time!=rhs.time || this->midiPairs.count() != rhs.midiPairs.count()) {
+            return true;
+        } else {
+            for (int var = 0; var < midiPairs.count(); ++var) {
+                if (midiPairs.at(var) != rhs.midiPairs.at(var)) {
+                    return true;
+                }
             }
         }
         return false;
