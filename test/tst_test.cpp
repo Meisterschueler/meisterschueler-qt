@@ -600,55 +600,45 @@ void Test::songService_findIntervalWithFingers() {
 // MIDISERVICE
 
 void Test::midiService_addNote() {
-    // AaBbEFCecf | GHgDhd
-
     NoteOnEvent A(  0, 0, 10, 0); NoteOffEvent a( 50, 0, 10, 0);
     NoteOnEvent B(100, 0, 20, 0); NoteOffEvent b(150, 0, 20, 0);
-    NoteOnEvent C(200, 0, 30, 0); NoteOffEvent c(250, 0, 30, 0);
-    NoteOnEvent D(300, 0, 40, 0); NoteOffEvent d(350, 0, 40, 0);
-    NoteOnEvent E(400, 0, 60, 0); NoteOffEvent e(450, 0, 60, 0);
+    NoteOnEvent C(120, 0, 30, 0); NoteOffEvent c(170, 0, 30, 0);
+    NoteOnEvent D(130, 0, 25, 0); NoteOffEvent d(140, 0, 25, 0);
+    NoteOnEvent E(131, 0, 12, 0); NoteOffEvent e(132, 0, 12, 0);
     NoteOnEvent F(500, 0, 70, 0); NoteOffEvent f(550, 0, 70, 0);
-    NoteOnEvent G(600, 0, 80, 0); NoteOffEvent g(650, 0, 80, 0);
-    NoteOnEvent H(700, 0, 90, 0); NoteOffEvent h(750, 0, 90, 0);
 
-    QList<MidiPair> pairs;
+    QList<MidiPairCluster> mpc;
 
-    MidiService::addNoteOn(pairs, A);
-    MidiService::addNoteOff(pairs, a);
-    MidiService::addNoteOn(pairs, B);
-    MidiService::addNoteOff(pairs, b);
-    MidiService::addNoteOn(pairs, E);
-    MidiService::addNoteOn(pairs, F);
-    MidiService::addNoteOn(pairs, C);
-    MidiService::addNoteOff(pairs, e);
-    MidiService::addNoteOff(pairs, c);
-    MidiService::addNoteOff(pairs, f);
+    MidiService::addNoteOn(mpc, A);
+    MidiService::addNoteOff(mpc, a);
+    MidiService::addNoteOn(mpc, B);
+    MidiService::addNoteOff(mpc, b);
+    MidiService::addNoteOn(mpc, C);
+    MidiService::addNoteOn(mpc, D);
+    MidiService::addNoteOn(mpc, E);
+    MidiService::addNoteOff(mpc, e);
+    MidiService::addNoteOff(mpc, d);
+    MidiService::addNoteOff(mpc, c);
 
-    MidiService::addNoteOn(pairs, G);
-    MidiService::addNoteOn(pairs, H);
-    MidiService::addNoteOff(pairs, g);
-    MidiService::addNoteOn(pairs, D);
-    MidiService::addNoteOff(pairs, h);
-    MidiService::addNoteOff(pairs, d);
+    QCOMPARE( mpc.size(), 3 );
 
-    QCOMPARE( pairs.size(), 8 );
+    QVERIFY( mpc.at(0).midiPairs.count() == 1 );
+    QVERIFY( A == mpc.at(0).midiPairs.at(0).noteOn );
+    QVERIFY( a == mpc.at(0).midiPairs.at(0).noteOff );
 
-    QVERIFY( A == pairs.at(0).noteOn );
-    QVERIFY( a == pairs.at(0).noteOff );
-    QVERIFY( B == pairs.at(1).noteOn );
-    QVERIFY( b == pairs.at(1).noteOff );
-    QVERIFY( C == pairs.at(2).noteOn );
-    QVERIFY( c == pairs.at(2).noteOff );
-    QVERIFY( D == pairs.at(3).noteOn );
-    QVERIFY( d == pairs.at(3).noteOff );
-    QVERIFY( E == pairs.at(4).noteOn );
-    QVERIFY( e == pairs.at(4).noteOff );
-    QVERIFY( F == pairs.at(5).noteOn );
-    QVERIFY( f == pairs.at(5).noteOff );
-    QVERIFY( G == pairs.at(6).noteOn );
-    QVERIFY( g == pairs.at(6).noteOff );
-    QVERIFY( H == pairs.at(7).noteOn );
-    QVERIFY( h == pairs.at(7).noteOff );
+    QVERIFY( mpc.at(1).midiPairs.count() == 4 );
+    QVERIFY( B == mpc.at(1).midiPairs.at(0).noteOn );
+    QVERIFY( b == mpc.at(1).midiPairs.at(0).noteOff );
+    QVERIFY( C == mpc.at(1).midiPairs.at(1).noteOn );
+    QVERIFY( c == mpc.at(1).midiPairs.at(1).noteOff );
+    QVERIFY( D == mpc.at(1).midiPairs.at(2).noteOn );
+    QVERIFY( d == mpc.at(1).midiPairs.at(2).noteOff );
+    QVERIFY( E == mpc.at(1).midiPairs.at(3).noteOn );
+    QVERIFY( e == mpc.at(1).midiPairs.at(3).noteOff );
+
+    QVERIFY( mpc.at(2).midiPairs.count() == 1 );
+    QVERIFY( F == mpc.at(2).midiPairs.at(0).noteOn );
+    QVERIFY( f == mpc.at(2).midiPairs.at(0).noteOff );
 }
 
 void Test::midiService_saveLoad() {
@@ -858,7 +848,6 @@ void Test::matchingService_merge() {
 // MATCHINGHANDLER
 
 void Test::matchingHandler_simple() {
-    QSKIP("Broken");
     QString gmnUp = "[c0/16 d e f]";
     MatchingItem upItem = gmnToMatchingItem(gmnUp);
 
@@ -976,7 +965,6 @@ void Test::matchingHandler_simple() {
 }
 
 void Test::matchingHandler_hanonNo1Left() {
-    QSKIP("Broken");
     QString fileName1("../../meisterschueler-qt/test/midifiles/hanonNo1Left.mid");
     QFile hanonFile1(fileName1);
     QVERIFY( hanonFile1.exists() );
@@ -1326,7 +1314,6 @@ void Test::mergingHandler_simple() {
 // CLUSTERHANDLER
 
 void Test::clusterHandler_simple() {
-    QSKIP("Broken");
     ClusterHandler clusterHandler;
     QSignalSpy channelEventsSpy(&clusterHandler, SIGNAL(gotChannelEvents(QList<ChannelEvent>)));
 
