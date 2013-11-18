@@ -619,22 +619,23 @@ void Test::midiService_addNote() {
     MidiService::addNoteOff(mpc, e);
     MidiService::addNoteOff(mpc, d);
     MidiService::addNoteOff(mpc, c);
+    MidiService::addNoteOn(mpc, F);
+    MidiService::addNoteOff(mpc, f);
 
     QCOMPARE( mpc.size(), 3 );
-
     QVERIFY( mpc.at(0).midiPairs.count() == 1 );
     QVERIFY( A == mpc.at(0).midiPairs.at(0).noteOn );
     QVERIFY( a == mpc.at(0).midiPairs.at(0).noteOff );
 
     QVERIFY( mpc.at(1).midiPairs.count() == 4 );
-    QVERIFY( B == mpc.at(1).midiPairs.at(0).noteOn );
-    QVERIFY( b == mpc.at(1).midiPairs.at(0).noteOff );
-    QVERIFY( C == mpc.at(1).midiPairs.at(1).noteOn );
-    QVERIFY( c == mpc.at(1).midiPairs.at(1).noteOff );
+    QVERIFY( B == mpc.at(1).midiPairs.at(1).noteOn );
+    QVERIFY( b == mpc.at(1).midiPairs.at(1).noteOff );
+    QVERIFY( C == mpc.at(1).midiPairs.at(3).noteOn );
+    QVERIFY( c == mpc.at(1).midiPairs.at(3).noteOff );
     QVERIFY( D == mpc.at(1).midiPairs.at(2).noteOn );
     QVERIFY( d == mpc.at(1).midiPairs.at(2).noteOff );
-    QVERIFY( E == mpc.at(1).midiPairs.at(3).noteOn );
-    QVERIFY( e == mpc.at(1).midiPairs.at(3).noteOff );
+    QVERIFY( E == mpc.at(1).midiPairs.at(0).noteOn );
+    QVERIFY( e == mpc.at(1).midiPairs.at(0).noteOff );
 
     QVERIFY( mpc.at(2).midiPairs.count() == 1 );
     QVERIFY( F == mpc.at(2).midiPairs.at(0).noteOn );
@@ -700,7 +701,7 @@ void Test::matchingService_midiPairs2xy() {
     MidiPair Dd(D, d);
 
     QList<MidiPairCluster> pairs;
-    pairs.append(Aa);
+    pairs.append(Aa);   // TODO: hier wird implizit der MidiPairCluster-Konstruktor genommen... will man das?
     pairs.append(Bb);
     pairs.append(Cc);
     pairs.append(Dd);
