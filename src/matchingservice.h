@@ -28,10 +28,10 @@ public:
     static double getSongQuality(const QByteArray& pitchAlignment, char transposition);
     static double getChordQuality(const QByteArray& pitchAlignment);
     static bool isFinished(const QByteArray& pitchAlignment, const QByteArray& pressedSequence);
-    static QList<MidiPair> cutMatchingMidiPairs(QList<MidiPair>& pairs, const QByteArray& pitchAlignment);
+    static QList<MidiPairCluster> cutMatchingMidiPairs(QList<MidiPairCluster>& pairs, const QByteArray& pitchAlignment);
 
     // post matching
-    static QList<Score> merge(const QList<Score>& scores, const QList<MidiPair>& midiPairs, const QByteArray& pitchAlignment);
+    static QList<Score> merge(const QList<Score>& scores, const QList<MidiPairCluster>& midiPairClusters, const QByteArray& pitchAlignment);
 };
 
 #endif // MATCHINGSERVICE_H

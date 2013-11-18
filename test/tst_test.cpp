@@ -791,12 +791,12 @@ void Test::matchingService_cutMatchingMidiPairs() {
     MidiPair Bb(B, b);
     MidiPair Cc(C, c);
 
-    QList<MidiPair> pairs;
+    QList<MidiPairCluster> pairs;
     pairs.append(Aa);
     pairs.append(Bb);
     pairs.append(Cc);
 
-    QList<MidiPair> rest = MatchingService::cutMatchingMidiPairs(pairs, "mmi");
+    QList<MidiPairCluster> rest = MatchingService::cutMatchingMidiPairs(pairs, "mmi");
     QCOMPARE( pairs.size(), 2 );
     QCOMPARE( rest.size(), 1 );
     QVERIFY( rest.at(0) == Cc );
@@ -818,17 +818,17 @@ void Test::matchingService_merge() {
     MidiPair Ee(NoteOnEvent(100, 0, 63, 0), NoteOffEvent(110, 0, 63, 0));
     MidiPair Ff(NoteOnEvent(100, 0, 65, 0), NoteOffEvent(110, 0, 65, 0));
 
-    QList<MidiPair> midiPairs;
-    midiPairs.append(A);
-    midiPairs.append(Bb);
-    midiPairs.append(Cc);
-    midiPairs.append(Dd);
-    midiPairs.append(Ee);
-    midiPairs.append(Ff);
+    QList<MidiPairCluster> mpc;
+    mpc.append(A);
+    mpc.append(Bb);
+    mpc.append(Cc);
+    mpc.append(Dd);
+    mpc.append(Ee);
+    mpc.append(Ff);
 
     QByteArray pitchAlignment = "mmdmimw";
 
-    QList<Score> mergedScores = MatchingService::merge(scores, midiPairs, pitchAlignment);
+    QList<Score> mergedScores = MatchingService::merge(scores, mpc, pitchAlignment);
 
     QCOMPARE( mergedScores.size(), 7 );
     QVERIFY( mergedScores.at(0).status == PLAYED );

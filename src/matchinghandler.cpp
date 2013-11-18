@@ -95,7 +95,7 @@ void MatchingHandler::match() {
 
     qSort(matchingItems);
     MatchingItem bestMatchingItem = matchingItems[0];
-    //bestMatchingItem.mergedScores = MatchingService::merge(bestMatchingItem.song.voices.value(Hand::LEFT), *bestMatchingItem.midiPairClusters, bestMatchingItem.pitchAlignment);
+    bestMatchingItem.mergedScores = MatchingService::merge(bestMatchingItem.song.voices.value(Hand::LEFT), *bestMatchingItem.midiPairClusters, bestMatchingItem.pitchAlignment);
     emit songRecognized(bestMatchingItem);
 
     double bestQuality = bestMatchingItem.quality;
@@ -105,7 +105,7 @@ void MatchingHandler::match() {
     bool isFinished = MatchingService::isFinished(bestMatchingItem.pitchAlignment, *bestMatchingItem.pressedSequence);
     if (isFinished) {
         midiPairClusters = QSharedPointer<QList<MidiPairCluster>>(new QList<MidiPairCluster>());
-        //(*midiPairClusters).append(MatchingService::cutMatchingMidiPairs(*bestMatchingItem.midiPairClusters, bestMatchingItem.pitchAlignment));
+        (*midiPairClusters).append(MatchingService::cutMatchingMidiPairs(*bestMatchingItem.midiPairClusters, bestMatchingItem.pitchAlignment));
         prepareAndEmitFinishedItem(bestMatchingItem);
         init();
     }
@@ -127,7 +127,7 @@ void MatchingHandler::prepareAndEmitFinishedItem(const MatchingItem& item) {
     finishedItem.pitchAlignment = MatchingService::getAlingment(item.scorePitchSequence, *item.midiPitchSequence, finishedItem.transposition);
     finishedItem.intervalAlignment = MatchingService::getAlingment(item.scoreIntervalSequence, *item.midiIntervalSequence);
 
-    //finishedItem.mergedScores = MatchingService::merge(finishedItem.song.voices.value(Hand::LEFT), *finishedItem.midiPairClusters, finishedItem.pitchAlignment);
+    finishedItem.mergedScores = MatchingService::merge(finishedItem.song.voices.value(Hand::LEFT), *finishedItem.midiPairClusters, finishedItem.pitchAlignment);
 
     emit songFinished(finishedItem);
 }

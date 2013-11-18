@@ -155,22 +155,29 @@ bool MatchingService::isFinished(const QByteArray& pitchAlignment, const QByteAr
     return result;
 }
 
-QList<MidiPair> MatchingService::cutMatchingMidiPairs(QList<MidiPair>& pairs, const QByteArray& pitchAlignment) {
-    QList<MidiPair> result;
+QList<MidiPairCluster> MatchingService::cutMatchingMidiPairs(QList<MidiPairCluster>& pairs, const QByteArray& pitchAlignment) {
+    QList<MidiPairCluster> result;
 
-    QString alignment(pitchAlignment);
+    /*QString alignment(pitchAlignment);
     while (alignment.endsWith("i")) {
         alignment.remove(alignment.size()-1, 1);
     }
     alignment.remove('d');
 
     result = pairs.mid(alignment.size());
-    pairs = pairs.mid(0, alignment.size());
+    pairs = pairs.mid(0, alignment.size());*/
 
     return result;
 }
 
-QList<Score> MatchingService::merge(const QList<Score>& scores, const QList<MidiPair>& midiPairs, const QByteArray& pitchAlignment) {
+QList<Score> MatchingService::merge(const QList<Score>& scores, const QList<MidiPairCluster>& midiPairClusters, const QByteArray& pitchAlignment) {
+    QList<MidiPair> midiPairs;
+    for (MidiPairCluster mpc : midiPairClusters) {
+        for (MidiPair midiPair : mpc.midiPairs) {
+            midiPairs.append(midiPair);
+        }
+    }
+
     QList<Score> result;
     int idx_scores = 0, idx_midiPairs = 0, idx_alignment = 0;
     while (idx_alignment < pitchAlignment.size()) {
