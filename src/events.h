@@ -197,6 +197,8 @@ public:
     time_t time;
     QList<MidiPair> midiPairs;
 
+    MidiPairCluster() : time(0) {}
+
     MidiPairCluster(MidiPair midiPair) {
         time = midiPair.noteOn.getTime();
         midiPairs.append(midiPair);
@@ -206,17 +208,21 @@ public:
         return (this->time < rhs.time);
     }
 
-    bool operator!=(const MidiPairCluster& rhs) const {
-        if (this->time!=rhs.time || this->midiPairs.count() != rhs.midiPairs.count()) {
-            return true;
+    bool operator==(const MidiPairCluster& rhs) const {
+        if (this->time != rhs.time || this->midiPairs.count() != rhs.midiPairs.count()) {
+            return false;
         } else {
-            for (int var = 0; var < midiPairs.count(); ++var) {
-                if (midiPairs.at(var) != rhs.midiPairs.at(var)) {
-                    return true;
+            for (int i = 0; i < midiPairs.count(); ++i) {
+                if (midiPairs.at(i) != rhs.midiPairs.at(i)) {
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
+    }
+
+    bool operator!=(const MidiPairCluster& rhs) const {
+        return !((*this)==rhs);
     }
 };
 
