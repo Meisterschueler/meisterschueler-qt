@@ -186,6 +186,7 @@ void MainWindow::on_actionBubbleView_triggered() {
     bubbleView = new BubbleView();
 
     QObject::connect(clusterHandler, &ClusterHandler::gotMidiPairClusters, bubbleView, &BubbleView::showMidiPairClusters);
+    QObject::connect(clusterHandler, &ClusterHandler::reset, bubbleView, &BubbleView::reset);
     QObject::connect(bubbleView, &BubbleView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
     QObject::connect(bubbleView, &BubbleView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
