@@ -799,7 +799,8 @@ void Test::matchingService_cutMatchingMidiPairs() {
     QList<MidiPairCluster> rest = MatchingService::cutMatchingMidiPairs(pairs, "mmi");
     QCOMPARE( pairs.size(), 2 );
     QCOMPARE( rest.size(), 1 );
-    QVERIFY( rest.at(0) == Cc );
+    QCOMPARE( rest.at(0).midiPairs.size(), 1 );
+    QVERIFY( rest.at(0).midiPairs.at(0) == Cc );
 }
 
 void Test::matchingService_merge() {

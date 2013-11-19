@@ -158,14 +158,21 @@ bool MatchingService::isFinished(const QByteArray& pitchAlignment, const QByteAr
 QList<MidiPairCluster> MatchingService::cutMatchingMidiPairs(QList<MidiPairCluster>& pairs, const QByteArray& pitchAlignment) {
     QList<MidiPairCluster> result;
 
-    /*QString alignment(pitchAlignment);
+    QString alignment(pitchAlignment);
     while (alignment.endsWith("i")) {
         alignment.remove(alignment.size()-1, 1);
     }
     alignment.remove('d');
 
-    result = pairs.mid(alignment.size());
-    pairs = pairs.mid(0, alignment.size());*/
+    int idx = 0;
+    int splitpoint = alignment.size();
+    for (int i = 0; i < pairs.count(); ++i) {
+        idx += pairs.at(i).midiPairs.count();
+        if (idx > splitpoint) {
+            result = pairs.mid(i);
+            pairs = pairs.mid(0, i);
+        }
+    }
 
     return result;
 }
