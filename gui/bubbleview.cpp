@@ -156,11 +156,9 @@ void BubbleView::showMidiPairClusters(QList<MidiPairCluster> midiPairClusters) {
                     midiPairBubbleMap.remove(oldMidiPair);
                     midiPairBubbleMap.insert(midiPair, bubble);
 
-                    if (oldMidiPair.noteOn != emptyNoteOnEvent && oldMidiPair.noteOff != emptyNoteOffEvent) {
-                        NoteOnEvent noteOn = oldMidiPair.noteOn;
-                        QPoint pos = mapFromScene(noteOn.getNote(), 127-noteOn.getVelocity());
-                        attachDisappearingAnimation(bubble, pos);
-                    }
+                    NoteOnEvent noteOn = oldMidiPair.noteOn;
+                    QPoint pos = mapFromScene(noteOn.getNote(), 127-noteOn.getVelocity());
+                    attachDisappearingAnimation(bubble, pos);
                 } else {
                     // ungeändertes Bubble
                 }
