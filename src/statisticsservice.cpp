@@ -188,7 +188,7 @@ StatisticCluster StatisticsService::getStatisticCluster(const QList<MidiPairClus
     */
 
     for (MidiPairCluster mpc : mpcs) {
-        for (int i = 1; i < mpc.midiPairs.count(); ++i) {
+        for (int i = 0; i < mpc.midiPairs.count(); ++i) {
             offsets.append(mpc.midiPairs.at(i).noteOn.getTime()-mpc.time);
         }
     }

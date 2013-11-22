@@ -1147,10 +1147,14 @@ void Test::statisticsService_statisticCluster_fromMidiPairCluster() {
     QCOMPARE( statisticCluster.speed.values.at(2), 100.0 );
     QCOMPARE( statisticCluster.speed.values.at(3), 100.0 );
 
-    QCOMPARE( statisticCluster.offset.values.size(), 3 );
-    QCOMPARE( statisticCluster.offset.values.at(0),  10.0 );
-    QCOMPARE( statisticCluster.offset.values.at(1),  20.0 );
-    QCOMPARE( statisticCluster.offset.values.at(2),  30.0 );
+    QCOMPARE( statisticCluster.offset.values.size(), 7 );
+    QCOMPARE( statisticCluster.offset.values.at(0),  0.0 );
+    QCOMPARE( statisticCluster.offset.values.at(1),  0.0 );
+    QCOMPARE( statisticCluster.offset.values.at(2), 10.0 );
+    QCOMPARE( statisticCluster.offset.values.at(0), 20.0 );
+    QCOMPARE( statisticCluster.offset.values.at(1),  0.0 );
+    QCOMPARE( statisticCluster.offset.values.at(2), 30.0 );
+    QCOMPARE( statisticCluster.offset.values.at(0),  0.0 );
 }
 
 void Test::statisticsService_statisticCluster_constantSpeed() {
