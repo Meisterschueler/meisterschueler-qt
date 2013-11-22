@@ -1022,8 +1022,12 @@ void Test::chordHandler_cminor() {
 // STATISTICSSERVICE
 
 void Test::statisticsService_statisticItem() {
+    QVector<double> noValues;
+    StatisticItem item = StatisticsService::getStatisticItem(noValues);
+    QVERIFY( item.values == noValues );
+
     QVector<double> values {0.0, 1.0, 2.0, 3.0};
-    StatisticItem item = StatisticsService::getStatisticItem(values);
+    item = StatisticsService::getStatisticItem(values);
     QVERIFY( item.values == values );
     QCOMPARE( item.min, 0.0 );
     QCOMPARE( item.max, 3.0 );
@@ -1115,7 +1119,7 @@ void Test::statisticsService_statisticCluster_fromMidiPairCluster() {
     MidiPairCluster c(NoteOnEvent(1800, 0, 65, 50));
     c.midiPairs.append(MidiPair(NoteOnEvent(1830, 0, 67, 50)));
 
-    MidiPairCluster d(NoteOnEvent(3600, 0, 67, 50));
+    MidiPairCluster d(NoteOnEvent(2400, 0, 67, 50));
 
     mpc.append(a);
     StatisticCluster statisticCluster = StatisticsService::getStatisticCluster(mpc);
@@ -1124,29 +1128,29 @@ void Test::statisticsService_statisticCluster_fromMidiPairCluster() {
 
     mpc.append(b);
     statisticCluster = StatisticsService::getStatisticCluster(mpc);
-    QCOMPARE( statisticCluster.speed.values.size(), 1 );
+    QCOMPARE( statisticCluster.speed.values.size(), 2 );
     QCOMPARE( statisticCluster.speed.values.at(0), 60.0 );
-    QCOMPARE( statisticCluster.speed.values.at(0), 60.0 );
+    QCOMPARE( statisticCluster.speed.values.at(1), 60.0 );
 
     mpc.append(c);
     statisticCluster = StatisticsService::getStatisticCluster(mpc);
-    QCOMPARE( statisticCluster.speed.values.size(), 1 );
+    QCOMPARE( statisticCluster.speed.values.size(), 3 );
     QCOMPARE( statisticCluster.speed.values.at(0), 60.0 );
-    QCOMPARE( statisticCluster.speed.values.at(0), 60.0 );
-    QCOMPARE( statisticCluster.speed.values.at(0), 75.0 );
+    QCOMPARE( statisticCluster.speed.values.at(1), 75.0 );
+    QCOMPARE( statisticCluster.speed.values.at(2), 75.0 );
 
     mpc.append(d);
     statisticCluster = StatisticsService::getStatisticCluster(mpc);
-    QCOMPARE( statisticCluster.speed.values.size(), 1 );
+    QCOMPARE( statisticCluster.speed.values.size(), 4 );
     QCOMPARE( statisticCluster.speed.values.at(0),  60.0 );
-    QCOMPARE( statisticCluster.speed.values.at(0),  60.0 );
-    QCOMPARE( statisticCluster.speed.values.at(0),  75.0 );
-    QCOMPARE( statisticCluster.speed.values.at(0), 100.0 );
+    QCOMPARE( statisticCluster.speed.values.at(1),  75.0 );
+    QCOMPARE( statisticCluster.speed.values.at(2), 100.0 );
+    QCOMPARE( statisticCluster.speed.values.at(3), 100.0 );
 
     QCOMPARE( statisticCluster.offset.values.size(), 3 );
     QCOMPARE( statisticCluster.offset.values.at(0),  10.0 );
-    QCOMPARE( statisticCluster.offset.values.at(0),  20.0 );
-    QCOMPARE( statisticCluster.offset.values.at(0),  30.0 );
+    QCOMPARE( statisticCluster.offset.values.at(1),  20.0 );
+    QCOMPARE( statisticCluster.offset.values.at(2),  30.0 );
 }
 
 void Test::statisticsService_statisticCluster_constantSpeed() {

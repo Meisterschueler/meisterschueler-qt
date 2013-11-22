@@ -37,7 +37,7 @@ public:
     StatisticsService();
 
     static StatisticItem getStatisticItem(const QVector<double>& values);
-    static StatisticCluster getStatisticCluster(const QList<MidiPairCluster>& mpc, const Fraction& fraction = Frac_1_4);
+    static StatisticCluster getStatisticCluster(const QList<MidiPairCluster>& mpcs, const Fraction& fraction = Frac_1_4);
     static StatisticCluster getStatisticCluster(const QList<MidiPair>& midiPairs, const Fraction& fraction = Frac_1_4);
     static StatisticCluster getStatisticCluster(const QList<Score>& scores);
 };
