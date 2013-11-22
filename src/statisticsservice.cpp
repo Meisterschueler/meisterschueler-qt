@@ -132,6 +132,12 @@ StatisticCluster StatisticsService::getStatisticCluster(const QList<MidiPair>& m
     return result;
 }
 
+StatisticCluster StatisticsService::getStatisticCluster(const QList<MidiPairCluster>& mpc, const Fraction& fraction) {
+    StatisticCluster result;
+
+    return result;
+}
+
 StatisticCluster StatisticsService::getStatisticCluster(const QList<Score>& scores) {
     StatisticCluster result;
 
