@@ -31,7 +31,7 @@ CustomView::CustomView(QWidget *parent) :
 }
 
 void CustomView::showMidiPairClusters(QList<MidiPairCluster> midiPairClusters) {
-    /*StatisticCluster statisticCluster = StatisticsService::getStatisticCluster(midiPairClusters, Frac_1_16);
+    StatisticCluster statisticCluster = StatisticsService::getStatisticCluster(midiPairClusters, Frac_1_16);
 
     StatisticItem x;
     StatisticItem xLM;
@@ -89,7 +89,6 @@ void CustomView::showMidiPairClusters(QList<MidiPairCluster> midiPairClusters) {
                                   yLM.mean-yLM.standarddeviation);
 
     this->replot();
-    */
 }
 
 void CustomView::updateDiagram() {
@@ -106,6 +105,10 @@ void CustomView::updateDiagram() {
         this->xAxis->setLabel("overlap");
         this->xAxis->setRange(-250, 250);
         break;
+    case OFFSET:
+        this->xAxis->setLabel("offset");
+        this->xAxis->setRange(0, 50);
+        break;
     }
 
     switch (yAxisType) {
@@ -118,8 +121,12 @@ void CustomView::updateDiagram() {
         this->yAxis->setRange(20, 80);
         break;
     case OVERLAP:
-        this->xAxis->setLabel("overlap");
-        this->xAxis->setRange(-50, 50);
+        this->yAxis->setLabel("overlap");
+        this->yAxis->setRange(-50, 50);
+        break;
+    case OFFSET:
+        this->yAxis->setLabel("offset");
+        this->yAxis->setRange(0, 50);
         break;
     }
 
@@ -141,12 +148,14 @@ void CustomView::contextMenuEvent(QContextMenuEvent *event) {
     QAction *xSpeed = xMenu.addAction(tr("Speed"));
     QAction *xVelocity = xMenu.addAction(tr("Velocity"));
     QAction *xOverlap = xMenu.addAction(tr("Overlap"));
+    QAction *xOffset = xMenu.addAction(tr("Offset"));
 
     QMenu yMenu;
     yMenu.setTitle(tr("y-Axis"));
     QAction *ySpeed = yMenu.addAction(tr("Speed"));
     QAction *yVelocity = yMenu.addAction(tr("Velocity"));
     QAction *yOverlap = yMenu.addAction(tr("Overlap"));
+    QAction *yOffset = yMenu.addAction(tr("Offset"));
 
     QMenu colorizationMenu;
     colorizationMenu.setTitle(tr("Colorization"));
@@ -166,12 +175,16 @@ void CustomView::contextMenuEvent(QContextMenuEvent *event) {
             xAxisType = VELOCITY;
         } else if (selectedItem == xOverlap) {
             xAxisType = OVERLAP;
+        } else if (selectedItem == xOffset) {
+            xAxisType = OFFSET;
         } else if (selectedItem == ySpeed) {
             yAxisType = SPEED;
         } else if (selectedItem == yVelocity) {
             yAxisType = VELOCITY;
         } else if (selectedItem == yOverlap) {
             yAxisType = OVERLAP;
+        } else if (selectedItem == yOffset) {
+            yAxisType = OFFSET;
         } else if (selectedItem == noneColorization) {
             colorization = NONE;
         } else if (selectedItem == fingerColorization) {

@@ -21,7 +21,7 @@ public slots:
 private:
     QList<MidiPairCluster> midiPairClusters;
 
-    enum eAxis {SPEED, VELOCITY, OVERLAP};
+    enum eAxis {SPEED, VELOCITY, OVERLAP, OFFSET};
     eAxis xAxisType;
     eAxis yAxisType;
 
