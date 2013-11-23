@@ -16,23 +16,6 @@ MidiService::MidiService()
 {
 }
 
-void MidiService::addNoteOn(QList<MidiPair>& pairs, const NoteOnEvent &noteOn) {
-    MidiPair pair(noteOn);
-    pairs.append(pair);
-}
-
-void MidiService::addNoteOff(QList<MidiPair>& pairs, const NoteOffEvent &noteOff) {
-    QMutableListIterator<MidiPair> it(pairs);
-    it.toBack();
-    while (it.hasPrevious()) {
-        it.previous();
-        if (it.value().noteOn.getNote() == noteOff.getNote() && it.value().noteOff == emptyNoteOffEvent) {
-            it.value().noteOff = noteOff;
-            break;
-        }
-    }
-}
-
 void MidiService::addNoteOn(QList<MidiPairCluster>& pairClusters, const NoteOnEvent &noteOn) {
     MidiPair pair(noteOn);
     if (pairClusters.isEmpty()) {
