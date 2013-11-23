@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <ctime>
+
 #include <QDir>
 #include <QFileDialog>
 #include <QSettings>
@@ -34,7 +36,8 @@ MainWindow::MainWindow(QWidget *parent) :
     qRegisterMetaType<NoteOnEvent>("NoteOnEvent");
     qRegisterMetaType<NoteOffEvent>("NoteOffEvent");
 
-    clusterHandler = new ClusterHandler();
+    midiClusterHandler = new ClusterHandler();
+    dummyClusterHandler = new ClusterHandler();
     commandManager = new CommandManager();
     feedbackManager = new FeedbackManager();
     midiWrapper = new MidiWrapper();
@@ -56,19 +59,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // GUI/Core connections
     QObject::connect(this, &MainWindow::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
+    QObject::connect(this, &MainWindow::gotNoteOnEvent, dummyClusterHandler, &ClusterHandler::matchNoteOnEvent);
     QObject::connect(this, &MainWindow::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
+    QObject::connect(this, &MainWindow::gotNoteOffEvent, dummyClusterHandler, &ClusterHandler::matchNoteOffEvent);
 
     // Core connections
-    if (false) {
-        QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, matchingHandler, &MatchingHandler::matchNoteOnEvent);
-        QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, matchingHandler, &MatchingHandler::matchNoteOffEvent);
-    } else {
-        QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, clusterHandler, &ClusterHandler::matchNoteOnEvent);
-        QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, clusterHandler, &ClusterHandler::matchNoteOffEvent);
-        QObject::connect(clusterHandler, &ClusterHandler::gotChannelEvents, matchingHandler, &MatchingHandler::matchChannelEvents);
-        QObject::connect(clusterHandler, &ClusterHandler::reset, matchingHandler, &MatchingHandler::reset);
-        QObject::connect(clusterHandler, &ClusterHandler::reset, signalManager, &SignalManager::playResetSound);
-    }
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, midiClusterHandler, &ClusterHandler::matchNoteOnEvent);
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, midiClusterHandler, &ClusterHandler::matchNoteOffEvent);
+    QObject::connect(midiClusterHandler, &ClusterHandler::gotChannelEvents, matchingHandler, &MatchingHandler::matchChannelEvents);
+    QObject::connect(midiClusterHandler, &ClusterHandler::reset, matchingHandler, &MatchingHandler::reset);
+    QObject::connect(midiClusterHandler, &ClusterHandler::reset, signalManager, &SignalManager::playResetSound);
 
     QObject::connect(matchingHandler, &MatchingHandler::songRecognized, mergingHandler, &MergingHandler::eatMatchingItem);
     QObject::connect(matchingHandler, &MatchingHandler::songFinished, signalManager, &SignalManager::playFinishedSound);
@@ -76,6 +76,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
     QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
+    QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOnEvent, dummyClusterHandler, &ClusterHandler::matchNoteOnEvent);
+    QObject::connect(playbackHandler, &PlaybackHandler::gotNoteOffEvent, dummyClusterHandler, &ClusterHandler::matchNoteOffEvent);
 
     QObject::connect(signalManager, &SignalManager::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
     QObject::connect(signalManager, &SignalManager::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
@@ -107,7 +109,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 
-    delete clusterHandler;
+    delete midiClusterHandler;
+    delete dummyClusterHandler;
     delete commandManager;
     delete feedbackManager;
     delete midiWrapper;
@@ -148,8 +151,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     }
 
     if ( idx != -1 && !event->isAutoRepeat() ) {
-        NoteOnEvent noteOn = NoteOnEvent(0, 0, offset+idx, 50);
-        clusterHandler->matchNoteOnEvent(noteOn);
+        NoteOnEvent noteOn = NoteOnEvent(time(NULL), 0, offset+idx, 50);
         emit gotNoteOnEvent(noteOn);
     } else {
         QMainWindow::keyPressEvent(event);
@@ -159,9 +161,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     if (GuidoView *gv = qobject_cast<GuidoView*>(centralWidget())) {
         if (event->key() == Qt::Key_Left) {
-            gv->previousPage();
+            emit previousPage();
         } else if (event->key() == Qt::Key_Right) {
-            gv->nextPage();
+            emit nextPage();
         }
     }
 
@@ -174,8 +176,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     }
 
     if ( idx != -1 && !event->isAutoRepeat() ) {
-        NoteOffEvent noteOff = NoteOffEvent(0, 0, offset+idx, 0);
-        clusterHandler->matchNoteOffEvent(noteOff);
+        NoteOffEvent noteOff = NoteOffEvent(time(NULL), 0, offset+idx, 0);
         emit gotNoteOffEvent(noteOff);
     } else {
         QMainWindow::keyReleaseEvent(event);
@@ -185,8 +186,11 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event) {
 void MainWindow::on_actionBubbleView_triggered() {
     bubbleView = new BubbleView();
 
-    QObject::connect(clusterHandler, &ClusterHandler::gotMidiPairClusters, bubbleView, &BubbleView::showMidiPairClusters);
-    QObject::connect(clusterHandler, &ClusterHandler::reset, bubbleView, &BubbleView::reset);
+    QObject::connect(midiClusterHandler, &ClusterHandler::gotMidiPairClusters, bubbleView, &BubbleView::showMidiPairClusters);
+    QObject::connect(midiClusterHandler, &ClusterHandler::reset, bubbleView, &BubbleView::reset);
+    QObject::connect(dummyClusterHandler, &ClusterHandler::gotMidiPairClusters, bubbleView, &BubbleView::showMidiPairClusters);
+    QObject::connect(dummyClusterHandler, &ClusterHandler::reset, bubbleView, &BubbleView::reset);
+
     QObject::connect(bubbleView, &BubbleView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
     QObject::connect(bubbleView, &BubbleView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
@@ -196,6 +200,8 @@ void MainWindow::on_actionBubbleView_triggered() {
 void MainWindow::on_actionGuidoView_triggered() {
     guidoView = new GuidoView();
 
+    QObject::connect(this, &MainWindow::previousPage, guidoView, &GuidoView::previousPage);
+    QObject::connect(this, &MainWindow::nextPage, guidoView, &GuidoView::nextPage);
     QObject::connect(guidoView, &GuidoView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);
     QObject::connect(guidoView, &GuidoView::gotNoteOffEvent, midiWrapper, &MidiWrapper::playNoteOffEvent);
 
@@ -260,7 +266,7 @@ void MainWindow::on_actionActionQCustomPlot_triggered()
 {
     CustomView *customView = new CustomView();
 
-    QObject::connect(clusterHandler, &ClusterHandler::gotMidiPairClusters, customView, &CustomView::showMidiPairClusters);
+    QObject::connect(midiClusterHandler, &ClusterHandler::gotMidiPairClusters, customView, &CustomView::showMidiPairClusters);
 
     setCentralWidget(customView);
 }

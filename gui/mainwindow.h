@@ -41,10 +41,14 @@ signals:
     void gotNoteOnEvent(NoteOnEvent);
     void gotNoteOffEvent(NoteOffEvent);
 
+    void previousPage();
+    void nextPage();
+
 private:
     Ui::MainWindow *ui;
 
-    ClusterHandler *clusterHandler;
+    ClusterHandler *midiClusterHandler;
+    ClusterHandler *dummyClusterHandler;
     CommandManager *commandManager;
     FeedbackManager *feedbackManager;
     MidiWrapper *midiWrapper;
