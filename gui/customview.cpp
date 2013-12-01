@@ -51,6 +51,10 @@ void CustomView::showMidiPairClusters(QList<MidiPairCluster> midiPairClusters) {
         x = statisticCluster.overlap;
         xLM = statisticCluster.overlapLastMeasure;
         break;
+    case OFFSET:
+        x = statisticCluster.offset;
+        xLM = statisticCluster.offsetLastMeasure;
+        break;
     }
 
     switch (yAxisType) {
@@ -66,6 +70,10 @@ void CustomView::showMidiPairClusters(QList<MidiPairCluster> midiPairClusters) {
         y = statisticCluster.overlap;
         yLM = statisticCluster.overlapLastMeasure;
         break;
+    case OFFSET:
+        y = statisticCluster.offset;
+        yLM = statisticCluster.offsetLastMeasure;
+        break;
     }
 
     QVector<double> xData;
@@ -80,13 +88,13 @@ void CustomView::showMidiPairClusters(QList<MidiPairCluster> midiPairClusters) {
                                 y.mean+y.standarddeviation);
 
     ellipse->bottomRight->setCoords(x.mean+x.standarddeviation,
-                                y.mean-y.standarddeviation);
+                                    y.mean-y.standarddeviation);
 
     ellipseLM->topLeft->setCoords(xLM.mean-xLM.standarddeviation,
                                   yLM.mean+yLM.standarddeviation);
 
     ellipseLM->bottomRight->setCoords(xLM.mean+xLM.standarddeviation,
-                                  yLM.mean-yLM.standarddeviation);
+                                      yLM.mean-yLM.standarddeviation);
 
     this->replot();
 }
