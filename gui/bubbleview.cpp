@@ -22,6 +22,7 @@ BubbleView::~BubbleView()
 BubbleGraphicsItem *BubbleView::makeBubble() {
     BubbleGraphicsItem *bubble = new BubbleGraphicsItem();
     bubble->pen().setWidth( 10 );
+    bubble->setBrush(QBrush(QColor(255,0,0)));
     bubble->setFlag( QGraphicsItem::ItemIgnoresTransformations );
 
     graphicsScene->addItem( bubble );
@@ -58,6 +59,8 @@ QPixmap BubbleView::getBackgroundPixmap() {
 }
 
 void BubbleView::attachDisappearingAnimation(BubbleGraphicsItem *bubble, const QPoint& pos) {
+    bubble->setBrush(QBrush(QColor(255,0,0,0)));
+
     QPropertyAnimation *animRect = new QPropertyAnimation(bubble, "rect", this);
     animRect->setStartValue( QRectF(pos.x()-10, pos.y()-10, 20, 20) );
     animRect->setEndValue( QRectF(pos.x()-80, pos.y()-80, 160, 160) );
