@@ -38,5 +38,7 @@
 // Other
 #include "mididefs.h"
 
+#include <cmath>
+
 
 #endif

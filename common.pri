@@ -4,11 +4,17 @@ PRECOMPILED_HEADER = ../stable.h
 OTHER_FILES += ../stable.h
 
 #Use C++11
-QMAKE_CXXFLAGS += -std=c++0x
+CONFIG += c++11
+QMAKE_CXXFLAGS += -std=c++11
+
+#OSX stuff...
+mac {
+    QMAKE_CXXFLAGS = -mmacosx-version-min=10.7
+}
 
 #Path definitions
 GUIDOLIB = ../../guidolib-code
-RTMIDI = ../../rtmidi-2.0.1
+RTMIDI = ../../rtmidi-2.1.0
 JDKSMIDI = ../../jdksmidi
 KISSFFT = ../../kiss_fft130
 QCUSTOMPLOT = ../../qcustomplot
@@ -30,7 +36,7 @@ LIBS += -L$$GUIDOLIB/Qt \
 
 #RtMidi
 INCLUDEPATH += $$RTMIDI
-SOURCES += $$RTMIDI/rtmidi.cpp
+SOURCES += $$RTMIDI/RtMidi.cpp
 
 debug {
     DEFINES += __RTMIDI_DEBUG__
@@ -53,7 +59,7 @@ win32 {
 
 mac {
     DEFINES += __MACOSX_CORE__
-    LIBS += -framework CoreMidi \
+    LIBS += -framework CoreMIDI \
             -framework CoreAudio \
             -framework CoreFoundation
 }
