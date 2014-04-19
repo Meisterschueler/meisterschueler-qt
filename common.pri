@@ -13,26 +13,29 @@ mac {
 }
 
 #Path definitions
-GUIDOLIB = ../../guidolib-code
-RTMIDI = ../../rtmidi-2.1.0
-JDKSMIDI = ../../jdksmidi
-KISSFFT = ../../kiss_fft130
-QCUSTOMPLOT = ../../qcustomplot
+MAINPATH = /Users/konstantin/Development/Meisterschueler
+GUIDOLIB = $$MAINPATH/guidolib-code
+RTMIDI = $$MAINPATH/rtmidi-2.1.0
+JDKSMIDI = $$MAINPATH/jdksmidi
+KISSFFT = $$MAINPATH/kiss_fft130
+QCUSTOMPLOT = $$MAINPATH/qcustomplot
 
 #Guido
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
-INCLUDEPATH += $$GUIDOLIB/Qt/GuidoQt/include \
-               $$GUIDOLIB/src/include \
+INCLUDEPATH += $$GUIDOLIB/src/include \
                $$GUIDOLIB/src/misc \
                $$GUIDOLIB/src/lib \
                $$GUIDOLIB/src/abstract \
                $$GUIDOLIB/src/parser \
                $$GUIDOLIB/src/midisharelight
 
-LIBS += -L$$GUIDOLIB/Qt \
-        -L$$GUIDOLIB/cmake \
-        -lGuidoQt \
-        -lGUIDOEngine
+win32,unix,!mac: LIBS += -L$$GUIDOLIB/cmake -lGUIDOEngine
+mac:LIBS += -F$$GUIDOLIB/cmake/Debug -framework GUIDOEngine
+
+#GuidoQt
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
+INCLUDEPATH += $$GUIDOLIB/Qt/GuidoQt/include
+
+LIBS += -L$$GUIDOLIB/Qt -lGuidoQt
 
 #RtMidi
 INCLUDEPATH += $$RTMIDI
@@ -42,7 +45,7 @@ debug {
     DEFINES += __RTMIDI_DEBUG__
 }
 
-unix {
+unix,!mac {
 # Ensure jack is running: jackd -d alsa -X raw
 #    DEFINES += __UNIX_JACK__
 #    LIBS += -ljack
