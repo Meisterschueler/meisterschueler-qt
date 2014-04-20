@@ -16,6 +16,8 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
+DESTDIR = output #Unter OSX kracht es sonst...
+
 SOURCES += tst_test.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
