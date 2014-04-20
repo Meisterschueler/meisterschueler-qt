@@ -52,6 +52,7 @@ private Q_SLOTS:
     void needlemanWunsch_intervals();
     void needlemanWunsch_transposition();
 
+    void guidoService_gmnToScores_notvalid();
     void guidoService_gmnToScores_simple();
     void guidoService_gmnToScores_chord();
     void guidoService_gmnToScores_repeat();
@@ -320,6 +321,13 @@ void Test::needlemanWunsch_transposition() {
 }
 
 // GUIDOSERVICE
+
+void Test::guidoService_gmnToScores_notvalid() {
+    QList<Score> notes = GuidoService::gmnToScores("");
+    QCOMPARE( notes.size(), 0 );
+    notes = GuidoService::gmnToScores("MyFaultString");
+    QCOMPARE( notes.size(), 0 );
+}
 
 void Test::guidoService_gmnToScores_simple() {
     QString gmn = "[c d e f g]";

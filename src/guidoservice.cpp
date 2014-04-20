@@ -46,7 +46,11 @@ QList<Score> GuidoService::gmnToScores(const QString &gmn) {
     QList<Score> result;
 
     ARHandler ar;
-    GuidoParseString(gmn.toLatin1(), &ar);
+    GuidoErrCode err = GuidoParseString(gmn.toLatin1(), &ar);
+    if (err != guidoNoErr) {
+        return result;
+    }
+
     ARMusic *arMusic = ar->armusic;
 
     GuidoPos pos = arMusic->GetHeadPosition();
