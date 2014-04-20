@@ -29,7 +29,12 @@ class Test : public QObject
 public:
     Test();
 
+private:
+    QString midiTestFiles;
+
 private Q_SLOTS:
+    void init();
+
     void channelEvent_comparisons();
     void noteOnEvent_comparisons();
     void midiPair_constructors();
@@ -126,6 +131,12 @@ Test::Test()
     qRegisterMetaType<NoteOnEvent>("NoteOnEvent");
     qRegisterMetaType<NoteOffEvent>("NoteOffEvent");
     qRegisterMetaType<Score>("Score");
+}
+
+// INITIALIZATION
+
+void Test::init() {
+    midiTestFiles = QString("%1%2%3%4").arg(MAINPATH).arg(QDir::separator()).arg("meisterschueler-qt/test/midifiles").arg(QDir::separator());
 }
 
 // BASIC TYPES
@@ -594,7 +605,8 @@ void Test::hanonSongFactory_simple() {
 // SONGSERVICE
 
 void Test::songService_simple() {
-    QList<Song> songs = SongService::getSongsFromDirectory("/home/fritz/meisterschueler-misc");
+    QString songDirectory = QString("%1%2%3").arg(MAINPATH).arg(QDir::separator()).arg("meisterschueler-misc");
+    QList<Song> songs = SongService::getSongsFromDirectory(songDirectory);
     QVERIFY( songs.count() > 10 );
 }
 
@@ -680,8 +692,8 @@ void Test::midiService_saveLoad() {
 }
 
 void Test::midiService_loadHanon() {
-    QString fileName1("../../meisterschueler-qt/test/midifiles/hanonNo1Left.mid");
-    QString fileName2("../../meisterschueler-qt/test/midifiles/hanonNo1Both.mid");
+    QString fileName1(midiTestFiles + "hanonNo1Left.mid");
+    QString fileName2(midiTestFiles + "hanonNo1Both.mid");
     QFile hanonFile1(fileName1);
     QFile hanonFile2(fileName2);
     QVERIFY( hanonFile1.exists() );
@@ -975,7 +987,7 @@ void Test::matchingHandler_simple() {
 }
 
 void Test::matchingHandler_hanonNo1Left() {
-    QString fileName1("../../meisterschueler-qt/test/midifiles/hanonNo1Left.mid");
+    QString fileName1(midiTestFiles + "hanonNo1Left.mid");
     QFile hanonFile1(fileName1);
     QVERIFY( hanonFile1.exists() );
 

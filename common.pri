@@ -1,3 +1,12 @@
+#System minimum
+lessThan(QT_MAJOR_VERSION, 5) {
+    message("Meisterschueler requires QT >= 5 to work")
+}
+mac {
+    QMAKE_CXXFLAGS = -mmacosx-version-min=10.7
+}
+
+
 #Use pre-compiled headers
 CONFIG += precompile_header
 PRECOMPILED_HEADER = ../stable.h
@@ -7,13 +16,9 @@ OTHER_FILES += ../stable.h
 CONFIG += c++11
 QMAKE_CXXFLAGS += -std=c++11
 
-#OSX stuff...
-mac {
-    QMAKE_CXXFLAGS = -mmacosx-version-min=10.7
-}
-
 #Path definitions
-MAINPATH = /Users/konstantin/Development/Meisterschueler
+mac: MAINPATH = /Users/konstantin/Development/Meisterschueler
+DEFINES += MAINPATH=\\\"$$MAINPATH\\\"
 GUIDOLIB = $$MAINPATH/guidolib-code
 RTMIDI = $$MAINPATH/rtmidi-2.1.0
 JDKSMIDI = $$MAINPATH/jdksmidi
