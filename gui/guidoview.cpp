@@ -26,16 +26,19 @@ GuidoView::GuidoView(QWidget *parent) :
     gv->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     gv->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     gv->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-
-    songs = SongService::getSongsFromDirectory("/home/fritz/meisterschueler-misc/scores");
-    for (Song song : songs) {
-        ui->comboBox->addItem(song.name);
-    }
 }
 
 GuidoView::~GuidoView()
 {
     delete ui;
+}
+
+void GuidoView::setSongs(const QList<Song>& songs) {
+    this->songs = songs;
+    ui->comboBox->clear();
+    for (Song song : songs) {
+        ui->comboBox->addItem(song.name);
+    }
 }
 
 void GuidoView::changeEvent(QEvent *e)

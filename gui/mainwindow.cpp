@@ -200,6 +200,10 @@ void MainWindow::on_actionBubbleView_triggered() {
 void MainWindow::on_actionGuidoView_triggered() {
     guidoView = new GuidoView();
 
+    QString scoreDirectory = QString("%1/meisterschueler-misc/scores").arg(MAINPATH);
+    QList<Song> songs = SongService::getSongsFromDirectory(scoreDirectory);
+    guidoView->setSongs(songs);
+
     QObject::connect(this, &MainWindow::previousPage, guidoView, &GuidoView::previousPage);
     QObject::connect(this, &MainWindow::nextPage, guidoView, &GuidoView::nextPage);
     QObject::connect(guidoView, &GuidoView::gotNoteOnEvent, midiWrapper, &MidiWrapper::playNoteOnEvent);

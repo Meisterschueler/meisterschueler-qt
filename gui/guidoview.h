@@ -21,6 +21,8 @@ class GuidoView : public QWidget
 public:
     explicit GuidoView(QWidget *parent = 0);
     ~GuidoView();
+
+    void setSongs(const QList<Song>& songs);
     
 protected:
     void changeEvent(QEvent *e);
