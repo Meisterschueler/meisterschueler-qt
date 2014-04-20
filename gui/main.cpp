@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QFontDatabase>
 #include <QSettings>
 #include <QTranslator>
 
@@ -16,7 +17,7 @@ int main(int argc, char *argv[])
     QGuidoPainter::startGuidoEngine();
 
     // Embedd the note font
-    //QFontDatabase::addApplicationFont(":/font/guido2.ttf");
+    QFontDatabase::addApplicationFont(":/font/guido2.ttf");
 
     // For Settings...
     QCoreApplication::setApplicationName("Meisterschueler");

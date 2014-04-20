@@ -3,4 +3,7 @@
         <file alias="meisterschueler_de.qm">translations/meisterschueler_de.qm</file>
         <file alias="meisterschueler_fr.qm">translations/meisterschueler_fr.qm</file>
     </qresource>
+    <qresource prefix="/font">
+        <file alias="guido2.ttf">fonts/guido2.ttf</file>
+    </qresource>
 </RCC>

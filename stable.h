@@ -5,6 +5,7 @@
 
 // Qt includes
 #include <QApplication>
+#include <QFontDatabase>
 #include <QDialog>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsView>
