@@ -28,6 +28,8 @@ int main(int argc, char *argv[])
     // Translation
     QSettings settings;
     QString locale = QLocale::system().name();
+    locale = locale.split("_").at(0);   // from de_DE to de
+
     QString savedLocale = settings.value("language").toString();
     QTranslator translator;
     translator.load(QString(":/translations/meisterschueler_") + (savedLocale.isEmpty() ? locale : savedLocale));
