@@ -70,7 +70,7 @@ bool MidiService::save(const QString& fileName, const QList<ChannelEvent>& event
 
     MIDIClockTime t; // time in midi ticks
     //MIDIClockTime dt = 100; // time interval (1 second)
-    int clks_per_beat = 100; // number of ticks in crotchet (1...32767)
+    int clks_per_beat = 1000; // number of ticks in crotchet (1...32767)
     int num_tracks = 2; // tracks 0 and 1
 
     MIDIMultiTrack tracks( num_tracks );  // the object which will hold all the tracks
