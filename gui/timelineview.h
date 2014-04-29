@@ -24,11 +24,13 @@ public:
     ~TimelineView();
 
 private:
+    void updateLegatoColor();
+
     QGraphicsScene *graphicsScene;
     QPropertyAnimation *animation;
     MyItem *originItem;
 
-    QMap<MidiPair, BubbleGraphicsItem*> midiPairBubbleMap;
+    QMap<MidiPair, QGraphicsEllipseItem*> midiPairItemMap;
 
 public slots:
     void showNoteOnEvent(NoteOnEvent noteOnEvent);

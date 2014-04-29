@@ -6,6 +6,8 @@
 #include <QPointF>
 #include <QPropertyAnimation>
 
+#include <QDebug>
+
 TimelineView::TimelineView(QGraphicsView *parent) : QGraphicsView(parent) {
     graphicsScene = new QGraphicsScene(this);
     setScene(graphicsScene);
@@ -39,11 +41,46 @@ void TimelineView::showNoteOnEvent(NoteOnEvent noteOnEvent) {
 
     QGraphicsEllipseItem *ellipseItem = new QGraphicsEllipseItem(x-originItem->pos().x()-10, y-10, 20, 20, originItem);
     ellipseItem->setPen(QPen(Qt::red));
-    ellipseItem->setBrush(QBrush(QColor(255,0,0)));
+    ellipseItem->setBrush(QBrush(QColor(32,32,32)));
+
+    MidiPair midiPair(noteOnEvent);
+    midiPairItemMap.insert(midiPair, ellipseItem);
+
+    updateLegatoColor();
 }
 
 void TimelineView::showNoteOffEvent(NoteOffEvent noteOffEvent) {
+    for (MidiPair midiPair : midiPairItemMap.keys()) {
+        if (midiPair.noteOn.getNote() == noteOffEvent.getNote() && midiPair.noteOff == emptyNoteOffEvent) {
+            QGraphicsEllipseItem *myItem = midiPairItemMap.value(midiPair);
 
+            midiPairItemMap.remove(midiPair);
+
+            midiPair.noteOff = noteOffEvent;
+            midiPairItemMap.insert(midiPair, myItem);
+            break;
+        }
+    }
+
+    updateLegatoColor();
+}
+
+void TimelineView::updateLegatoColor() {
+    for (int i=1; i<midiPairItemMap.keys().count(); i++) {
+        MidiPair midiPairPre = midiPairItemMap.keys().at(i-1);
+        MidiPair midiPair = midiPairItemMap.keys().at(i);
+        QGraphicsEllipseItem *myItem = midiPairItemMap.value(midiPair);
+
+        if (midiPairPre.noteOff != emptyNoteOffEvent && midiPair.noteOn != emptyNoteOnEvent) {
+            double delta = midiPair.noteOn.getTime() - midiPairPre.noteOff.getTime();
+            qDebug() << delta;
+            if (delta > 100) { // staccato
+                myItem->setBrush(QBrush(QColor(255,0,0)));
+            } else if (delta < -100) { // legato
+                myItem->setBrush(QBrush(QColor(0,0,255)));
+            }
+        }
+    }
 }
 
 void TimelineView::resizeEvent(QResizeEvent *event) {
