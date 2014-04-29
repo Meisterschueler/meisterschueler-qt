@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     chordview.cpp \
     feedbackdialog.cpp \
     graphicsscoreitem.cpp \
-    customview.cpp
+    customview.cpp \
+    timelineview.cpp
 
 HEADERS  += mainwindow.h \
     settingsdialog.h \
@@ -30,7 +31,8 @@ HEADERS  += mainwindow.h \
     chordwidget.h \
     feedbackdialog.h \
     graphicsscoreitem.h \
-    customview.h
+    customview.h \
+    timelineview.h
 
 # Get Classes
 INCLUDEPATH += ../src
