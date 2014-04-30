@@ -53,12 +53,19 @@
          </spacer>
         </item>
         <item>
-         <widget class="QSlider" name="horizontalSliderDelay">
+         <widget class="QSlider" name="horizontalSliderEchoesDelay">
           <property name="maximum">
            <number>2000</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelEchoesDelay">
+          <property name="text">
+           <string>TextLabel</string>
           </property>
          </widget>
         </item>
@@ -90,12 +97,19 @@
          </spacer>
         </item>
         <item>
-         <widget class="QSlider" name="horizontalSliderVelocity">
+         <widget class="QSlider" name="horizontalSliderRePingVelocity">
           <property name="maximum">
            <number>127</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelRePingVelocity">
+          <property name="text">
+           <string>TextLabel</string>
           </property>
          </widget>
         </item>
@@ -127,47 +141,52 @@
          </spacer>
         </item>
         <item>
-         <widget class="QSlider" name="horizontalSliderTunnelMin">
-          <property name="maximum">
-           <number>127</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QSlider" name="horizontalSliderTunnelMin">
+            <property name="maximum">
+             <number>127</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="horizontalSliderTunnelMax">
+            <property name="maximum">
+             <number>127</number>
+            </property>
+            <property name="value">
+             <number>127</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QSlider" name="horizontalSliderTunnelMax">
-          <property name="maximum">
-           <number>127</number>
-          </property>
-          <property name="value">
-           <number>127</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QLabel" name="labelTunnelMin">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelTunnelMax">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_3"/>
         </item>
        </layout>
       </item>
@@ -243,7 +262,7 @@
   <connection>
    <sender>radioButtonEcho</sender>
    <signal>toggled(bool)</signal>
-   <receiver>horizontalSliderDelay</receiver>
+   <receiver>horizontalSliderEchoesDelay</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -259,7 +278,7 @@
   <connection>
    <sender>radioButtonReping</sender>
    <signal>toggled(bool)</signal>
-   <receiver>horizontalSliderVelocity</receiver>
+   <receiver>horizontalSliderRePingVelocity</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

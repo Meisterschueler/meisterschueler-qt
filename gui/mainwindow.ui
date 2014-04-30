@@ -22,7 +22,7 @@
      <x>0</x>
      <y>0</y>
      <width>529</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -69,6 +69,7 @@
    <addaction name="actionGuidoView"/>
    <addaction name="actionChordWidget"/>
    <addaction name="actionActionQCustomPlot"/>
+   <addaction name="actionTimelineView"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionFull_Screen">
@@ -136,6 +137,11 @@
   <action name="actionActionQCustomPlot">
    <property name="text">
     <string>QCustomPlot</string>
+   </property>
+  </action>
+  <action name="actionTimelineView">
+   <property name="text">
+    <string>TimelineView</string>
    </property>
   </action>
  </widget>

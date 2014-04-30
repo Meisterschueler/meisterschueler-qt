@@ -21,42 +21,42 @@ void FeedbackDialog::init(FeedbackManager *echoManager) {
     switch (echoManager->getState()) {
     case FeedbackManager::OFF:
         ui->radioButtonOff->toggle();
-        ui->horizontalSliderDelay->setEnabled(false);
-        ui->horizontalSliderVelocity->setEnabled(false);
+        ui->horizontalSliderEchoesDelay->setEnabled(false);
+        ui->horizontalSliderRePingVelocity->setEnabled(false);
         ui->horizontalSliderTunnelMin->setEnabled(false);
         ui->horizontalSliderTunnelMax->setEnabled(false);
         break;
     case FeedbackManager::ECHO:
         ui->radioButtonEcho->toggle();
-        ui->horizontalSliderDelay->setEnabled(true);
-        ui->horizontalSliderVelocity->setEnabled(false);
+        ui->horizontalSliderEchoesDelay->setEnabled(true);
+        ui->horizontalSliderRePingVelocity->setEnabled(false);
         ui->horizontalSliderTunnelMin->setEnabled(false);
         ui->horizontalSliderTunnelMax->setEnabled(false);
         break;
     case FeedbackManager::REPING:
         ui->radioButtonReping->toggle();
-        ui->horizontalSliderDelay->setEnabled(false);
-        ui->horizontalSliderVelocity->setEnabled(true);
+        ui->horizontalSliderEchoesDelay->setEnabled(false);
+        ui->horizontalSliderRePingVelocity->setEnabled(true);
         ui->horizontalSliderTunnelMin->setEnabled(false);
         ui->horizontalSliderTunnelMax->setEnabled(false);
         break;
     case FeedbackManager::TUNNEL:
         ui->radioButtonTunnel->toggle();
-        ui->horizontalSliderDelay->setEnabled(false);
-        ui->horizontalSliderVelocity->setEnabled(false);
+        ui->horizontalSliderEchoesDelay->setEnabled(false);
+        ui->horizontalSliderRePingVelocity->setEnabled(false);
         ui->horizontalSliderTunnelMin->setEnabled(true);
         ui->horizontalSliderTunnelMax->setEnabled(true);
         break;
     case FeedbackManager::PINGPONG:
         ui->radioButtonPingPong->toggle();
-        ui->horizontalSliderDelay->setEnabled(false);
-        ui->horizontalSliderVelocity->setEnabled(false);
+        ui->horizontalSliderEchoesDelay->setEnabled(false);
+        ui->horizontalSliderRePingVelocity->setEnabled(false);
         ui->horizontalSliderTunnelMin->setEnabled(false);
         ui->horizontalSliderTunnelMax->setEnabled(false);
         break;
     }
 
-    ui->horizontalSliderDelay->setValue(echoManager->getEchoDelay());
+    ui->horizontalSliderEchoesDelay->setValue(echoManager->getEchoDelay());
     ui->horizontalSliderTunnelMin->setValue(echoManager->getTunnelMin());
     ui->horizontalSliderTunnelMax->setValue(echoManager->getTunnelMax());
 
@@ -66,7 +66,7 @@ void FeedbackDialog::init(FeedbackManager *echoManager) {
     QObject::connect(ui->radioButtonTunnel, &QRadioButton::toggled, echoManager, &FeedbackManager::toggleTunnel);
     QObject::connect(ui->radioButtonPingPong, &QRadioButton::toggled, echoManager, &FeedbackManager::togglePingPong);
 
-    QObject::connect(ui->horizontalSliderDelay, &QSlider::valueChanged, echoManager, &FeedbackManager::setEchoDelay);
+    QObject::connect(ui->horizontalSliderEchoesDelay, &QSlider::valueChanged, echoManager, &FeedbackManager::setEchoDelay);
     QObject::connect(ui->horizontalSliderTunnelMin, &QSlider::valueChanged, echoManager, &FeedbackManager::setTunnelMin);
     QObject::connect(ui->horizontalSliderTunnelMax, &QSlider::valueChanged, echoManager, &FeedbackManager::setTunnelMax);
 }
@@ -82,3 +82,25 @@ void FeedbackDialog::changeEvent(QEvent *e)
         break;
     }
 }
+
+void FeedbackDialog::on_horizontalSliderEchoesDelay_sliderMoved(int position)
+{
+    ui->labelEchoesDelay->setText(tr("%1ms").arg(position));
+}
+
+void FeedbackDialog::on_horizontalSliderRePingVelocity_sliderMoved(int position)
+{
+    ui->labelRePingVelocity->setText(tr("%1").arg(position));
+}
+
+void FeedbackDialog::on_horizontalSliderTunnelMin_sliderMoved(int position)
+{
+    ui->labelTunnelMin->setText(tr("%1").arg(position));
+}
+
+void FeedbackDialog::on_horizontalSliderTunnelMax_sliderMoved(int position)
+{
+    ui->labelTunnelMax->setText(tr("%1").arg(position));
+}
+
+

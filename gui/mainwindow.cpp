@@ -12,6 +12,7 @@
 #include "feedbackdialog.h"
 #include "guidoview.h"
 #include "settingsdialog.h"
+#include "timelineview.h"
 
 #include "clusterhandler.h"
 #include "commandmanager.h"
@@ -66,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Core connections
     QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, midiClusterHandler, &ClusterHandler::matchNoteOnEvent);
     QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, midiClusterHandler, &ClusterHandler::matchNoteOffEvent);
-    QObject::connect(midiClusterHandler, &ClusterHandler::gotChannelEvents, matchingHandler, &MatchingHandler::matchChannelEvents);
+    QObject::connect(midiClusterHandler, &ClusterHandler::gotMidiPairClusters, matchingHandler, &MatchingHandler::matchMidiPairClusters);
     QObject::connect(midiClusterHandler, &ClusterHandler::reset, matchingHandler, &MatchingHandler::reset);
     QObject::connect(midiClusterHandler, &ClusterHandler::reset, signalManager, &SignalManager::playResetSound);
 
@@ -230,7 +231,7 @@ void MainWindow::on_actionFull_Screen_triggered() {
 
 void MainWindow::on_actionSettings_triggered() {
     SettingsDialog* settingsDialog = new SettingsDialog(this);
-    settingsDialog->init(midiWrapper);
+    settingsDialog->init(midiWrapper, resultManager);
     settingsDialog->exec();
 }
 
@@ -273,4 +274,14 @@ void MainWindow::on_actionActionQCustomPlot_triggered()
     QObject::connect(midiClusterHandler, &ClusterHandler::gotMidiPairClusters, customView, &CustomView::showMidiPairClusters);
 
     setCentralWidget(customView);
+}
+
+void MainWindow::on_actionTimelineView_triggered()
+{
+    TimelineView *timelineView = new TimelineView();
+
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, timelineView, &TimelineView::showNoteOnEvent);
+    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, timelineView, &TimelineView::showNoteOffEvent);
+
+    setCentralWidget(timelineView);
 }

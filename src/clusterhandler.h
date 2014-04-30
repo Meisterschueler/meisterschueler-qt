@@ -19,8 +19,8 @@ public slots:
     void matchNoteOffEvent(NoteOffEvent noteOff);
 
 signals:
-    void gotChannelEvents(QList<ChannelEvent> events);
     void gotControlChangeEvent(ControlChangeEvent event);
+    void gotMidiPairCluster(int idx, MidiPairCluster midiPairCluster);
     void gotMidiPairClusters(QList<MidiPairCluster> midiPairClusters);
     void reset();
 
@@ -28,9 +28,8 @@ private:
     QTimer *delayTimer;
     QTimer *resetTimer;
     QList<ChannelEvent> channelEvents;
-    bool pressedKeys[128];
-
     QList<MidiPairCluster> midiPairClusters;
+    bool pressedKeys[128];
 
     static constexpr int CHORD_DELAY = 50;
     static constexpr int RESET_DELAY = 2000;

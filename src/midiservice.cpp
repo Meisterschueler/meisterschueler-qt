@@ -1,6 +1,8 @@
 #include "midiservice.h"
 
 #include "events.h"
+
+#include <QDebug>
 #include <QSharedPointer>
 #include <QMutableListIterator>
 
@@ -16,46 +18,37 @@ MidiService::MidiService()
 {
 }
 
-void MidiService::addNoteOn(QList<MidiPairCluster>& pairClusters, const NoteOnEvent &noteOn) {
+int MidiService::addNoteOn(QList<MidiPairCluster>& pairClusters, const NoteOnEvent &noteOn) {
     MidiPair pair(noteOn);
     if (pairClusters.isEmpty()) {
         pairClusters.append(pair);
-        return;
-    }
-    QMutableListIterator<MidiPairCluster> it(pairClusters);
-    it.toBack();
-    while (it.hasPrevious()) {
-        it.previous();
-        if (it.value().time < noteOn.getTime() && it.value().time + 50 > noteOn.getTime()) {
-            MidiPair pair(noteOn);
-            it.value().midiPairs.append(pair);
-            qSort(it.value().midiPairs);
-            return;
-        } else if (it.value().time + 50 < noteOn.getTime()) {
-            it.next();
-            MidiPair pair(noteOn);
-            it.insert(MidiPairCluster(pair));
-            return;
-        }
+        return 0;
     }
 
-    it.value().midiPairs.append(pair);
+    int end = pairClusters.count()-1;
+    if (pairClusters.at(end).time+50 < noteOn.getTime()) {
+        pairClusters.append(MidiPair(noteOn));
+        return end+1;
+    } else {
+        pairClusters[end].midiPairs.append(MidiPair(noteOn));
+        qSort(pairClusters[end].midiPairs);
+        return end;
+    }
 }
 
-void MidiService::addNoteOff(QList<MidiPairCluster>& pairClusters, const NoteOffEvent &noteOff) {
-    QMutableListIterator<MidiPairCluster> it(pairClusters);
-    it.toBack();
-    while (it.hasPrevious()) {
-        it.previous();
-        QMutableListIterator<MidiPair> it2(it.value().midiPairs);
-        while (it2.hasNext()) {
-            it2.next();
-            if (it2.value().noteOn.getNote() == noteOff.getNote() && it2.value().noteOff == emptyNoteOffEvent) {
-                it2.value().noteOff = noteOff;
-                return;
+int MidiService::addNoteOff(QList<MidiPairCluster>& pairClusters, const NoteOffEvent &noteOff) {
+    for (int idx = pairClusters.count()-1; idx>=0; idx--) {
+        MidiPairCluster *currentCluster = &pairClusters[idx];
+        for (int idx2 = 0; idx2 < currentCluster->midiPairs.count(); idx2++) {
+            if (currentCluster->midiPairs.at(idx2).noteOn.getNote() == noteOff.getNote() && currentCluster->midiPairs.at(idx2).noteOff == emptyNoteOffEvent) {
+                currentCluster->midiPairs[idx2].noteOff = noteOff;
+                return idx;
             }
         }
     }
+
+    qDebug() << "WTF!!!";
+    return 0;
 }
 
 using namespace jdksmidi;

@@ -36,26 +36,9 @@ void MatchingHandler::matchNoteOffEvent(NoteOffEvent noteOff) {
     match();
 }
 
-void MatchingHandler::matchChannelEvents(QList<ChannelEvent> channelEvents) {
-    for (ChannelEvent channelEvent : channelEvents) {
-        if (channelEvent.type() == Event::NoteOnEventType) {
-            MidiService::addNoteOn(*midiPairClusters, channelEvent);
-        } else if (channelEvent.type() == Event::NoteOffEventType) {
-            MidiService::addNoteOff(*midiPairClusters, channelEvent);
-        }
-    }
+void MatchingHandler::matchMidiPairClusters(QList<MidiPairCluster> mpc) {
+    (*midiPairClusters) = mpc;
     match();
-}
-
-void MatchingHandler::matchChannelEvents2(QList<ChannelEvent> channelEvents) {
-    for (ChannelEvent channelEvent : channelEvents) {
-        if (channelEvent.type() == Event::NoteOnEventType) {
-            MidiService::addNoteOn(*midiPairClusters, channelEvent);
-        } else if (channelEvent.type() == Event::NoteOffEventType) {
-            MidiService::addNoteOff(*midiPairClusters, channelEvent);
-        }
-        match();
-    }
 }
 
 void MatchingHandler::match() {

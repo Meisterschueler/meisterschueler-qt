@@ -22,6 +22,15 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
+private slots:
+    void on_horizontalSliderTunnelMin_sliderMoved(int position);
+
+    void on_horizontalSliderTunnelMax_sliderMoved(int position);
+
+    void on_horizontalSliderEchoesDelay_sliderMoved(int position);
+
+    void on_horizontalSliderRePingVelocity_sliderMoved(int position);
+
 private:
     Ui::FeedbackDialog *ui;
 

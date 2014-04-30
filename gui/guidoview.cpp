@@ -56,20 +56,13 @@ void GuidoView::changeEvent(QEvent *e)
 void GuidoView::resizeEvent(QResizeEvent *e) {
     QWidget::resizeEvent(e);
 
+    update();
+}
+
+void GuidoView::drawRedPoints()
+{
     QGraphicsView *gv = ui->graphicsView;
     double ratio = (double)gv->width()/gv->height();
-
-    GuidoPageFormat guidoPageFormat;
-    GuidoGetDefaultPageFormat(&guidoPageFormat);
-    guidoPageFormat.width = GuidoCM2Unit(29.7);
-    guidoPageFormat.height = GuidoCM2Unit(29.7/ratio);
-    guidoPageFormat.marginright = 0;
-
-    graphicsScene->clear();
-    guidoGraphicsItem = new QGuidoGraphicsItem();
-    guidoGraphicsItem->setGMNCode(currentSong.gmn);
-    guidoGraphicsItem->setGuidoPageFormat(guidoPageFormat);
-    graphicsScene->addItem(guidoGraphicsItem);
 
     QList<Score> scores = GuidoService::gmnToScores(currentSong.gmn);
     MyMapCollector eventMapCollector;
@@ -91,8 +84,27 @@ void GuidoView::resizeEvent(QResizeEvent *e) {
 
         graphicsScene->addItem(item);
     }
+}
+
+void GuidoView::update(int index) {
+    QGraphicsView *gv = ui->graphicsView;
+    double ratio = (double)gv->width()/gv->height();
+
+    GuidoPageFormat guidoPageFormat;
+    GuidoGetDefaultPageFormat(&guidoPageFormat);
+    guidoPageFormat.width = GuidoCM2Unit(29.7);
+    guidoPageFormat.height = GuidoCM2Unit(29.7/ratio);
+    guidoPageFormat.marginright = 0;
+
+    graphicsScene->clear();
+    guidoGraphicsItem = new QGuidoGraphicsItem();
+    guidoGraphicsItem->setGMNCode(currentSong.gmn);
+    guidoGraphicsItem->setGuidoPageFormat(guidoPageFormat);
+    graphicsScene->addItem(guidoGraphicsItem);
 
     gv->fitInView(guidoGraphicsItem, Qt::KeepAspectRatio);
+
+    drawRedPoints();
 }
 
 void GuidoView::nextPage() {
@@ -117,4 +129,6 @@ void GuidoView::on_comboBox_currentIndexChanged(int index)
 {
     currentSong = songs.at(index);
     currentPage = 1;
+
+    update();
 }

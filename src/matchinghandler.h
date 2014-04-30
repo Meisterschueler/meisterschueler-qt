@@ -23,8 +23,7 @@ public slots:
     void reset();
     void matchNoteOnEvent(NoteOnEvent noteOn);
     void matchNoteOffEvent(NoteOffEvent noteOff);
-    void matchChannelEvents(QList<ChannelEvent> channelEvents);
-    void matchChannelEvents2(QList<ChannelEvent> channelEvents);
+    void matchMidiPairClusters(QList<MidiPairCluster> mpc);
 
 private:
     QList<MatchingItem> matchingItems;

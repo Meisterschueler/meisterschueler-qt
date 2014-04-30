@@ -24,6 +24,7 @@ public:
 
     void setSongs(const QList<Song>& songs);
     
+    void drawRedPoints();
 protected:
     void changeEvent(QEvent *e);
     void resizeEvent(QResizeEvent *e);
@@ -33,6 +34,8 @@ signals:
     void gotNoteOffEvent(NoteOffEvent event);
 
 public slots:
+    void update(int index=0);
+
     void nextPage();
     void previousPage();
     

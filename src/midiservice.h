@@ -15,8 +15,8 @@ class MidiService
 public:
     MidiService();
 
-    static void addNoteOn(QList<MidiPairCluster> &pairClusters, const NoteOnEvent& noteOn);
-    static void addNoteOff(QList<MidiPairCluster> &pairClusters, const NoteOffEvent& noteOff);
+    static int addNoteOn(QList<MidiPairCluster> &pairClusters, const NoteOnEvent& noteOn);
+    static int addNoteOff(QList<MidiPairCluster> &pairClusters, const NoteOffEvent& noteOff);
 
     static bool save(const QString& fileName, const QList<ChannelEvent>& events);
     static QList<ChannelEvent> load(const QString fileName);

@@ -11,8 +11,6 @@ class RecordHandler : public QObject
     Q_OBJECT
 public:
     explicit RecordHandler(QObject *parent = 0);
-    
-signals:
 
 public slots:
     void startRecording();

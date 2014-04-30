@@ -1,6 +1,11 @@
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 
+#include <QFileDialog>
+
+#include "../src/midiwrapper.h"
+#include "../src/resultmanager.h"
+
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SettingsDialog)
@@ -25,9 +30,10 @@ void SettingsDialog::changeEvent(QEvent *e)
     }
 }
 
-void SettingsDialog::init(MidiWrapper *midiWrapper) {
+void SettingsDialog::init(MidiWrapper *midiWrapper, ResultManager *resultManager) {
     this->midiWrapper = midiWrapper;
 
+    // MIDI tab
     QStringList inputPorts = midiWrapper->getInputPorts();
     ui->comboBoxInputDevice->addItems(inputPorts);
     ui->comboBoxInputDevice->setCurrentIndex(inputPorts.indexOf(midiWrapper->getOpenedInputPort()));
@@ -37,4 +43,27 @@ void SettingsDialog::init(MidiWrapper *midiWrapper) {
     ui->comboBoxOutputDevice->addItems(outputPorts);
     ui->comboBoxOutputDevice->setCurrentIndex(outputPorts.indexOf(midiWrapper->getOpenedOutputPort()));
     QObject::connect(ui->comboBoxOutputDevice, SIGNAL(currentIndexChanged(QString)), midiWrapper, SLOT(openOutputPort(QString)));
+
+    // Path tab
+    QString resultFilePath = resultManager->getResultFilePath();
+    ui->labelResultFilesPath->setText(resultFilePath);
+
+    ui->labelCustomScoresPath->setText(""); // TODO: hier muss der Custom scores path rein...
+}
+
+void SettingsDialog::on_toolButtonResultFilePath_clicked()
+{
+    QString fileName = QFileDialog::getExistingDirectory(this, "Result File Path");
+    if (!fileName.isEmpty()) {
+        ui->labelResultFilesPath->setText(fileName);
+        resultManager->setResultFilePath(fileName);
+    }
+}
+
+void SettingsDialog::on_toolButtonCustomScoresPath_clicked()
+{
+    QString fileName = QFileDialog::getExistingDirectory(this, "Custom Scores Path");
+    if (!fileName.isEmpty()) {
+        ui->labelCustomScoresPath->setText(fileName);
+    }
 }

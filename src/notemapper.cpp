@@ -63,5 +63,4 @@ void NoteMapper::Rest(const ARMusicalObject *ev) {
 
     const ARRest *arr = dynamic_cast<const ARRest*>(ev);
     position += arr->getDuration();
-    //qDebug("Rest");
 }

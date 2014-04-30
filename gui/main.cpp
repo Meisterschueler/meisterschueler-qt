@@ -8,8 +8,6 @@
 
 #include "events.h"
 
-#define VER "0.1"
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

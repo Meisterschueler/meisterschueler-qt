@@ -52,12 +52,12 @@ void TimelineView::showNoteOnEvent(NoteOnEvent noteOnEvent) {
 void TimelineView::showNoteOffEvent(NoteOffEvent noteOffEvent) {
     for (MidiPair midiPair : midiPairItemMap.keys()) {
         if (midiPair.noteOn.getNote() == noteOffEvent.getNote() && midiPair.noteOff == emptyNoteOffEvent) {
-            QGraphicsEllipseItem *myItem = midiPairItemMap.value(midiPair);
+            QGraphicsEllipseItem *ellipseItem = midiPairItemMap.value(midiPair);
 
             midiPairItemMap.remove(midiPair);
 
             midiPair.noteOff = noteOffEvent;
-            midiPairItemMap.insert(midiPair, myItem);
+            midiPairItemMap.insert(midiPair, ellipseItem);
             break;
         }
     }
@@ -73,14 +73,33 @@ void TimelineView::updateLegatoColor() {
 
         if (midiPairPre.noteOff != emptyNoteOffEvent && midiPair.noteOn != emptyNoteOnEvent) {
             double delta = midiPair.noteOn.getTime() - midiPairPre.noteOff.getTime();
-            qDebug() << delta;
-            if (delta > 100) { // staccato
-                myItem->setBrush(QBrush(QColor(255,0,0)));
-            } else if (delta < -100) { // legato
-                myItem->setBrush(QBrush(QColor(0,0,255)));
-            }
+
+            QColor color = calcColor(delta, -20, 20);
+            myItem->setBrush(QBrush(color));
         }
     }
+}
+
+QColor TimelineView::calcColor(double value, double vMin, double vMax, double cMin, double cMax) {
+    QColor color;
+
+    double normValue = (qBound(vMin, value, vMax) - vMin) / (vMax-vMin);
+    normValue = normValue*(cMax-cMin)+cMin;
+
+    if (normValue >= 0.0 && normValue < 1.0)
+        color = QColor(255*normValue, 0, 0);
+    else if (normValue >= 1.0 && normValue < 2.0)
+        color = QColor(255, 255*(normValue-1.0), 0);
+    else if (normValue >= 2.0 && normValue < 3.0)
+        color = QColor(255*(3.0-normValue), 255, 0);
+    else if (normValue >= 3.0 && normValue < 4.0)
+        color = QColor(0, 255, 255*(normValue-3.0));
+    else if (normValue >= 4.0 && normValue < 5.0)
+        color = QColor(0, 255*(5.0-normValue), 255);
+    else if (normValue >= 5.0 && normValue < 6.0)
+        color = QColor(0, 0, 255*(6.0-normValue));
+
+    return color;
 }
 
 void TimelineView::resizeEvent(QResizeEvent *event) {

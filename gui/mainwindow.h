@@ -74,6 +74,7 @@ private slots:
     void on_actionExit_triggered();
     void on_actionFeedback_triggered();
     void on_actionActionQCustomPlot_triggered();
+    void on_actionTimelineView_triggered();
 };
 
 #endif // MAINWINDOW_H

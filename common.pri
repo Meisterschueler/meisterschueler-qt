@@ -6,6 +6,11 @@ mac {
     QMAKE_CXXFLAGS = -mmacosx-version-min=10.7
 }
 
+#Version information
+#REVISION = $$system(git --git-dir $$PWD/.git --work-tree $$PWD describe)
+#REVISION = $$system(git rev-parse HEAD | cut -c1-10)
+#DEFINES += GITHASH=\\\"$$REVISION\\\"
+DEFINES += VER=\\\"asdf\\\"
 
 #Use pre-compiled headers
 CONFIG += precompile_header

@@ -3,7 +3,8 @@
 
 #include <QDialog>
 
-#include "../src/midiwrapper.h"
+class MidiWrapper;
+class ResultManager;
 
 namespace Ui {
 class SettingsDialog;
@@ -17,15 +18,21 @@ public:
     explicit SettingsDialog(QWidget *parent = 0);
     ~SettingsDialog();
 
-    void init(MidiWrapper *midiWrapper);
+    void init(MidiWrapper *midiWrapper, ResultManager *resultManager);
     
 protected:
     void changeEvent(QEvent *e);
     
+private slots:
+    void on_toolButtonResultFilePath_clicked();
+
+    void on_toolButtonCustomScoresPath_clicked();
+
 private:
     Ui::SettingsDialog *ui;
 
     MidiWrapper *midiWrapper;
+    ResultManager *resultManager;
 };
 
 #endif // SETTINGSDIALOG_H

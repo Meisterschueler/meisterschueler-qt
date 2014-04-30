@@ -22,17 +22,18 @@ ClusterHandler::ClusterHandler()
 
 void ClusterHandler::matchNoteOnEvent(NoteOnEvent noteOn) {
     resetTimer->stop();
-    MidiService::addNoteOn(midiPairClusters, noteOn);
+
     channelEvents.append(noteOn);
+
     if (!delayTimer->isActive()) {
         delayTimer->start(CHORD_DELAY);
     }
     pressedKeys[noteOn.getNote()] = true;
 }
 
-void ClusterHandler::matchNoteOffEvent(NoteOffEvent noteOff) {    
-    MidiService::addNoteOff(midiPairClusters, noteOff);
+void ClusterHandler::matchNoteOffEvent(NoteOffEvent noteOff) {
     channelEvents.append(noteOff);
+
     if (!delayTimer->isActive()) {
         delayTimer->start(CHORD_DELAY);
     }
@@ -52,13 +53,25 @@ void ClusterHandler::matchNoteOffEvent(NoteOffEvent noteOff) {
 }
 
 void ClusterHandler::timeOutDelay() {
-    emit gotChannelEvents(channelEvents);
+    QMap<int, MidiPairCluster> modifiedClusters;
+    for (ChannelEvent e : channelEvents) {
+        if (e.type() == Event::NoteOnEventType) {
+            int idx = MidiService::addNoteOn(midiPairClusters, (NoteOnEvent)e);
+            modifiedClusters.insert(idx, midiPairClusters.at(idx));
+        } else if (e.type() == Event::NoteOffEventType) {
+            int idx = MidiService::addNoteOff(midiPairClusters, (NoteOffEvent)e);
+            modifiedClusters.insert(idx, midiPairClusters.at(idx));
+        }
+    }
+
+    for (int idx : modifiedClusters.keys()) {
+        emit gotMidiPairCluster(idx, modifiedClusters.value(idx));
+    }
     emit gotMidiPairClusters(midiPairClusters);
-    qDebug() << midiPairClusters.size();
+
     channelEvents.clear();
 }
 
 void ClusterHandler::timeOutReset() {
-    midiPairClusters.clear();
     emit reset();
 }

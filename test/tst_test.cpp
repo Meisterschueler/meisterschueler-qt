@@ -111,11 +111,7 @@ private Q_SLOTS:
 
     void playbackHandler_simple();
 
-    void recordHandler_simple();
-
     void midiWrapper_simple();
-
-    void performance_simple();
 
 private:
     MatchingItem gmnToMatchingItem(const QString &gmn);
@@ -130,6 +126,7 @@ Test::Test()
     qRegisterMetaType<QList<ChannelEvent>>("QList<ChannelEvent>");
     qRegisterMetaType<NoteOnEvent>("NoteOnEvent");
     qRegisterMetaType<NoteOffEvent>("NoteOffEvent");
+    qRegisterMetaType<MidiPairCluster>("MidiPairCluster");
     qRegisterMetaType<Score>("Score");
 }
 
@@ -187,9 +184,6 @@ void Test::midiPair_comparisons() {
     QVERIFY( pair != lower );
     QVERIFY( lower < pair );
     QCOMPARE( pair < lower, false );
-
-    QVERIFY( lower < higher );
-    QCOMPARE( higher < lower, false );
 }
 
 void Test::midiPairCluster_constructors() {
@@ -1329,13 +1323,13 @@ void Test::mergingHandler_simple() {
 
 void Test::clusterHandler_simple() {
     ClusterHandler clusterHandler;
-    QSignalSpy channelEventsSpy(&clusterHandler, SIGNAL(gotChannelEvents(QList<ChannelEvent>)));
+    QSignalSpy midiPairClusterSpy(&clusterHandler, SIGNAL(gotMidiPairCluster(int, MidiPairCluster)));
 
     clusterHandler.matchNoteOnEvent(NoteOnEvent(  0, 0, 48, 10));
     clusterHandler.matchNoteOffEvent(NoteOffEvent(100, 0, 48, 0));
-    QCOMPARE( channelEventsSpy.count(), 0 );
+    QCOMPARE( midiPairClusterSpy.count(), 0 );
     QTest::qSleep(50);
-    QCOMPARE( channelEventsSpy.count(), 1 );
+    QCOMPARE( midiPairClusterSpy.count(), 1 );
 }
 
 // PLAYBACKHANDLER
@@ -1366,31 +1360,6 @@ void Test::playbackHandler_simple() {
     QCOMPARE( noteOffEventSpy.count(), 2 );
 }
 
-// RECORDHANDLER
-
-void Test::recordHandler_simple() {
-    QSKIP("Der Handler sendet kein SIGNAL mehr, sondern er nutzt den MidiService");
-    RecordHandler recordHandler;
-    QSignalSpy spy(&recordHandler, SIGNAL(gotChannelEventsToSave(QList<ChannelEvent>)));
-    recordHandler.recordChannelEvent(ChannelEvent(0, 0, 48, 0, Event::NoteOnEventType));
-    recordHandler.save();
-    QCOMPARE( spy.count(), 0 );
-
-    recordHandler.startRecording();
-    recordHandler.recordChannelEvent(ChannelEvent(0, 0, 48, 0, Event::NoteOnEventType));
-    recordHandler.recordChannelEvent(ChannelEvent(0, 0, 48, 0, Event::NoteOnEventType));
-    recordHandler.recordChannelEvent(ChannelEvent(0, 0, 48, 0, Event::NoteOnEventType));
-    QCOMPARE( spy.count(), 0 );
-    recordHandler.stopRecording();
-    recordHandler.recordChannelEvent(ChannelEvent(0, 0, 48, 0, Event::NoteOnEventType));
-    QCOMPARE( spy.count(), 0 );
-    recordHandler.save();
-    QCOMPARE( spy.count(), 1 );
-    QList<QVariant> arguments = spy.takeFirst();
-    QList<ChannelEvent> events = qvariant_cast<QList<ChannelEvent>>(arguments.at(0));
-    QCOMPARE( events.size(), 3 );
-}
-
 // MIDIWRAPPER
 
 void Test::midiWrapper_simple() {
@@ -1400,88 +1369,6 @@ void Test::midiWrapper_simple() {
         qDebug( "%s", inputPort.toStdString().c_str() );
     }
     QVERIFY( inputPorts.size() > 1 );
-}
-
-// PERFORMANCE TESTS
-
-void Test::performance_simple() {
-    QSKIP("Sometings is wrong with simple_performance_text");
-    QList<Song> songs = SongService::getSongsBuiltIn();
-    QList<MatchingItem> matchingItems = SongService::createMatchingItems(songs);
-    MatchingHandler matchingHandler(matchingItems);
-    MatchingHandler matchingHandler2(matchingItems);
-
-    //ResultManager resultManager;
-    //QObject::connect(&matchingHandler, &MatchingHandler::songFinished, &resultManager, &ResultManager::analyseFinishedSong);
-
-    QSignalSpy recognizedSpy(&matchingHandler, SIGNAL(songRecognized(MatchingItem)));
-    QSignalSpy finishSpy(&matchingHandler, SIGNAL(songFinished(MatchingItem)));
-
-    QSignalSpy recognizedSpy2(&matchingHandler2, SIGNAL(songRecognized(MatchingItem)));
-    QSignalSpy finishSpy2(&matchingHandler2, SIGNAL(songFinished(MatchingItem)));
-
-    QString dirName = "/home/fritz/build-meisterschueler-Desktop-Debug/gui";
-    QStringList nameFilter("*.mid");
-    QDir directory(dirName);
-    QStringList midiFilesAndDirectories = directory.entryList(nameFilter);
-    int good = 0;
-    int bad = 0;
-    int good2 = 0;
-    int bad2 = 0;
-    int diff = 0;
-    for (QString midiFileName : midiFilesAndDirectories) {
-        qDebug() << midiFileName;
-        QList<ChannelEvent> channelEvents = MidiService::load(dirName + "/" + midiFileName);
-        matchingHandler.matchChannelEvents(channelEvents);
-        matchingHandler2.matchChannelEvents2(channelEvents);
-
-        MatchingItem item;
-        MatchingItem item2;
-
-        if (finishSpy.count() == 1) {
-            QList<QVariant> arguments = finishSpy.takeFirst();
-            item = qvariant_cast<MatchingItem>(arguments.at(0));
-            qDebug() << item.song.name << ": OK! (OOO)";
-            good++;
-        } else {
-            QList<QVariant> arguments = recognizedSpy.takeLast();
-            item = qvariant_cast<MatchingItem>(arguments.at(0));
-            qDebug() << item.song.name << ": NOT FINISHED! (OOO)";
-            bad++;
-        }
-
-        if (finishSpy2.count() == 1) {
-            QList<QVariant> arguments = finishSpy2.takeFirst();
-            item2 = qvariant_cast<MatchingItem>(arguments.at(0));
-            qDebug() << item2.song.name << ": OK! (XXX)";
-            good2++;
-        } else {
-            QList<QVariant> arguments = recognizedSpy2.takeLast();
-            item2 = qvariant_cast<MatchingItem>(arguments.at(0));
-            qDebug() << item2.song.name << ": NOT FINISHED! (XXX)";
-            bad2++;
-        }
-
-        if (item.song.name != item2.song.name || !midiFileName.startsWith(item.song.name)) {
-            if (*item.midiPitchSequence != *item2.midiPitchSequence) {
-                qDebug() << "Pitch Sequence is different";
-                diff++;
-            }
-
-            QFile::copy(dirName + "/" + midiFileName, "/home/fritz/build-meisterschueler-Desktop-Debug/bad/" + midiFileName);
-        }
-
-        matchingHandler.reset();
-        matchingHandler2.reset();
-    }
-
-    qDebug()  << "Good: " << good << " (" << good2 << ")";
-    qDebug()  << "Bad: " << bad << " (" << bad2 << ")";
-    qDebug()  << "Different: " << diff;
-
-    QCOMPARE( diff, 0 );
-    QCOMPARE( bad, 0 );
-    QCOMPARE( bad2, 0 );
 }
 
 // HELPER FUNCTIONS

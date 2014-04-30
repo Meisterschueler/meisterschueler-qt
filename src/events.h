@@ -188,7 +188,7 @@ public:
     }
 
     bool operator<(const MidiPair& rhs) const {
-        return (this->noteOn.getNote() < rhs.noteOn.getNote() );
+        return (noteOn < rhs.noteOn);
     }
 };
 
