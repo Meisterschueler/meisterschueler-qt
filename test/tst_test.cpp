@@ -172,8 +172,11 @@ void Test::midiPair_comparisons() {
     MidiPair pair(NoteOnEvent(10, 0, 10, 64), NoteOffEvent(1000, 0, 10, 0));
     MidiPair same(NoteOnEvent(10, 0, 10, 64), NoteOffEvent(1000, 0, 10, 0));
 
-    MidiPair earlier(NoteOnEvent(5, 0, 5, 0));
-    MidiPair later(NoteOnEvent(15, 0, 20, 0));
+    MidiPair earlier(NoteOnEvent(5, 0, 10, 0));
+    MidiPair later(NoteOnEvent(15, 0, 10, 0));
+
+    MidiPair higher(NoteOnEvent(10, 0, 20, 0));
+    MidiPair lower(NoteOnEvent(10, 0, 5, 64));
 
     QVERIFY( pair == same );
 
@@ -184,6 +187,15 @@ void Test::midiPair_comparisons() {
     QVERIFY( pair != earlier );
     QVERIFY( earlier < pair );
     QCOMPARE( pair < earlier, false );
+
+    QVERIFY( pair != higher );
+    QVERIFY( pair < higher );
+    QCOMPARE( later < higher, false );
+
+    QVERIFY( pair != lower );
+    QVERIFY( lower < pair );
+    QCOMPARE( pair < lower, false );
+
 }
 
 void Test::midiPairCluster_constructors() {
@@ -1323,7 +1335,7 @@ void Test::mergingHandler_simple() {
 
 void Test::clusterHandler_simple() {
     ClusterHandler clusterHandler;
-    QSignalSpy midiPairClusterSpy(&clusterHandler, SIGNAL(gotMidiPairCluster(int, MidiPairCluster)));
+    QSignalSpy midiPairClusterSpy(&clusterHandler, SIGNAL(gotMidiPairCluster(MidiPairCluster)));
 
     clusterHandler.matchNoteOnEvent(NoteOnEvent(  0, 0, 48, 10));
     clusterHandler.matchNoteOffEvent(NoteOffEvent(100, 0, 48, 0));

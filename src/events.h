@@ -184,11 +184,15 @@ public:
     }
 
     bool operator!=(const MidiPair& rhs) const {
-        return (noteOn != rhs.noteOn || noteOff != rhs.noteOff);
+        return (noteOn.getTime() != rhs.noteOn.getTime() || noteOn != rhs.noteOn || noteOff != rhs.noteOff);
     }
 
     bool operator<(const MidiPair& rhs) const {
-        return (noteOn.getTime() < rhs.noteOn.getTime());
+        if (noteOn.getTime() != rhs.noteOn.getTime()) {
+            return (noteOn.getTime() < rhs.noteOn.getTime());
+        } else {
+            return (noteOn < rhs.noteOn);
+        }
     }
 };
 
