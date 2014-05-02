@@ -180,7 +180,7 @@ public:
     MidiPair(NoteOnEvent noteOn, NoteOffEvent noteOff) : noteOn(noteOn), noteOff(noteOff) {}
 
     bool operator==(const MidiPair& rhs) const {
-        return (noteOn == rhs.noteOn && noteOff == rhs.noteOff);
+        return (noteOn.getTime() == rhs.noteOn.getTime() && noteOn == rhs.noteOn && noteOff == rhs.noteOff);
     }
 
     bool operator!=(const MidiPair& rhs) const {
@@ -188,7 +188,7 @@ public:
     }
 
     bool operator<(const MidiPair& rhs) const {
-        return (noteOn < rhs.noteOn);
+        return (noteOn.getTime() < rhs.noteOn.getTime());
     }
 };
 
@@ -204,25 +204,16 @@ public:
         midiPairs.append(midiPair);
     }
 
-    bool operator<(const MidiPairCluster& rhs) const {
-        return (this->time < rhs.time);
-    }
-
     bool operator==(const MidiPairCluster& rhs) const {
-        if (this->time != rhs.time || this->midiPairs.count() != rhs.midiPairs.count()) {
-            return false;
-        } else {
-            for (int i = 0; i < midiPairs.count(); ++i) {
-                if (midiPairs.at(i) != rhs.midiPairs.at(i)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return (this->time == rhs.time);
     }
 
     bool operator!=(const MidiPairCluster& rhs) const {
-        return !((*this)==rhs);
+        return (this->time != rhs.time);
+    }
+
+    bool operator<(const MidiPairCluster& rhs) const {
+        return (this->time < rhs.time);
     }
 };
 

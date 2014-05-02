@@ -169,21 +169,21 @@ void Test::midiPair_constructors() {
 }
 
 void Test::midiPair_comparisons() {
-    MidiPair pair(NoteOnEvent(0, 0, 10, 64), NoteOffEvent(1000, 0, 10, 0));
-    MidiPair same(NoteOnEvent(0, 0, 10, 64), NoteOffEvent(1000, 0, 10, 0));
+    MidiPair pair(NoteOnEvent(10, 0, 10, 64), NoteOffEvent(1000, 0, 10, 0));
+    MidiPair same(NoteOnEvent(10, 0, 10, 64), NoteOffEvent(1000, 0, 10, 0));
 
-    MidiPair higher(NoteOnEvent(0, 0, 20, 0));
-    MidiPair lower(NoteOnEvent(0, 0, 5, 0));
+    MidiPair earlier(NoteOnEvent(5, 0, 5, 0));
+    MidiPair later(NoteOnEvent(15, 0, 20, 0));
 
     QVERIFY( pair == same );
 
-    QVERIFY( pair != higher );
-    QVERIFY( pair < higher );
-    QCOMPARE( higher < pair, false );
+    QVERIFY( pair != later );
+    QVERIFY( pair < later );
+    QCOMPARE( later < pair, false );
 
-    QVERIFY( pair != lower );
-    QVERIFY( lower < pair );
-    QCOMPARE( pair < lower, false );
+    QVERIFY( pair != earlier );
+    QVERIFY( earlier < pair );
+    QCOMPARE( pair < earlier, false );
 }
 
 void Test::midiPairCluster_constructors() {

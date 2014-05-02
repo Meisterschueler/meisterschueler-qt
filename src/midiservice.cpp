@@ -31,7 +31,22 @@ int MidiService::addNoteOn(QList<MidiPairCluster>& pairClusters, const NoteOnEve
         return end+1;
     } else {
         pairClusters[end].midiPairs.append(MidiPair(noteOn));
-        qSort(pairClusters[end].midiPairs);
+
+        // ... weil ein MidiPair nicht mehr nach Notenwert, sondern nach Zeit sortiert werden soll ...
+        QMap<NoteOnEvent, NoteOffEvent> toSort;
+        QList<MidiPair> midiPairs = pairClusters.at(end).midiPairs;
+        for (MidiPair pair : midiPairs) {
+            toSort.insert(pair.noteOn, pair.noteOff);
+        }
+        midiPairs.clear();
+        for (NoteOnEvent noteOn : toSort.keys()) {
+            midiPairs.append(MidiPair(noteOn, toSort.value(noteOn)));
+        }
+        pairClusters[end].midiPairs = midiPairs;
+
+        // ... muss diese Lösung weichen:
+        //qSort(pairClusters[end].midiPairs);
+
         return end;
     }
 }
