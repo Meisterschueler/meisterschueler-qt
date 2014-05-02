@@ -31,6 +31,7 @@ private:
     MyItem *originItem;
 
     QList<MidiPairCluster> midiPairClusters;
+    QMap<MidiPairCluster, QGraphicsEllipseItem*> midiPairItemMap;
 
 public slots:
     void showNoteOnEvent(NoteOnEvent noteOnEvent);

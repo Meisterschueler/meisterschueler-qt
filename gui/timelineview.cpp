@@ -53,11 +53,38 @@ void TimelineView::showMidiPairCluster(MidiPairCluster midiPairCluster) {
     int idx = midiPairClusters.indexOf(midiPairCluster);
     if (idx == -1) {
         midiPairClusters.append(midiPairCluster);
+        idx = midiPairClusters.indexOf(midiPairCluster);
     } else {
         midiPairClusters.replace(idx, midiPairCluster);
     }
 
-    // Unfinished...
+    for (MidiPair midiPair : midiPairCluster.midiPairs) {
+        if (!midiPairItemMap.contains(midiPair)) {
+            double x = this->width() - 30.0;
+            double y = (1.0 - midiPair.noteOn.getNote()/128.0) * this->height();
+
+            QGraphicsEllipseItem *ellipseItem = new QGraphicsEllipseItem(x-originItem->pos().x()-10, y-10, 20, 20, originItem);
+            ellipseItem->setPen(QPen(Qt::red));
+            ellipseItem->setBrush(QBrush(Qt::gray));
+
+            midiPairItemMap.insert(midiPair, ellipseItem);
+        }
+    }
+
+    for (int i = idx; i > 0 && i < midiPairClusters.count(); i++) {
+        MidiPairCluster preCluster = midiPairClusters.at(i-1);
+        time_t lastNoteOffTime = 0;
+        for (MidiPair midiPair : preCluster.midiPairs) {
+            lastNoteOffTime = qMax(lastNoteOffTime, midiPair.noteOff.getTime());
+        }
+
+        for (MidiPair midiPair : midiPairClusters.at(i).midiPairs) {
+            int delta = midiPair.noteOn.getTime() - lastNoteOffTime;
+            QColor color = calcColor(delta, -10, 10);
+            QGraphicsEllipseItem *ellipseItem = midiPairItemMap.value(midiPair);
+            ellipseItem->setBrush(color);
+        }
+    }
 }
 
 QColor TimelineView::calcColor(double value, double vMin, double vMax, double cMin, double cMax) {
