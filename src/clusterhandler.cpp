@@ -65,7 +65,7 @@ void ClusterHandler::timeOutDelay() {
     }
 
     for (int idx : modifiedClusters.keys()) {
-        emit gotMidiPairCluster(idx, modifiedClusters.value(idx));
+        emit gotMidiPairCluster(modifiedClusters.value(idx));
     }
     emit gotMidiPairClusters(midiPairClusters);
 

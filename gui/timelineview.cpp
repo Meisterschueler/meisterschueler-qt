@@ -38,46 +38,26 @@ TimelineView::~TimelineView()
 void TimelineView::showNoteOnEvent(NoteOnEvent noteOnEvent) {
     double x = this->width() - 30.0;
     double y = (1.0 - noteOnEvent.getNote()/128.0) * this->height();
+    QColor color = calcColor(128.0-noteOnEvent.getVelocity(), 50.0, 100.0);
 
     QGraphicsEllipseItem *ellipseItem = new QGraphicsEllipseItem(x-originItem->pos().x()-10, y-10, 20, 20, originItem);
     ellipseItem->setPen(QPen(Qt::red));
-    ellipseItem->setBrush(QBrush(QColor(32,32,32)));
-
-    MidiPair midiPair(noteOnEvent);
-    midiPairItemMap.insert(midiPair, ellipseItem);
-
-    updateLegatoColor();
+    ellipseItem->setBrush(QBrush(color));
 }
 
 void TimelineView::showNoteOffEvent(NoteOffEvent noteOffEvent) {
-    for (MidiPair midiPair : midiPairItemMap.keys()) {
-        if (midiPair.noteOn.getNote() == noteOffEvent.getNote() && midiPair.noteOff == emptyNoteOffEvent) {
-            QGraphicsEllipseItem *ellipseItem = midiPairItemMap.value(midiPair);
-
-            midiPairItemMap.remove(midiPair);
-
-            midiPair.noteOff = noteOffEvent;
-            midiPairItemMap.insert(midiPair, ellipseItem);
-            break;
-        }
-    }
-
-    updateLegatoColor();
+    // Do nothing...
 }
 
-void TimelineView::updateLegatoColor() {
-    for (int i=1; i<midiPairItemMap.keys().count(); i++) {
-        MidiPair midiPairPre = midiPairItemMap.keys().at(i-1);
-        MidiPair midiPair = midiPairItemMap.keys().at(i);
-        QGraphicsEllipseItem *myItem = midiPairItemMap.value(midiPair);
-
-        if (midiPairPre.noteOff != emptyNoteOffEvent && midiPair.noteOn != emptyNoteOnEvent) {
-            double delta = midiPair.noteOn.getTime() - midiPairPre.noteOff.getTime();
-
-            QColor color = calcColor(delta, -20, 20);
-            myItem->setBrush(QBrush(color));
-        }
+void TimelineView::showMidiPairCluster(MidiPairCluster midiPairCluster) {
+    int idx = midiPairClusters.indexOf(midiPairCluster);
+    if (idx == -1) {
+        midiPairClusters.append(midiPairCluster);
+    } else {
+        midiPairClusters.replace(idx, midiPairCluster);
     }
+
+    // Unfinished...
 }
 
 QColor TimelineView::calcColor(double value, double vMin, double vMax, double cMin, double cMax) {

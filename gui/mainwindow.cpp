@@ -280,8 +280,9 @@ void MainWindow::on_actionTimelineView_triggered()
 {
     TimelineView *timelineView = new TimelineView();
 
-    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, timelineView, &TimelineView::showNoteOnEvent);
-    QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, timelineView, &TimelineView::showNoteOffEvent);
+    QObject::connect(midiClusterHandler, &ClusterHandler::gotMidiPairCluster, timelineView, &TimelineView::showMidiPairCluster);
+    //QObject::connect(midiWrapper, &MidiWrapper::gotNoteOnEvent, timelineView, &TimelineView::showNoteOnEvent);
+    //QObject::connect(midiWrapper, &MidiWrapper::gotNoteOffEvent, timelineView, &TimelineView::showNoteOffEvent);
 
     setCentralWidget(timelineView);
 }

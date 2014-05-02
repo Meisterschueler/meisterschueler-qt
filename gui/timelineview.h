@@ -24,18 +24,18 @@ public:
     ~TimelineView();
 
 private:
-    void updateLegatoColor();
     QColor calcColor(double value, double vMin = 0.0, double vMax = 1.0, double cMin = 1.0, double cMax = 5.0);
 
     QGraphicsScene *graphicsScene;
     QPropertyAnimation *animation;
     MyItem *originItem;
 
-    QMap<MidiPair, QGraphicsEllipseItem*> midiPairItemMap;
+    QList<MidiPairCluster> midiPairClusters;
 
 public slots:
     void showNoteOnEvent(NoteOnEvent noteOnEvent);
     void showNoteOffEvent(NoteOffEvent noteOffEvent);
+    void showMidiPairCluster(MidiPairCluster midiPairCluster);
 
 protected:
     void resizeEvent(QResizeEvent *event);

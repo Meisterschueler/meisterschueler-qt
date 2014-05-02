@@ -20,7 +20,7 @@ public slots:
 
 signals:
     void gotControlChangeEvent(ControlChangeEvent event);
-    void gotMidiPairCluster(int idx, MidiPairCluster midiPairCluster);
+    void gotMidiPairCluster(MidiPairCluster midiPairCluster);
     void gotMidiPairClusters(QList<MidiPairCluster> midiPairClusters);
     void reset();
 
